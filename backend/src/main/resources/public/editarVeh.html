@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+
+          integrity="sha512-YoJw8UATPp+6XGrugZlfYX6cNUJx/BxOKqa1PY27vGJegcqC8jJePxmSZf+Mww3J9D2W8mSvS0wiyOebOx1eZA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Rent a Car</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="principal.html">Inicio <span class="sr-only"></span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="servicios.html">Servicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="autoBarat.html">Vehiculos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contacto.html">Contacto</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="mantenedor.html">Mantenedor de vehiculos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pagos.html">Pagos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Login.html">Inicia Sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <H1>NUESTRA FLOTA DE VEHÍCULOS</H1>
+    <table id="mitabla" align="center">
+        <tr>
+            <th style="width: 120px;">MARCA</th>
+            <!---REEMPLAZA A UN TD PERO LO HACE EN NEGRITA PARA HACER LA CABECERA DE LA TABLA-->
+            <th style="width: 120px;">MODELO</th>
+            <th style="width: 120px;">PATENTE</th>
+            <th style="width: 120px;">TIPO VEHICULO</th>
+            <th style="width: 120px;">CAPACIDAD</th>
+            <th style="width: 120px;">COLOR</th>
+            <th style="width: 120px;">AÑO</th>
+            <th style="width: 120px;">MODIFICAR</th>
+            <th style="width: 120px;">ELIMINAR</th>
+        </tr>
+    </table>
+
+    <footer>
+        <p>&copy; Información adicional</p>
+        <ul>
+            <li><a href="requisitos.html">Requisitos para arrendar</a></li>
+            <li><a href="/conectar">Contacto</a></li>
+            <li><a href="/rrss">Redes Sociales</a></li>
+        </ul>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+            integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $.get('/cars', function (json) {
+                $.each(json.cars, function (index, element) {
+                    let idBtnDel = "btn_del" + element.id
+                    let idRow = "row_" + element.id
+                    let row = "\n" +
+                        "    <tr>\n" +
+                        "        <td>" + element.brand + "</td>\n" +
+                        "        <td>" + element.model + "</td>\n" +
+                        "        <td>" + element.plateCode + "</td>\n" +
+                        "        <td>" + element.type + "</td>\n" +
+                        "        <td>" + element.capacity + "</td>\n" +
+                        "        <td>" + element.color + "</td>\n" +
+                        "        <td>" + element.year + "</td>\n" +
+                        "        <td><a class='btn btn-success' href='/addVeh.html?id=" + element.id  + "'>Modificar</a></td>\n" +
+                        "        <td><a class='btn btn-danger' id='" + idBtnDel + "'>Eliminar</a></td>\n" +
+                        "    </tr>"
+
+                    $("#mitabla").append(row)
+
+                    $("#" + idBtnDel).click(function () {
+                        $.ajax({
+                            url: '/cars/' + element.id,
+                            type: 'DELETE',
+                            success: function (response) {
+                                window.location = "/editarVeh.html"
+                            }
+                        });
+                    })
+                })
+            })
+        })
+    </script>
+</body>
+</html>

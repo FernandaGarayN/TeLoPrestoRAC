@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>crearVehiculo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Agrega tu archivo CSS personalizado -->
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Rent a Car</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="principal.html">Inicio <span class="sr-only"></span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="servicios.html">Servicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="autoBarat.html">Vehiculos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contacto.html">Contacto</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="mantenedor.html">Mantenedor de vehiculos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pagos.html">Pagos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Login.html">Inicia Sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <form id="formularioV">
+            <div>
+                <label for="marca" class="col-form-label">MARCA: </label>
+                <input type="text" id="marca" class="form-control" name="marca">
+                <span id="msgmarca">Ingresa una marca válida</span>
+            </div>
+            <div>
+                <label for="modelo"  class="col-form-label">MODELO: </label>
+                <input type="text" id="modelo" class="form-control" name="modelo">
+                <span id="msgmodelo">Ingresa un modelo válido</span>
+            </div>
+            <div>
+                <label for="patente"  class="col-form-label">PATENTE: </label>
+                <input type="text" id="patente" class="form-control" name="patente">
+                <span id="msgpatente">Ingresa una patente válida</span>
+            </div>
+            <div>
+                <label for="color"  class="col-form-label">COLOR: </label>
+                <select class="form-select" id="color" name="color">
+                    <option value="colors">Seleccione un color</option>
+                    <option value="gris">Gris</option>
+                    <option value="negro">Negro</option>
+                    <option value="rojo">Rojo</option>
+                    <option value="blanco">Blanco</option>
+                </select>
+                <span id="msgcolor">Debes elegir un color </span>
+            </div>
+            <div class="col-sm-2">
+                <label for="anio"  class="col-form-label">AÑO DE FABRICACIÓN: </label>
+                <input type="number" class="form-control" id="anio" name="anio" required="">
+            </div>
+            <span id="msganio">Debes seleccionar un año</span>
+            <span id="msganio2">El año debe ser mayor que 2011</span>
+            <span id="msganio3">Aún no llegamos a ese año</span>
+            <div>
+                <label for="capacidad"  class="col-form-label">CAPACIDAD: </label>
+                <select class="form-select" id="capacidad" name="capacidad">
+                    <option value="capacidad">Capacidad de pasajeros</option>
+                    <option value="2">2</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="7">7</option>
+                </select>
+                <span id="msgcapacidad">Debes ingresar la capacidad</span>
+            </div>
+            <div>
+                <label for="tipo"  class="col-form-label">TIPO: </label>
+                <select class="form-select" id="tipo" name="tipo">
+                    <option value="tipo">tipo de vehiculo</option>
+                    <option value="sedan">sedan</option>
+                    <option value="suv">suv</option>
+                    <option value="camioneta">camioneta</option>
+                    <option value="coupe">coupe</option>
+                    <option value="citycar">citycar</option>
+                    <option value="hatchbacks">hatchbacks</option>
+                </select>
+                <span id="msgtipo">Debes elegir un tipo de vehículo</span>
+            </div>
+            <div>
+                <label for="valor"  class="col-form-label">VALOR DIARIO: </label>
+                <input type="number" id="valor" class="form-control" name="valor">
+                <span id="msgvalor">Ingresa un precio válido</span>
+                <span id="msgvalor2">No damos autos gratis</span>
+                <span id="msgvalor3">Alto, tampoco es tan caro</span>
+            </div>
+
+            <br>
+            <input id="btnVeh" type="button" value="VALIDAR FORMULARIO" >
+        </form>
+    </div>
+    
+    <footer>
+        <p>&copy; Información adicional</p>
+        <ul>
+            
+            <li><a href="requisitos.html">Requisitos para arrendar</a></li>
+            <li><a href="/conectar">Contacto</a></li>
+            <li><a href="/rrss">Redes Sociales</a></li>
+        </ul>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+    integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script src="validaciones.js"></script>
+    <script>
+        $(document).ready(function(){
+            let settings = {}
+            settings.headers = {
+                "Accept":"application/json",
+                "Content-Type": "application/json"
+            }
+            $.ajaxSetup(settings)
+
+            const urlParams = new URLSearchParams(window.location.search)
+            const id = urlParams.get("id")
+
+            if(id) {
+                $.get("/cars/"+id, function (json) {
+                    $("#marca").val(json.car.brand)
+                    $("#modelo").val(json.car.model)
+                    $("#patente").val(json.car.plateCode)
+                    $("#color").val(json.car.color)
+                    $("#anio").val(json.car.year)
+                    $("#capacidad").val(json.car.capacity)
+                    $("#tipo").val(json.car.type)
+                    $("#valor").val(json.car.cost)
+                    $("#btnVeh").click(function (){
+                        editar(json.car.id)
+                    })
+                })
+            } else {
+                $("#btnVeh").click(guardar)
+            }
+
+            $("#msgmarca").hide()
+            $("#msgmodelo").hide()
+            $("#msgpatente").hide()
+            $("#msgvalor").hide()
+            $("#msgvalor2").hide()
+            $("#msgvalor3").hide()
+            $("#msganio").hide()
+            $("#msganio2").hide()
+            $("#msganio3").hide()
+            $("#msgcolor").hide()
+            $("#msgtipo").hide()
+            $("#msgcapacidad").hide()
+        })
+    </script>
+</body>
+</html>

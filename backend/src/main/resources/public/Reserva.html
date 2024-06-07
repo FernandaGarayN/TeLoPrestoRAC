@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Agrega tu archivo CSS personalizado -->
+    <link rel="stylesheet" href="estilo.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Rent a Car</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="principal.html">Inicio <span class="sr-only"></span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="servicios.html">Servicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="autoBarat.html">Vehiculos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contacto.html">Contacto</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="mantenedor.html">Mantenedor de vehiculos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pagos.html">Pagos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Login.html">Inicia Sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container my-5">
+        <h1 class="text-center mb-5">Reserva de Automóvil</h1>
+        <form>
+            <!-- Datos del cliente -->
+            <div class="mb-3 row">
+                <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="apellido" class="col-sm-2 col-form-label">Apellido</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="apellido" name="apellido" required>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="email" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="telefono" class="col-sm-2 col-form-label">Teléfono</label>
+                <div class="col-sm-10">
+                    <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                </div>
+            </div>
+            <!-- Información del vehículo -->
+            <div class="mb-3 row">
+                <label for="vehiculo" class="col-sm-2 col-form-label">Vehículo</label>
+                <div class="col-sm-10">
+                    <select class="form-select" id="vehiculo" name="vehiculo">
+
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="fechainicio" class="col-sm-2 col-form-label">Fecha de inicio</label>
+                <div class="col-sm-10">
+                    <input type="date" class="form-control" id="fechainicio" name="fechainicio" required>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="fechafin" class="col-sm-2 col-form-label">Fecha de fin</label>
+                <div class="col-sm-10">
+                    <input type="date" class="form-control" id="fechafin" name="fechafin" required>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="offset-sm-2 col-sm-10">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="gps" name="gps">
+                        <label class="form-check-label" for="gps">
+                            GPS
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="silla" name="silla">
+                        <label class="form-check-label" for="silla">
+                            Silla de bebé
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="seguro" name="seguro">
+                        <label class="form-check-label" for="seguro">
+                            Seguro adicional
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-sm-12 text-center">
+                    <button id="btnreserva" type="button" class="btn btn-primary">Reservar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div class="modal fade" id="confirmarModal" tabindex="-1" role="dialog" aria-labelledby="confirmarModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmarModalLabel">Confirmación de Reserva</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¡Gracias por elegir Rent-a-Car High Gamma! Hemos recibido su reserva con éxito.</p>
+                    <p>Su reserva para un <span id="vehiculoReserva"></span> desde el <span
+                            id="fechaInicioReserva"></span> hasta el <span id="fechaFinReserva"></span> ha sido
+                        confirmada para su nombre (<span id="nombreReserva"></span>) y número de teléfono (<span
+                            id="telefonoReserva"></span>).</p>
+                    <p>Si necesita hacer algún cambio, no dude en ponerse en contacto con nosotros.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; Información adicional</p>
+        <ul>
+            
+            <li><a href="requisitos.html">Requisitos para arrendar</a></li>
+            <li><a href="/conectar">Contacto</a></li>
+            <li><a href="/rrss">Redes Sociales</a></li>
+        </ul>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+       <script src="validaciones.js"></script>
+       <script>
+        $("#document").ready(function(){
+            $("#btnreserva").click(validarReserva)
+            $.get('/cars', function (json) {
+                $.each(json.cars, function (index, element) {
+                    let vehiculo = "<option value ='"+ element.id +"'>"+ element.brand +"/ "+ element.model+"/ "+ element.color +"</option>"
+                    $("#vehiculo").append(vehiculo)
+                })
+            })
+        })
+    </script>
+</body>
+
+</html>

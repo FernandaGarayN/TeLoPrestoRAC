@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head_tag('Vehículos')}"><title>VEHICULOS</title></head>
+<body>
+<nav th:replace="~{fragments/navbar :: navbar('vehiculos')}"></nav>
+
+<div class="container bg-white">
+    <h1>Nuestros Vehiculos</h1>
+    <div class="row">
+        <div class="d-sm-flex align-self-sm-stretch col-sm-6 col-md-6 col-lg-4">
+            <div class="card m-2">
+                <img th:src="@{/img/descarga.jpg}" class="card-img-top object-fit" alt=""/>
+                <div class="card-body">
+                    <h5 class="card-title">Arrienda un auto familiar</h5>
+                    <p class="card-text">
+                        Encuentra los mejores precios en alquiler de autos familiares para tus próximas vacaciones.
+                    </p>
+                    <a th:href="@{/busqueda-vehiculos}" class="btn btn-warning">Busca tu vehículo</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-sm-flex align-self-sm-stretch col-sm-6 col-md-6 col-lg-4">
+            <div class="card m-2">
+                <img th:src="@{/img/OIP.jpg}" class="card-img-top" alt=""/>
+                <div class="card-body">
+                    <h5 class="card-title">Arrienda un auto de lujo</h5>
+                    <p class="card-text ">
+                        Disfrute de la experiencia de conducir un auto de lujo con nuestro servicio de alquiler de vehículos premium
+                    </p>
+                    <a href="#" class="btn btn-danger">Próximamente</a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<footer th:replace="fragments/footer :: footer_tag"></footer>
+</body>
+</html>
