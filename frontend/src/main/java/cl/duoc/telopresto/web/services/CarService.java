@@ -35,14 +35,14 @@ public class CarService {
      Car newCar = new Car();
      newCar.setBrand(form.getBrand());
      newCar.setCapacity(form.getCapacity());
-     newCar.setCost(form.getDailyCost());
+     newCar.setDailyCost(form.getDailyCost());
      newCar.setColor(form.getColor());
      newCar.setModel(form.getModel());
      newCar.setPlateCode(form.getPlateCode());
      newCar.setSubsidiaryId(form.getSubsidiaryId());
      newCar.setType(form.getType());
      newCar.setYear(form.getFactoryYear());
-     newCar.setImage(form.getImage());
+     //newCar.setImage(form.getImage());
      return carClient.save(newCar);
   }
 

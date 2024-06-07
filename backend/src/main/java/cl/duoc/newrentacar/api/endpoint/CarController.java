@@ -86,7 +86,7 @@ public class CarController {
 
   @PostMapping("/cars")
   public ResponseEntity<GetCarResponse> post(@RequestBody Car aCar) {
-    boolean added = carService.addCar(aCar);
+    boolean added = carService.addFirebaseCar(aCar);
     if (added) {
       return ResponseEntity.status(HttpStatus.CREATED).build();
     } else {

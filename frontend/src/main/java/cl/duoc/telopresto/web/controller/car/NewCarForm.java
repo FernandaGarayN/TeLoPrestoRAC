@@ -3,6 +3,7 @@ package cl.duoc.telopresto.web.controller.car;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -20,5 +21,5 @@ public class NewCarForm {
     private Integer capacity;
     private Integer dailyCost;
     private String type;
-    private String image;
+    private MultipartFile image;
 }

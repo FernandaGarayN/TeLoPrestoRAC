@@ -14,7 +14,10 @@
     <a th:href="@{/nuevo-vehiculo}" class="btn btn-primary">
         Nuevo Vehículo
     </a>
-
+    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${successMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     <!-- Lista de vehículos existentes -->
     <div id="car-list" class="p-2">
         <h3>Vehículos en el Sistema</h3>
@@ -42,6 +45,6 @@
         </table>
     </div>
 </div>
-<footer th:replace="fragments/footer :: footer_tag"></footer>
+<footer th:replace="~{fragments/footer :: footer_tag}"></footer>
 </body>
 </html>

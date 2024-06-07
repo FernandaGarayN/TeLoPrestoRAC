@@ -25,13 +25,13 @@
                 <td>[[${row.startAt}]]</td>
                 <td>[[${row.endAt}]]</td>
                 <td>[[${row.days}]]</td>
-                <td th:text="${'$' + #numbers.formatDecimal(row.car.cost, 0, 'POINT', 0, 'NONE')}"></td>
+                <td th:text="${'$' + #numbers.formatDecimal(row.car.getDailyCost, 0, 'POINT', 0, 'NONE')}"></td>
                 <td th:text="${'$' + #numbers.formatDecimal(row.amount, 0, 'POINT', 0, 'NONE')}"></td>
             </tr>
             </tbody>
         </table>
     </div>
 </div>
-<footer th:replace="fragments/footer :: footer_tag"></footer>
+<footer th:replace="~{fragments/footer :: footer_tag}"></footer>
 </body>
 </html>
