@@ -115,11 +115,11 @@ public class CarService {
     return newCar;
   }
 
-  public Car updateCarById(int id, Car aCar) {
-    Optional<CarEntity> foundCar = carRepository.findById(id);
+  public Car updateCarById(String id, Car aCar) {
+    Optional<Car> foundCar = carFirebaseRepository.findCarById(id);
     boolean isFound = foundCar.isPresent();
     if (isFound) {
-      carRepository.save(getCarEntity(aCar));
+      carFirebaseRepository.edit(id, aCar);
       return aCar;
     }
     return null;
@@ -138,5 +138,13 @@ public class CarService {
   public List<Car> searchFirebase(
     String brand, String model, String color, Integer year, String subsidiary, Integer price) {
     return carFirebaseRepository.findFirebaseCars(brand, model, color, year, subsidiary, price);
+  }
+
+  public Car findCarFirebaseById(String id) {
+    return carFirebaseRepository.findCarById(id).orElseThrow();
+  }
+
+  public Car deleteCarFirebaseById(String id) {
+    return carFirebaseRepository.delete(id).orElseThrow();
   }
 }

@@ -8,6 +8,7 @@ import com.google.firebase.cloud.FirestoreClient;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,11 @@ public class CarFirebaseRepository {
     try {
       QuerySnapshot querySnapshot = db.collection("cars").get().get();
       return querySnapshot.getDocuments().stream()
-        .map(document -> document.toObject(Car.class))
+        .map(document -> {
+          Car car = document.toObject(Car.class);
+          car.setId(document.getId());
+          return car;
+        })
         .collect(Collectors.toList());
     } catch (Exception e) {
       e.printStackTrace();
@@ -75,5 +80,51 @@ public class CarFirebaseRepository {
     }
 
     return finalCars;
+  }
+
+  public Optional<Car> findCarById(String id) {
+    Firestore db = FirestoreClient.getFirestore();
+    DocumentReference docRef = db.collection("cars").document(id);
+    ApiFuture<DocumentSnapshot> future = docRef.get();
+
+    try {
+      DocumentSnapshot document = future.get();
+      if (document.exists()) {
+        Car car = document.toObject(Car.class);
+        assert car != null;
+        car.setId(document.getId());
+        return Optional.of(car);
+      } else {
+        return Optional.empty();
+      }
+    } catch (InterruptedException | ExecutionException e) {
+      return Optional.empty();
+    }
+  }
+
+  public void edit(String id, Car aCar) {
+    Firestore db = FirestoreClient.getFirestore();
+    db.collection("cars").document(id).set(aCar);
+  }
+
+  public Optional<Car> delete(String id) {
+    Firestore db = FirestoreClient.getFirestore();
+    DocumentReference docRef = db.collection("cars").document(id);
+    ApiFuture<DocumentSnapshot> future = docRef.get();
+
+    try {
+      DocumentSnapshot document = future.get();
+      if (document.exists()) {
+        Car car = document.toObject(Car.class);
+        assert car != null;
+        car.setId(document.getId());
+        docRef.delete();
+        return Optional.of(car);
+      } else {
+        return Optional.empty();
+      }
+    } catch (InterruptedException | ExecutionException e) {
+      return Optional.empty();
+    }
   }
 }

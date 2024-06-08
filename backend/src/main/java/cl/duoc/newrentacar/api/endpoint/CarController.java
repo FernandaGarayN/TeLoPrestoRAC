@@ -60,8 +60,8 @@ public class CarController {
   }
 
   @GetMapping("/cars/{id}")
-  public ResponseEntity<GetCarResponse> get(@PathVariable int id) {
-    Car foundCar = carService.findCarById(id);
+  public ResponseEntity<GetCarResponse> get(@PathVariable String id) {
+    Car foundCar = carService.findCarFirebaseById(id);
 
     if (foundCar != null) {
       GetCarResponse response = new GetCarResponse();
@@ -73,8 +73,8 @@ public class CarController {
   }
 
   @DeleteMapping("/cars/{id}")
-  public ResponseEntity<GetCarResponse> delete(@PathVariable int id) {
-    Car deletedCar = carService.deleteCarById(id);
+  public ResponseEntity<GetCarResponse> delete(@PathVariable String id) {
+    Car deletedCar = carService.deleteCarFirebaseById(id);
     if (deletedCar != null) {
       GetCarResponse response = new GetCarResponse();
       response.setCar(deletedCar);
@@ -95,7 +95,7 @@ public class CarController {
   }
 
   @PutMapping("/cars/{id}")
-  public ResponseEntity<GetCarResponse> put(@PathVariable("id") int id, @RequestBody Car aCar) {
+  public ResponseEntity<GetCarResponse> put(@PathVariable("id") String id, @RequestBody Car aCar) {
     Car updated = carService.updateCarById(id, aCar);
     if (updated != null) {
       GetCarResponse response = new GetCarResponse();
