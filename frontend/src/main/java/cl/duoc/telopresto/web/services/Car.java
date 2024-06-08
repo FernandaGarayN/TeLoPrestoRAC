@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Car {
-  private int id;
+  private String id;
   private String plateCode;
   private String brand;
   private String model;

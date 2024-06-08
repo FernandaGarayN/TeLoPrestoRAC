@@ -25,7 +25,7 @@ public class CarController {
 
   @GetMapping("/cars/years")
   public ResponseEntity<List<Integer>> getYears() {
-    List<Car> cars = carService.getAllCars();
+    List<Car> cars = carService.getAllFirebaseCars();
     List<Integer> years = new ArrayList<>();
     for (Car car : cars) {
       if (!years.contains(car.getYear())) {
@@ -44,12 +44,12 @@ public class CarController {
     @RequestParam(value = "subsidiary", required = false) String subsidiary,
     @RequestParam(value = "price", required = false) Integer price
   ) {
-    return ResponseEntity.ok(carService.search(brand, model, color, year, subsidiary, price));
+    return ResponseEntity.ok(carService.searchFirebase(brand, model, color, year, subsidiary, price));
   }
 
   @GetMapping("/cars/brands")
   public ResponseEntity<List<String>> getBrands() {
-    List<Car> cars = carService.getAllCars();
+    List<Car> cars = carService.getAllFirebaseCars();
     List<String> brands = new ArrayList<>();
     for (Car car : cars) {
       if (!brands.contains(car.getBrand())) {

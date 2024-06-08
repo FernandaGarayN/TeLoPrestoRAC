@@ -60,7 +60,7 @@ public class CarService {
 
   private static Car getCar(CarEntity dbCar) {
     Car car = new Car();
-    car.setId(dbCar.getId());
+    //car.setId(dbCar.getId());
     car.setPlateCode(dbCar.getPlateCode());
     car.setBrand(dbCar.getBrand());
     car.setModel(dbCar.getModel());
@@ -133,5 +133,10 @@ public class CarService {
       finalCars.add(getCar(entity));
     }
     return finalCars;
+  }
+
+  public List<Car> searchFirebase(
+    String brand, String model, String color, Integer year, String subsidiary, Integer price) {
+    return carFirebaseRepository.findFirebaseCars(brand, model, color, year, subsidiary, price);
   }
 }

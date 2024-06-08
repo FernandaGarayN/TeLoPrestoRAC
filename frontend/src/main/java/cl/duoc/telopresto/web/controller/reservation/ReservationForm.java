@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class ReservationForm {
-    private Integer carId;
+    private String carId;
     private String car;
     private LocalDate startAt;
     private LocalDate endAt;
