@@ -13,5 +13,9 @@ spring:
       payment: ${spring.properties.backend-url}/api/payments
       reservations: ${spring.properties.backend-url}/api/reservations
       subsidiaries: ${spring.properties.backend-url}/api/subsidiaries
+  cloud:
+    openfeign:
+      okhttp:
+        enabled: true
 
 

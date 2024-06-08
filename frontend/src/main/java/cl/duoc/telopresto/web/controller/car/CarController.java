@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -34,7 +31,7 @@ public class CarController {
     }
 
     @GetMapping("/mantenedor-vehiculos")
-    public String getAllCars (ModelMap model){
+    public String getAllCars(ModelMap model) {
         List<Car> cars = carService.findAll();
         model.addAttribute("cars", cars);
         return "mantenedor-vehiculos";
@@ -66,28 +63,67 @@ public class CarController {
     }
 
     @GetMapping("/detalle-vehiculo")
-    public String getDetalleVehiculo(ModelMap model, @RequestParam("idVehiculo") Integer idVehiculo) {
+    public String getDetalleVehiculo(ModelMap model, @RequestParam("idVehiculo") String idVehiculo) {
         Car car = carService.findById(idVehiculo);
         model.addAttribute("car", car);
         return "detalle-vehiculo";
     }
 
     @GetMapping("/nuevo-vehiculo")
-    public String getNewCar (ModelMap model){
+    public String getNewCar(ModelMap model) {
         model.addAttribute("newCarForm", NewCarForm.builder().build());
         return "nuevo-vehiculo";
     }
 
+    @GetMapping("/editar-vehiculo/{id}")
+    public String getEditCar(ModelMap model, @PathVariable("id") String id) {
+        Car car = carService.findById(id);
+        EditCarForm form = EditCarForm.builder()
+                .brand(car.getBrand())
+                .model(car.getModel())
+                .factoryYear(car.getYear())
+                .plateCode(car.getPlateCode())
+                //.subsidiaryId(car.getSubsidiary())
+                .dailyCost(car.getDailyCost())
+                .type(car.getType())
+                .capacity(car.getCapacity())
+                .color(car.getColor())
+                .build();
+        model.addAttribute("editCarForm", form);
+        model.addAttribute("id", id);
+        return "editar-vehiculo";
+    }
+
     @PostMapping("/nuevo-vehiculo")
-    public String postNewCar (ModelMap model, @Valid @ModelAttribute ("newCarForm") NewCarForm newCarForm,
-                              BindingResult bindingResult, RedirectAttributes redirectAttributes){
-        if (bindingResult.hasErrors()){
+    public String postNewCar(ModelMap model,
+                             @Valid @ModelAttribute("newCarForm") NewCarForm newCarForm,
+                             BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("newCarForm", newCarForm);
+            return "nuevo-vehiculo";
         }
-
-
         carService.save(newCarForm);
         redirectAttributes.addFlashAttribute("successMessage", "El vehículo ha sido guardado exitosamente.");
+        return "redirect:/mantenedor-vehiculos";
+    }
+
+    @PostMapping("/editar-vehiculo/{id}")
+    public String postEditCar(ModelMap model, @PathVariable("id") String id,
+                              @Valid @ModelAttribute("editCarForm") EditCarForm editCarForm,
+                              BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("editCarForm", editCarForm);
+            return "editar-vehiculo";
+        }
+        carService.edit(id, editCarForm);
+        redirectAttributes.addFlashAttribute("successMessage", "El vehículo ha sido modificado exitosamente.");
+        return "redirect:/mantenedor-vehiculos";
+    }
+
+    @GetMapping("/eliminar-vehiculo/{id}")
+    public String deleteCar(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
+        carService.deleteCar(id);
+        redirectAttributes.addFlashAttribute("successMessage", "El vehículo ha sido eliminado exitosamente.");
         return "redirect:/mantenedor-vehiculos";
     }
 }

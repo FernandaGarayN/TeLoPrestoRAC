@@ -52,7 +52,7 @@ public class ReservationController {
   }
 
   @GetMapping("/nueva-reserva")
-  public String getNewReservation(ModelMap model, @RequestParam("idVehiculo") Integer id) {
+  public String getNewReservation(ModelMap model, @RequestParam("idVehiculo") String id) {
     Car car = carService.findById(id);
     ReservationForm reservationForm =
         ReservationForm.builder()

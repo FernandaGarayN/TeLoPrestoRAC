@@ -3,10 +3,7 @@ package cl.duoc.telopresto.web.apiclients.car;
 import cl.duoc.telopresto.web.config.feign.FeignCarConfig;
 import cl.duoc.telopresto.web.services.Car;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,7 +22,7 @@ public interface CarClient {
             @RequestParam(value = "price", required = false) Integer price);
 
     @GetMapping("/{id}")
-    GetCarResponse findById(@PathVariable Integer id);
+    GetCarResponse findById(@PathVariable String id);
 
     @GetMapping("/years")
     List<Integer> getListOfYears();
@@ -34,8 +31,14 @@ public interface CarClient {
     List<String> getListOfBrands();
 
     @PostMapping("")
-    Car save(Car newCar);
+    Car save( @RequestBody Car newCar);
 
     @GetMapping()
     GetCarsResponse findAll();
+
+    @PutMapping("/{id}")
+    GetCarResponse edit(@PathVariable("id") String id, @RequestBody Car aCar);
+
+    @DeleteMapping("{id}")
+    GetCarResponse delete(@PathVariable String id);
 }

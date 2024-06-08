@@ -4,6 +4,7 @@ import cl.duoc.telopresto.web.apiclients.car.CarClient;
 import cl.duoc.telopresto.web.controller.car.CarSearchForm;
 import java.util.List;
 
+import cl.duoc.telopresto.web.controller.car.EditCarForm;
 import cl.duoc.telopresto.web.controller.car.NewCarForm;
 import lombok.RequiredArgsConstructor;
 
@@ -28,9 +29,10 @@ public class CarService {
         carSearchForm.getPrice());
   }
 
-  public Car findById(Integer id){
+  public Car findById(String id){
     return carClient.findById(id).getCar();
   }
+
   public Car save(NewCarForm form){
      Car newCar = new Car();
      newCar.setBrand(form.getBrand());
@@ -46,7 +48,26 @@ public class CarService {
      return carClient.save(newCar);
   }
 
+    public Car edit(String id, EditCarForm form){
+        Car newCar = new Car();
+        newCar.setBrand(form.getBrand());
+        newCar.setCapacity(form.getCapacity());
+        newCar.setDailyCost(form.getDailyCost());
+        newCar.setColor(form.getColor());
+        newCar.setModel(form.getModel());
+        newCar.setPlateCode(form.getPlateCode());
+        newCar.setSubsidiaryId(form.getSubsidiaryId());
+        newCar.setType(form.getType());
+        newCar.setYear(form.getFactoryYear());
+        //newCar.setImage(form.getImage());
+        return carClient.edit(id, newCar).getCar();
+    }
+
     public List<Car> findAll() {
         return carClient.findAll().getCars();
+    }
+
+    public void deleteCar(String id) {
+        carClient.delete(id);
     }
 }

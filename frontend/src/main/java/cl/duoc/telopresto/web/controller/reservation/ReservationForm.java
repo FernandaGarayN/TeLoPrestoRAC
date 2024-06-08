@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Setter
 @ValidDateOrder
 public class ReservationForm {
-    private Integer carId;
+    private String carId;
     private String car;
     @NotNull
     private LocalDate startAt;

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/head :: head_tag('Modificación de Vehículos')}">
+    <title>Modificación de Vehículos</title>
+</head>
+<body>
+<nav th:replace="~{fragments/navbar :: navbar('vehiculos')}"></nav>
+<div class="container bg-white">
+    <div class="p-2">
+        <h2 class="mb-4">Modificación de Vehículos</h2>
+    </div>
+
+    <form th:object="${editCarForm}" th:action="@{/editar-vehiculo/{id}(id = ${id})}" method="post" class="p-2" enctype="multipart/form-data">
+
+        <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+            Hay errores en el formulario. Por favor, corrígelos e intenta de nuevo.
+            <ul>
+                <li th:each="err : ${#fields.globalErrors()}" th:text="${err}"></li>
+            </ul>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                <label for="plate_code">Placa Patente:</label>
+                <input th:field="*{plateCode}" type="text" class="form-control" id="plate_code" name="plate_code" required>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="brand">Marca:</label>
+                <input th:field="*{brand}" type="text" class="form-control" id="brand" name="brand" required>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="model">Modelo:</label>
+                <input th:field="*{model}" type="text" class="form-control" id="model" name="model" required>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="subsidiary_id">Sucursal:</label>
+                <select th:field="*{subsidiaryId}" class="form-control" id="subsidiary_id" name="subsidiary_id">
+                    <option value="">Elija una Sucursal...</option>
+                    <!-- Agregar opciones de sucursales aquí -->
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                <label for="color">Color:</label>
+                <input th:field="*{color}" type="text" class="form-control" id="color" name="color" required>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="factory_year">Año de Fabricación:</label>
+                <input th:field="*{factoryYear}" type="number" class="form-control" id="factory_year" name="factory_year" required>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="capacity">Capacidad:</label>
+                <input th:field="*{capacity}" type="number" class="form-control" id="capacity" name="capacity" required>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="daily_cost">Costo Diario:</label>
+                <input th:field="*{dailyCost}" type="number" class="form-control" id="daily_cost" name="daily_cost" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="type">Tipo de Vehículo:</label>
+            <input th:field="*{type}" type="text" class="form-control" id="type" name="type" required>
+        </div>
+        <div class="form-group">
+            <label for="image">Imagen del Vehículo:</label>
+            <input th:field="*{image}" type="file" class="form-control" id="image" name="image" accept="image/*">
+        </div>
+        <button type="submit" class="btn btn-primary">Editar Vehículo</button>
+    </form>
+</div>
+<footer th:replace="~{fragments/footer :: footer_tag}"></footer>
+</body>
+</html>

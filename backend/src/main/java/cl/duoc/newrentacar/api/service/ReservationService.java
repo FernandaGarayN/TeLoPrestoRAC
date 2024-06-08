@@ -51,7 +51,7 @@ public class ReservationService {
 
   private static Car getCar(CarEntity dbCar) {
     Car car = new Car();
-    car.setId(dbCar.getId());
+    //car.setId(dbCar.getId());
     car.setPlateCode(dbCar.getPlateCode());
     car.setBrand(dbCar.getBrand());
     car.setModel(dbCar.getModel());
@@ -66,7 +66,7 @@ public class ReservationService {
 
   public Reservation save(Reservation reservation) {
     ClientEntity clientEntity = clientRepository.findByUsername(reservation.getUsername()).orElseThrow();
-    CarEntity carEntity = carRepository.findById(reservation.getCar().getId()).orElseThrow();
+    CarEntity carEntity = carRepository.findById(Integer.parseInt(reservation.getCar().getId())).orElseThrow();
 
     ReservationEntity reservationEntity = new ReservationEntity();
 
