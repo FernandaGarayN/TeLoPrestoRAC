@@ -12,9 +12,7 @@ public class ReservationService {
 
     public List<Reservation> findByUsername(String username){
         List<Reservation> byUsername = reservationClient.findByUsername(username, null);
-        byUsername.forEach(reservation -> {
-            reservation.calculateTotal();
-        });
+        byUsername.forEach(Reservation::calculateTotal);
         return byUsername;
     }
 

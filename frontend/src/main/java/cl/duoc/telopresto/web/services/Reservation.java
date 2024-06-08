@@ -20,7 +20,7 @@ public class Reservation {
 
     public void calculateTotal() {
         if (startAt != null && endAt != null) {
-            days = endAt.toEpochDay() - startAt.toEpochDay();
+            days = 1 + (endAt.toEpochDay() - startAt.toEpochDay());
             amount = car.getDailyCost() * days;
         }
     }
