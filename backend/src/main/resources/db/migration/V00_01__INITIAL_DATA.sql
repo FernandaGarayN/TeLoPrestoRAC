@@ -42,7 +42,7 @@ INSERT INTO employee (subsidiary_id, first_name, last_name, position, hire_date)
 VALUES
     (1, 'Carlos', 'Martínez', 'Gerente', '2022-01-15'),
     (1, 'Ana', 'López', 'Asistente', '2022-03-10');
-2022-01-15
+
 -- Empleados para Sucursal 2
 INSERT INTO employee (subsidiary_id, first_name, last_name, position, hire_date)
 VALUES
