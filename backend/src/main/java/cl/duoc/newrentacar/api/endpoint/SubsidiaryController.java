@@ -27,4 +27,8 @@ public class SubsidiaryController {
         }
         return ResponseEntity.ok(names);
     }
+    @GetMapping("/subsidiaries")
+  public ResponseEntity<List<Subsidiary>> get() {
+        return ResponseEntity.ok(subsidiaryService.getAllSubsidiaries());
+    }
 }
