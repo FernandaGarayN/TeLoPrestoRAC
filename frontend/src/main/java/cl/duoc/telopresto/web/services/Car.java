@@ -22,6 +22,7 @@ public class Car {
     private Integer dailyCost;
     private String type;
     private String image;
+    private String imageUrl;
     private String mimeType;
     private String extension;
     private List<CarComment> comments;

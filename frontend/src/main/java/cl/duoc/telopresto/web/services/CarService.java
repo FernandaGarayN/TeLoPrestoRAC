@@ -84,7 +84,27 @@ public class CarService {
         newCar.setSubsidiaryId(form.getSubsidiaryId());
         newCar.setType(form.getType());
         newCar.setYear(form.getFactoryYear());
-        //newCar.setImage(form.getImage());
+        MultipartFile file = form.getImage();
+        if (file!= null && !file.isEmpty()) {
+            try {
+                byte[] fileContent = file.getBytes();
+                String encodedString = Base64.getEncoder().encodeToString(fileContent);
+                newCar.setImage(encodedString);
+
+                String originalFilename = file.getOriginalFilename();
+                assert originalFilename != null;
+                String extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+                newCar.setExtension(extension);
+
+                String mimeType = file.getContentType();
+                newCar.setMimeType(mimeType);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            newCar.setImage(null);
+        }
         return carClient.edit(id, newCar).getCar();
     }
 
