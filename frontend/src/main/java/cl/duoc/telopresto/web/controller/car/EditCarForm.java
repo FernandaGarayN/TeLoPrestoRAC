@@ -19,4 +19,5 @@ public class EditCarForm {
     private Integer dailyCost;
     private String type;
     private MultipartFile image;
+    private String imageUrl;
 }
