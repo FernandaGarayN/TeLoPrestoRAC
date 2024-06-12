@@ -12,18 +12,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/cars")
 public class CarController {
   @Autowired
   private CarService carService;
 
-  @GetMapping("/cars")
+  @GetMapping
   public ResponseEntity<GetCarsResponse> get() {
     GetCarsResponse response = new GetCarsResponse();
     response.setCars(carService.getAllFirebaseCars());
     return ResponseEntity.ok(response);
   }
 
-  @GetMapping("/cars/years")
+  @GetMapping("/years")
   public ResponseEntity<List<Integer>> getYears() {
     List<Car> cars = carService.getAllFirebaseCars();
     List<Integer> years = new ArrayList<>();
@@ -35,7 +36,7 @@ public class CarController {
     return ResponseEntity.ok(years);
   }
 
-  @GetMapping("/cars/searching")
+  @GetMapping("/searching")
   public ResponseEntity<List<Car>> searching(
     @RequestParam(value = "brand", required = false) String brand,
     @RequestParam(value = "model", required = false) String model,
@@ -47,7 +48,7 @@ public class CarController {
     return ResponseEntity.ok(carService.searchFirebase(brand, model, color, year, subsidiary, price));
   }
 
-  @GetMapping("/cars/brands")
+  @GetMapping("/brands")
   public ResponseEntity<List<String>> getBrands() {
     List<Car> cars = carService.getAllFirebaseCars();
     List<String> brands = new ArrayList<>();
@@ -59,10 +60,9 @@ public class CarController {
     return ResponseEntity.ok(brands);
   }
 
-  @GetMapping("/cars/{id}")
+  @GetMapping("/{id}")
   public ResponseEntity<GetCarResponse> get(@PathVariable String id) {
     Car foundCar = carService.findCarFirebaseById(id);
-
     if (foundCar != null) {
       GetCarResponse response = new GetCarResponse();
       response.setCar(foundCar);
@@ -72,7 +72,7 @@ public class CarController {
     }
   }
 
-  @DeleteMapping("/cars/{id}")
+  @DeleteMapping("/{id}")
   public ResponseEntity<GetCarResponse> delete(@PathVariable String id) {
     Car deletedCar = carService.deleteCarFirebaseById(id);
     if (deletedCar != null) {
@@ -84,7 +84,7 @@ public class CarController {
     }
   }
 
-  @PostMapping("/cars")
+  @PostMapping
   public ResponseEntity<GetCarResponse> post(@RequestBody Car aCar) {
     boolean added = carService.addFirebaseCar(aCar);
     if (added) {
@@ -94,7 +94,7 @@ public class CarController {
     }
   }
 
-  @PutMapping("/cars/{id}")
+  @PutMapping("/{id}")
   public ResponseEntity<GetCarResponse> put(@PathVariable("id") String id, @RequestBody Car aCar) {
     Car updated = carService.updateCarById(id, aCar);
     if (updated != null) {
