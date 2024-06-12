@@ -12,7 +12,6 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 public class CarFirebaseRepository {
   public List<Car> getAllCars() {
@@ -109,10 +108,12 @@ public class CarFirebaseRepository {
         assert car != null;
         car.setId(document.getId());
         String blobName = car.getImage();
-        Bucket bucket = StorageClient.getInstance().bucket();
-        Blob blob = bucket.get(blobName);
-        URL signedUrl = blob.signUrl(7, TimeUnit.DAYS);
-        car.setImage(signedUrl.toString());
+        if (blobName != null && !blobName.isEmpty()) {
+          Bucket bucket = StorageClient.getInstance().bucket();
+          Blob blob = bucket.get(blobName);
+          URL signedUrl = blob.signUrl(7, TimeUnit.DAYS);
+          car.setImageUrl(signedUrl.toString());
+        }
         return Optional.of(car);
       } else {
         return Optional.empty();
@@ -122,9 +123,21 @@ public class CarFirebaseRepository {
     }
   }
 
-  public void edit(String id, Car aCar) {
+  public void edit(String id, Car aCar, boolean newImage) {
     Firestore db = FirestoreClient.getFirestore();
-    db.collection("cars").document(id).set(aCar);
+    DocumentReference docRef = db.collection("cars").document(id);
+    docRef.set(aCar);
+    if(newImage){
+      byte[] imageBytes = Base64.getDecoder().decode(aCar.getImage());
+
+      Bucket bucket = StorageClient.getInstance().bucket();
+      Storage storage = bucket.getStorage();
+      String blobName = "/images/cars/" + docRef.getId() + "." + aCar.getExtension();
+      BlobId blobId = BlobId.of(bucket.getName(), blobName);
+      BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(aCar.getMimeType()).build();
+      Blob blob = storage.create(blobInfo, imageBytes);
+      docRef.update("image", blob.getName());
+    }
   }
 
   public Optional<Car> delete(String id) {

@@ -89,7 +89,7 @@ public class CarController {
                 .capacity(car.getCapacity())
                 .color(car.getColor())
                // .image(car.getImage())
-                .imageUrl(car.getImage())
+                .imageUrl(car.getImageUrl())
                 .build();
         model.addAttribute("editCarForm", form);
         model.addAttribute("id", id);

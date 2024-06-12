@@ -9,7 +9,7 @@
         <h2 class="mb-4">Detalle del Vehículo</h2>
         <div class="row">
             <div class="col-md-6">
-                <img th:src="@{'/img/' + ${car.image}}" alt="Foto Vehículo" width="600" height="400">
+                <img th:src="${car.imageUrl}" alt="Foto Vehículo" width="300">
             </div>
         </div>
         <div class="row mt-5">
