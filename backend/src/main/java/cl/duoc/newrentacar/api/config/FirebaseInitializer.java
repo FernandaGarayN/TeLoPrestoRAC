@@ -16,6 +16,7 @@ public class FirebaseInitializer {
       FirebaseOptions options = new FirebaseOptions.Builder()
         .setCredentials(GoogleCredentials.fromStream(serviceAccount))
         .setDatabaseUrl("https://telopresto-rent-a-car.firebaseio.com")
+        .setStorageBucket("telopresto-rent-a-car.appspot.com")
         .build();
 
       FirebaseApp.initializeApp(options);
