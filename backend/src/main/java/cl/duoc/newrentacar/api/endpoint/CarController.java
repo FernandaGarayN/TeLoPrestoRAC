@@ -106,5 +106,8 @@ public class CarController {
     }
   }
 
-  //aqui la nueva funcion
+  @GetMapping ("/types")
+  public ResponseEntity<List<Car>> getTypes() {
+    return ResponseEntity.ok(carService.getAllFirebaseCars());
+  }
 }
