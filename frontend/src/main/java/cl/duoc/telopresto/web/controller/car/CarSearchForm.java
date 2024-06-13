@@ -10,6 +10,7 @@ import lombok.Setter;
 public class CarSearchForm {
     private String brand;
     private String model;
+    private String type;
     private String color;
     private Integer year;
     private String subsidiary;

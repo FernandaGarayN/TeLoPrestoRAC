@@ -50,7 +50,7 @@ public class CarFirebaseRepository {
 
   }
 
-  public List<Car> findFirebaseCars(String brand, String model, String color, Integer year, String subsidiary, Integer price) {
+  public List<Car> findFirebaseCars(String brand, String model, String color, String type, Integer year, String subsidiary, Integer price) {
     List<Car> finalCars = new ArrayList<>();
 
     // Inicializar Firestore
@@ -68,6 +68,9 @@ public class CarFirebaseRepository {
     }
     if (color != null && !color.isEmpty()) {
       query = query.whereEqualTo("color", color);
+    }
+    if (type != null && !type.isEmpty()) {
+      query = query.whereEqualTo("type", type);
     }
     if (year != null) {
       query = query.whereEqualTo("year", year);

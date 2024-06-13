@@ -15,7 +15,6 @@ public class Car {
     private String brand;
     private String model;
     private String subsidiary;
-    private Integer subsidiaryId;
     private String color;
     private Integer year;
     private Integer capacity;

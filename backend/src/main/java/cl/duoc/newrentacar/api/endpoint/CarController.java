@@ -1,11 +1,16 @@
 package cl.duoc.newrentacar.api.endpoint;
 
 import cl.duoc.newrentacar.api.endpoint.model.Car;
+import cl.duoc.newrentacar.api.endpoint.model.CarBrand;
+import cl.duoc.newrentacar.api.endpoint.model.CarType;
+import cl.duoc.newrentacar.api.service.CarBrandService;
 import cl.duoc.newrentacar.api.service.CarService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import cl.duoc.newrentacar.api.service.CarTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +21,11 @@ import org.springframework.web.bind.annotation.*;
 public class CarController {
   @Autowired
   private CarService carService;
+  @Autowired
+  private CarTypeService carTypeService;
+
+@Autowired
+  private CarBrandService carBrandService;
 
   @GetMapping
   public ResponseEntity<GetCarsResponse> get() {
@@ -33,6 +43,7 @@ public class CarController {
         years.add(car.getYear());
       }
     }
+    Collections.sort(years);
     return ResponseEntity.ok(years);
   }
 
@@ -41,23 +52,17 @@ public class CarController {
     @RequestParam(value = "brand", required = false) String brand,
     @RequestParam(value = "model", required = false) String model,
     @RequestParam(value = "color", required = false) String color,
+    @RequestParam(value = "type", required = false) String type,
     @RequestParam(value = "year", required = false) Integer year,
     @RequestParam(value = "subsidiary", required = false) String subsidiary,
     @RequestParam(value = "price", required = false) Integer price
   ) {
-    return ResponseEntity.ok(carService.searchFirebase(brand, model, color, year, subsidiary, price));
+    return ResponseEntity.ok(carService.searchFirebase(brand, model, color, type, year, subsidiary, price));
   }
 
   @GetMapping("/brands")
-  public ResponseEntity<List<String>> getBrands() {
-    List<Car> cars = carService.getAllFirebaseCars();
-    List<String> brands = new ArrayList<>();
-    for (Car car : cars) {
-      if (!brands.contains(car.getBrand())) {
-        brands.add(car.getBrand());
-      }
-    }
-    return ResponseEntity.ok(brands);
+  public ResponseEntity<List<CarBrand>> getBrands() {
+    return ResponseEntity.ok(carBrandService.getAllBrands());
   }
 
   @GetMapping("/{id}")
@@ -107,7 +112,7 @@ public class CarController {
   }
 
   @GetMapping ("/types")
-  public ResponseEntity<List<Car>> getTypes() {
-    return ResponseEntity.ok(carService.getAllFirebaseCars());
+  public ResponseEntity<List<CarType>> getTypes() {
+    return ResponseEntity.ok(carTypeService.getAllCarTypes());
   }
 }
