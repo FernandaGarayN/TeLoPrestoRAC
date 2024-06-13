@@ -35,8 +35,7 @@
                 <label for="ubicacion">Ubicación (Sucursal):</label>
                 <select th:field="*{subsidiary}" class="form-control" id="ubicacion">
                     <option value="">Elija una Sucursal...</option>
-                    <option th:each="subsidiary : ${listOfSubsidiaries}" th:value="${subsidiary}"
-                            th:text="${subsidiary}"></option>
+                    <option th:each="sub : ${listOfSubsidiaries}" th:value="${sub['id']}" th:text="${sub['name']}"></option>
                 </select>
             </div>
             <div class="form-group col-md-6">

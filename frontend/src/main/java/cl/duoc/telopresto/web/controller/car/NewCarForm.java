@@ -15,7 +15,7 @@ public class NewCarForm {
     private String plateCode;
     private String brand;
     private String model;
-    private Integer subsidiaryId;
+    private String subsidiaryId;
     private String color;
     private Integer factoryYear;
     private Integer capacity;

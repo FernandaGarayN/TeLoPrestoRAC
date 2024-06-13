@@ -23,7 +23,7 @@ public class CarController {
     private final SubsidiaryService subsidiaryService;
     private List<Integer> listOfYear;
     private List<String> listOfBrands;
-    private List<String> listOfSubsidiaries;
+    private List<Map<String, String>> listOfSubsidiaries;
     private List<Map<String, String>> listOfCarTypes;
 
     @PostConstruct
@@ -63,12 +63,22 @@ public class CarController {
         if (!bindingResult.hasErrors()) {
             List<Car> cars = carService.searchCars(carSearchForm);
             cars.forEach(
-                    car -> listOfCarTypes.stream()
-                            .filter(type -> type.get("id").equals(car.getType()))
-                            .findFirst()
-                            .ifPresent(
-                                    type -> car.setType(type.get("name"))
-                            )
+                    car -> {
+
+                        listOfCarTypes.stream()
+                                .filter(type -> type.get("id").equals(car.getType()))
+                                .findFirst()
+                                .ifPresent(
+                                        type -> car.setType(type.get("name"))
+                                );
+
+                        listOfSubsidiaries.stream()
+                                .filter(subsidiary -> subsidiary.get("id").equals(car.getSubsidiary()))
+                                .findFirst()
+                                .ifPresent(
+                                        subsidiary -> car.setSubsidiary(subsidiary.get("name"))
+                                );
+                    }
             );
             model.addAttribute("results", cars);
         }
@@ -87,12 +97,20 @@ public class CarController {
                         type -> car.setType(type.get("name"))
                 );
 
+        listOfSubsidiaries.stream()
+                .filter(subsidiary -> subsidiary.get("id").equals(car.getSubsidiary()))
+                .findFirst()
+                .ifPresent(
+                        subsidiary -> car.setSubsidiary(subsidiary.get("name"))
+                );
+
         model.addAttribute("car", car);
         return "detalle-vehiculo";
     }
 
     @GetMapping("/nuevo-vehiculo")
     public String getNewCar(ModelMap model) {
+        model.addAttribute("listOfSubsidiaries", listOfSubsidiaries);
         model.addAttribute("listOfCarTypes", listOfCarTypes);
         model.addAttribute("newCarForm", NewCarForm.builder().build());
         return "nuevo-vehiculo";
@@ -106,7 +124,7 @@ public class CarController {
                 .model(car.getModel())
                 .factoryYear(car.getYear())
                 .plateCode(car.getPlateCode())
-                //.subsidiaryId(car.getSubsidiary())
+                .subsidiaryId(car.getSubsidiary())
                 .dailyCost(car.getDailyCost())
                 .type(car.getType())
                 .capacity(car.getCapacity())
@@ -114,6 +132,7 @@ public class CarController {
                 // .image(car.getImage())
                 .imageUrl(car.getImageUrl())
                 .build();
+        model.addAttribute("listOfSubsidiaries", listOfSubsidiaries);
         model.addAttribute("listOfCarTypes", listOfCarTypes);
         model.addAttribute("editCarForm", form);
         model.addAttribute("id", id);
@@ -125,6 +144,8 @@ public class CarController {
                              @Valid @ModelAttribute("newCarForm") NewCarForm newCarForm,
                              BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("listOfCarTypes", listOfCarTypes);
+            model.addAttribute("listOfSubsidiaries", listOfSubsidiaries);
             model.addAttribute("newCarForm", newCarForm);
             return "nuevo-vehiculo";
         }
@@ -138,6 +159,7 @@ public class CarController {
                               @Valid @ModelAttribute("editCarForm") EditCarForm editCarForm,
                               BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("listOfSubsidiaries", listOfSubsidiaries);
             model.addAttribute("listOfCarTypes", listOfCarTypes);
             model.addAttribute("editCarForm", editCarForm);
             return "editar-vehiculo";

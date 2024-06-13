@@ -50,7 +50,7 @@ public class CarService {
         newCar.setColor(form.getColor());
         newCar.setModel(form.getModel());
         newCar.setPlateCode(form.getPlateCode());
-        newCar.setSubsidiaryId(form.getSubsidiaryId());
+        newCar.setSubsidiary(form.getSubsidiaryId());
         newCar.setType(form.getType());
         newCar.setYear(form.getFactoryYear());
         MultipartFile file = form.getImage();
@@ -83,7 +83,7 @@ public class CarService {
         newCar.setColor(form.getColor());
         newCar.setModel(form.getModel());
         newCar.setPlateCode(form.getPlateCode());
-        newCar.setSubsidiaryId(form.getSubsidiaryId());
+        newCar.setSubsidiary(form.getSubsidiaryId());
         newCar.setType(form.getType());
         newCar.setYear(form.getFactoryYear());
         MultipartFile file = form.getImage();
