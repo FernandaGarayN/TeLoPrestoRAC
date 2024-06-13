@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,9 +24,11 @@ public class CarController {
     private List<Integer> listOfYear;
     private List<String> listOfBrands;
     private List<String> listOfSubsidiaries;
+    private List<Map<String, String>> listOfCarTypes;
 
     @PostConstruct
     public void init() {
+        listOfCarTypes = carService.getListOfCarTypes();
         listOfSubsidiaries = subsidiaryService.getListOfSubsidiaries();
         listOfBrands = carService.getListOfBrands();
         listOfYear = carService.getListOfYears();
@@ -42,6 +46,7 @@ public class CarController {
         model.addAttribute("listOfYears", listOfYear);
         model.addAttribute("listOfBrands", listOfBrands);
         model.addAttribute("listOfSubsidiaries", listOfSubsidiaries);
+        model.addAttribute("listOfCarTypes", listOfCarTypes);
         model.addAttribute("carSearchForm", CarSearchForm.builder().build());
         return "busqueda-vehiculos";
     }
@@ -53,9 +58,18 @@ public class CarController {
         model.addAttribute("listOfYears", listOfYear);
         model.addAttribute("listOfBrands", listOfBrands);
         model.addAttribute("listOfSubsidiaries", listOfSubsidiaries);
+        model.addAttribute("listOfCarTypes", listOfCarTypes);
         model.addAttribute("carSearchForm", carSearchForm);
         if (!bindingResult.hasErrors()) {
             List<Car> cars = carService.searchCars(carSearchForm);
+            cars.forEach(
+                    car -> listOfCarTypes.stream()
+                            .filter(type -> type.get("id").equals(car.getType()))
+                            .findFirst()
+                            .ifPresent(
+                                    type -> car.setType(type.get("name"))
+                            )
+            );
             model.addAttribute("results", cars);
         }
 
@@ -65,12 +79,21 @@ public class CarController {
     @GetMapping("/detalle-vehiculo")
     public String getDetalleVehiculo(ModelMap model, @RequestParam("idVehiculo") String idVehiculo) {
         Car car = carService.findById(idVehiculo);
+
+        listOfCarTypes.stream()
+                .filter(type -> type.get("id").equals(car.getType()))
+                .findFirst()
+                .ifPresent(
+                        type -> car.setType(type.get("name"))
+                );
+
         model.addAttribute("car", car);
         return "detalle-vehiculo";
     }
 
     @GetMapping("/nuevo-vehiculo")
     public String getNewCar(ModelMap model) {
+        model.addAttribute("listOfCarTypes", listOfCarTypes);
         model.addAttribute("newCarForm", NewCarForm.builder().build());
         return "nuevo-vehiculo";
     }
@@ -88,9 +111,10 @@ public class CarController {
                 .type(car.getType())
                 .capacity(car.getCapacity())
                 .color(car.getColor())
-               // .image(car.getImage())
+                // .image(car.getImage())
                 .imageUrl(car.getImageUrl())
                 .build();
+        model.addAttribute("listOfCarTypes", listOfCarTypes);
         model.addAttribute("editCarForm", form);
         model.addAttribute("id", id);
         return "editar-vehiculo";
@@ -114,6 +138,7 @@ public class CarController {
                               @Valid @ModelAttribute("editCarForm") EditCarForm editCarForm,
                               BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("listOfCarTypes", listOfCarTypes);
             model.addAttribute("editCarForm", editCarForm);
             return "editar-vehiculo";
         }

@@ -60,7 +60,10 @@
                 <div class="form-row">
                     <div class="form-group col-lg-3">
                         <label for="type">Tipo de Vehículo:</label>
-                        <input th:field="*{type}" type="text" class="form-control" id="type" name="type" required>
+                        <select th:field="*{type}" class="form-control" id="type">
+                            <option value="">Elija un Tipo...</option>
+                            <option th:each="type : ${listOfCarTypes}" th:value="${type['id']}" th:text="${type['name']}"></option>
+                        </select>
                     </div>
                     <div class="form-group col-lg-3">
                         <label for="color">Color:</label>
@@ -81,6 +84,7 @@
         </div>
 
         <button type="submit" class="mt-5 btn btn-primary">Ingresar Vehículo</button>
+        <a th:href="@{/mantenedor-vehiculos}" class="mt-5 btn btn-secondary">Regresar al Mantenedor</a>
     </form>
 </div>
 <footer th:replace="~{fragments/footer :: footer_tag}"></footer>

@@ -171,8 +171,8 @@ public class CarService {
   }
 
   public List<Car> searchFirebase(
-    String brand, String model, String color, Integer year, String subsidiary, Integer price) {
-    return carFirebaseRepository.findFirebaseCars(brand, model, color, year, subsidiary, price);
+    String brand, String model, String color, String type, Integer year, String subsidiary, Integer price) {
+    return carFirebaseRepository.findFirebaseCars(brand, model, color, type, year, subsidiary, price);
   }
 
   public Car findCarFirebaseById(String id) {

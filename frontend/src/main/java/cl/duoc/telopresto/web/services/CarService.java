@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 
 import cl.duoc.telopresto.web.controller.car.EditCarForm;
 import cl.duoc.telopresto.web.controller.car.NewCarForm;
@@ -31,6 +32,7 @@ public class CarService {
                 carSearchForm.getBrand(),
                 carSearchForm.getModel(),
                 carSearchForm.getColor(),
+                carSearchForm.getType(),
                 carSearchForm.getYear(),
                 carSearchForm.getSubsidiary(),
                 carSearchForm.getPrice());
@@ -85,7 +87,7 @@ public class CarService {
         newCar.setType(form.getType());
         newCar.setYear(form.getFactoryYear());
         MultipartFile file = form.getImage();
-        if (file!= null && !file.isEmpty()) {
+        if (file != null && !file.isEmpty()) {
             try {
                 byte[] fileContent = file.getBytes();
                 String encodedString = Base64.getEncoder().encodeToString(fileContent);
@@ -114,5 +116,9 @@ public class CarService {
 
     public void deleteCar(String id) {
         carClient.delete(id);
+    }
+
+    public List<Map<String, String>> getListOfCarTypes() {
+        return carClient.getTypes().stream().map(type -> Map.of("id", type.getId(), "name", type.getName())).toList();
     }
 }
