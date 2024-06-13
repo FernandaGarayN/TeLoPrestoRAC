@@ -15,12 +15,13 @@ import java.util.List;
 @Service
 public class SubsidiaryService {
   private SubsidiaryFirebaseRepository subsidiaryFirebaseRepository;
+
   @PostConstruct
   public void init() {
     subsidiaryFirebaseRepository = new SubsidiaryFirebaseRepository();
   }
-    public List <Subsidiary> getAllSubsidiaries(){
-        return subsidiaryFirebaseRepository.getAllSubsidiaries();
 
-    }
+  public List<Subsidiary> getAllSubsidiaries() {
+    return subsidiaryFirebaseRepository.getAllSubsidiaries();
+  }
 }

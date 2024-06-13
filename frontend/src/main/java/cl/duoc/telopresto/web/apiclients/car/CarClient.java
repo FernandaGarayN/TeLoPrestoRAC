@@ -2,6 +2,7 @@ package cl.duoc.telopresto.web.apiclients.car;
 
 import cl.duoc.telopresto.web.config.feign.FeignCarConfig;
 import cl.duoc.telopresto.web.services.Car;
+import cl.duoc.telopresto.web.services.CarBrand;
 import cl.duoc.telopresto.web.services.CarType;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public interface CarClient {
     List<Integer> getListOfYears();
 
     @GetMapping("/brands")
-    List<String> getListOfBrands();
+    List<CarBrand> getListOfBrands();
 
     @PostMapping("")
     Car save( @RequestBody Car newCar);

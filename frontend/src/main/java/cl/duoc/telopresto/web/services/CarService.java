@@ -23,8 +23,11 @@ public class CarService {
         return carClient.getListOfYears();
     }
 
-    public List<String> getListOfBrands() {
-        return carClient.getListOfBrands();
+    public List<Map<String, String>> getListOfBrands() {
+        return carClient.getListOfBrands()
+                .stream()
+                .map(brand -> Map.of("id", brand.getId(), "name", brand.getName()))
+                .toList();
     }
 
     public List<Car> searchCars(CarSearchForm carSearchForm) {

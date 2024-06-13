@@ -22,7 +22,7 @@ public class CarController {
     private final CarService carService;
     private final SubsidiaryService subsidiaryService;
     private List<Integer> listOfYear;
-    private List<String> listOfBrands;
+    private List<Map<String, String>> listOfBrands;
     private List<Map<String, String>> listOfSubsidiaries;
     private List<Map<String, String>> listOfCarTypes;
 
@@ -37,6 +37,31 @@ public class CarController {
     @GetMapping("/mantenedor-vehiculos")
     public String getAllCars(ModelMap model) {
         List<Car> cars = carService.findAll();
+        cars.forEach(
+                car -> {
+
+                    listOfCarTypes.stream()
+                            .filter(type -> type.get("id").equals(car.getType()))
+                            .findFirst()
+                            .ifPresent(
+                                    type -> car.setType(type.get("name"))
+                            );
+
+                    listOfSubsidiaries.stream()
+                            .filter(subsidiary -> subsidiary.get("id").equals(car.getSubsidiary()))
+                            .findFirst()
+                            .ifPresent(
+                                    subsidiary -> car.setSubsidiary(subsidiary.get("name"))
+                            );
+
+                    listOfBrands.stream()
+                            .filter(brand -> brand.get("id").equals(car.getBrand()))
+                            .findFirst()
+                            .ifPresent(
+                                    brand -> car.setBrand(brand.get("name"))
+                            );
+                }
+        );
         model.addAttribute("cars", cars);
         return "mantenedor-vehiculos";
     }
@@ -78,6 +103,13 @@ public class CarController {
                                 .ifPresent(
                                         subsidiary -> car.setSubsidiary(subsidiary.get("name"))
                                 );
+
+                        listOfBrands.stream()
+                                .filter(brand -> brand.get("id").equals(car.getBrand()))
+                                .findFirst()
+                                .ifPresent(
+                                        brand -> car.setBrand(brand.get("name"))
+                                );
                     }
             );
             model.addAttribute("results", cars);
@@ -104,12 +136,20 @@ public class CarController {
                         subsidiary -> car.setSubsidiary(subsidiary.get("name"))
                 );
 
+        listOfBrands.stream()
+                .filter(brand -> brand.get("id").equals(car.getBrand()))
+                .findFirst()
+                .ifPresent(
+                        brand -> car.setBrand(brand.get("name"))
+                );
+
         model.addAttribute("car", car);
         return "detalle-vehiculo";
     }
 
     @GetMapping("/nuevo-vehiculo")
     public String getNewCar(ModelMap model) {
+        model.addAttribute("listOfBrands", listOfBrands);
         model.addAttribute("listOfSubsidiaries", listOfSubsidiaries);
         model.addAttribute("listOfCarTypes", listOfCarTypes);
         model.addAttribute("newCarForm", NewCarForm.builder().build());
@@ -132,6 +172,7 @@ public class CarController {
                 // .image(car.getImage())
                 .imageUrl(car.getImageUrl())
                 .build();
+        model.addAttribute("listOfBrands", listOfBrands);
         model.addAttribute("listOfSubsidiaries", listOfSubsidiaries);
         model.addAttribute("listOfCarTypes", listOfCarTypes);
         model.addAttribute("editCarForm", form);
@@ -144,6 +185,7 @@ public class CarController {
                              @Valid @ModelAttribute("newCarForm") NewCarForm newCarForm,
                              BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("listOfBrands", listOfBrands);
             model.addAttribute("listOfCarTypes", listOfCarTypes);
             model.addAttribute("listOfSubsidiaries", listOfSubsidiaries);
             model.addAttribute("newCarForm", newCarForm);
@@ -159,6 +201,7 @@ public class CarController {
                               @Valid @ModelAttribute("editCarForm") EditCarForm editCarForm,
                               BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("listOfBrands", listOfBrands);
             model.addAttribute("listOfSubsidiaries", listOfSubsidiaries);
             model.addAttribute("listOfCarTypes", listOfCarTypes);
             model.addAttribute("editCarForm", editCarForm);

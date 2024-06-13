@@ -43,7 +43,10 @@
                     </div>
                     <div class="form-group col-lg-3">
                         <label for="brand">Marca:</label>
-                        <input th:field="*{brand}" type="text" class="form-control" id="brand" name="brand" required>
+                        <select th:field="*{brand}" class="form-control" id="brand">
+                            <option value="">Elija una Marca...</option>
+                            <option th:each="brand : ${listOfBrands}" th:value="${brand['id']}" th:text="${brand['name']}"></option>
+                        </select>
                     </div>
                     <div class="form-group col-lg-3">
                         <label for="model">Modelo:</label>

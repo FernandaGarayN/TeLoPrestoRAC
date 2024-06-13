@@ -1,10 +1,13 @@
 package cl.duoc.newrentacar.api.endpoint;
 
 import cl.duoc.newrentacar.api.endpoint.model.Car;
+import cl.duoc.newrentacar.api.endpoint.model.CarBrand;
 import cl.duoc.newrentacar.api.endpoint.model.CarType;
+import cl.duoc.newrentacar.api.service.CarBrandService;
 import cl.duoc.newrentacar.api.service.CarService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import cl.duoc.newrentacar.api.service.CarTypeService;
@@ -20,6 +23,9 @@ public class CarController {
   private CarService carService;
   @Autowired
   private CarTypeService carTypeService;
+
+@Autowired
+  private CarBrandService carBrandService;
 
   @GetMapping
   public ResponseEntity<GetCarsResponse> get() {
@@ -37,6 +43,7 @@ public class CarController {
         years.add(car.getYear());
       }
     }
+    Collections.sort(years);
     return ResponseEntity.ok(years);
   }
 
@@ -54,15 +61,8 @@ public class CarController {
   }
 
   @GetMapping("/brands")
-  public ResponseEntity<List<String>> getBrands() {
-    List<Car> cars = carService.getAllFirebaseCars();
-    List<String> brands = new ArrayList<>();
-    for (Car car : cars) {
-      if (!brands.contains(car.getBrand())) {
-        brands.add(car.getBrand());
-      }
-    }
-    return ResponseEntity.ok(brands);
+  public ResponseEntity<List<CarBrand>> getBrands() {
+    return ResponseEntity.ok(carBrandService.getAllBrands());
   }
 
   @GetMapping("/{id}")
