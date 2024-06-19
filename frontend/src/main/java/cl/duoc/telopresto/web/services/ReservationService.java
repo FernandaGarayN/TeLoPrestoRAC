@@ -19,7 +19,7 @@ public class ReservationService {
     public Reservation save(ReservationForm form, String username) {
         return reservationClient.save(Reservation.builder()
                 .username(username)
-                .car(Car.builder().id(form.getCarId()).build())
+                .carId(form.getCarId())
                 .startAt(form.getStartAt())
                 .endAt(form.getEndAt())
                 .build());

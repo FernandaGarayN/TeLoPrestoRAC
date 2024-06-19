@@ -10,9 +10,13 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Reservation {
-    private Integer id;
+    private String id;
     private String username;
-    private Car car;
+    private String carId;
+    private String brand;
+    private String model;
+    private String status;
+    private Integer dailyCost;
     private LocalDate startAt;
     private LocalDate endAt;
     private long days;
@@ -21,7 +25,7 @@ public class Reservation {
     public void calculateTotal() {
         if (startAt != null && endAt != null) {
             days = 1 + (endAt.toEpochDay() - startAt.toEpochDay());
-            amount = car.getDailyCost() * days;
+            amount = dailyCost * days;
         }
     }
 }

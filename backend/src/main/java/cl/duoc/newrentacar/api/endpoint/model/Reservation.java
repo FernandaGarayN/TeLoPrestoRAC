@@ -1,6 +1,5 @@
 package cl.duoc.newrentacar.api.endpoint.model;
 
-import java.time.LocalDate;
 import lombok.*;
 
 @Getter
@@ -9,9 +8,13 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Reservation {
-    private Integer id;
-    private String username;
-    private Car car;
-    private LocalDate startAt;
-    private LocalDate endAt;
+  private String id;
+  private String username;
+  private String carId;
+  private String brand;
+  private String model;
+  private Integer dailyCost;
+  private String status;
+  private String startAt;
+  private String endAt;
 }

@@ -4,8 +4,11 @@ import cl.duoc.telopresto.web.services.Car;
 import cl.duoc.telopresto.web.services.CarService;
 import cl.duoc.telopresto.web.services.Reservation;
 import cl.duoc.telopresto.web.services.ReservationService;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Map;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -22,11 +25,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ReservationController {
   private final ReservationService reservationService;
   private final CarService carService;
+  private List<Map<String, String>> listOfBrands;
+
+  @PostConstruct
+  public void init() {
+    listOfBrands = carService.getListOfBrands();
+  }
 
   @GetMapping("/mis-reservas")
   public String getReservations(
       ModelMap model,
-      @RequestParam(value = "highlight", required = false) Integer highlight,
+      @RequestParam(value = "highlight", required = false) String highlight,
       Authentication authentication) {
     String username = (String) authentication.getPrincipal();
     List<Reservation> reservations = reservationService.findByUsername(username);
@@ -54,6 +63,14 @@ public class ReservationController {
   @GetMapping("/nueva-reserva")
   public String getNewReservation(ModelMap model, @RequestParam("idVehiculo") String id) {
     Car car = carService.findById(id);
+
+    listOfBrands.stream()
+            .filter(brand -> brand.get("id").equals(car.getBrand()))
+            .findFirst()
+            .ifPresent(
+                    brand -> car.setBrand(brand.get("name"))
+            );
+
     ReservationForm reservationForm =
         ReservationForm.builder()
             .carId(car.getId())
@@ -69,12 +86,12 @@ public class ReservationController {
       @Valid @ModelAttribute("reservationForm") ReservationForm form,
       BindingResult bindingResult,
       Authentication authentication) {
-    String username = (String) authentication.getPrincipal();
     model.addAttribute("reservationForm", form);
     if (bindingResult.hasErrors()) {
       return "nueva-reserva";
     }
+    String username = (String) authentication.getPrincipal();
     Reservation reservation = reservationService.save(form, username);
-    return String.format("redirect:/mis-reservas?highlight=%d", reservation.getId());
+    return String.format("redirect:/mis-reservas?highlight=%s", reservation.getId());
   }
 }
