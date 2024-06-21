@@ -67,6 +67,14 @@ public class ReservationController {
             bindingResult.rejectValue("rut", "rut.not.found", "Rut no encontrado");
         } else {
             List<Reservation> reservations = reservationService.findByUsername(client.getUsername());
+            reservations.forEach(Reservation::calculateTotal);
+            reservations.forEach(
+                    reservation -> listOfBrands.stream()
+                            .filter(brand -> brand.get("id").equals(reservation.getBrand()))
+                            .findFirst()
+                            .ifPresent(
+                                    brand -> reservation.setBrand(brand.get("name"))
+                            ));
             model.addAttribute("username", client.getUsername());
             model.addAttribute("reservations", reservations);
         }

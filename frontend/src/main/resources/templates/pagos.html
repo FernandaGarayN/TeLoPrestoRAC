@@ -57,7 +57,11 @@
                 <td>[[${row.days}]]</td>
                 <td th:text="${'$' + #numbers.formatDecimal(row.dailyCost, 0, 'POINT', 0, 'NONE')}"></td>
                 <td th:text="${'$' + #numbers.formatDecimal(row.amount, 0, 'POINT', 0, 'NONE')}"></td>
-                <td><a th:href="@{/ingresar-pago/{id}(id=${row.id})}" class="btn btn-primary">Pagar</a></td>
+                <td>
+                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Próximamente disponible">
+                        <a href="#" class="btn btn-primary disabled" style="pointer-events: none;" role="button" aria-disabled="true">Pagar con Flow</a>
+                    </span>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -67,5 +71,11 @@
     </div>
 </div>
 <footer th:replace="~{fragments/footer :: footer_tag}"></footer>
+<div th:replace="~{fragments/footer :: footer_scripts}"></div>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
 </body>
 </html>

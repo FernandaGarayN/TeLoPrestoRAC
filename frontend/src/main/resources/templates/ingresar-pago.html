@@ -9,7 +9,7 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <h3>Información de la Reserva</h3>
+            <h3 class="p-2">Información de la Reserva</h3>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
                     <div class="row">
@@ -56,7 +56,9 @@
                         <div class="col-md-6">
                             <strong>Valor Diario</strong>
                         </div>
-                        <div class="col-md-6">[[${'$' + #numbers.formatDecimal(reservation.dailyCost, 0, 'POINT', 0, 'NONE')}]]</div>
+                        <div class="col-md-6">[[${'$' + #numbers.formatDecimal(reservation.dailyCost, 0, 'POINT', 0,
+                            'NONE')}]]
+                        </div>
                     </div>
                 </li>
                 <li class="list-group-item">
@@ -64,20 +66,31 @@
                         <div class="col-md-6">
                             <strong>Total</strong>
                         </div>
-                        <div class="col-md-6">[[${'$' + #numbers.formatDecimal(reservation.amount, 0, 'POINT', 0, 'NONE')}]]</div>
+                        <div class="col-md-6">[[${'$' + #numbers.formatDecimal(reservation.amount, 0, 'POINT', 0,
+                            'NONE')}]]
+                        </div>
                     </div>
                 </li>
             </ul>
         </div>
         <div class="col-md-6">
+            <h3 class="p-2">Información del Pago</h3>
             <form th:action="@{/ingresar-pago/{id}(id=${reservationId})}" th:object="${paymentForm}" method="post">
                 <div class="form-group">
                     <label for="amount">Monto:</label>
-                    <input th:field="*{amount}" type="number" class="form-control" id="amount" name="amount" required readonly>
+                    <input th:field="*{amount}" type="number" class="form-control" id="amount" name="amount" required
+                           readonly>
+                    <div th:if="${#fields.hasErrors('amount')}" class="alert alert-danger" role="alert">
+                        <span th:errors="*{amount}"></span>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="paymentDate">Fecha de Pago:</label>
-                    <input th:field="*{date}" type="text" class="form-control" id="paymentDate" name="paymentDate" required>
+                    <input th:field="*{date}" type="text" class="form-control" id="paymentDate" name="paymentDate"
+                           required>
+                    <div th:if="${#fields.hasErrors('date')}" class="alert alert-danger" role="alert">
+                        <span th:errors="*{date}"></span>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="paymentMethod">Método de Pago:</label>
@@ -88,6 +101,9 @@
                         <option value="cash">Efectivo</option>
                         <option value="cash">Transferencia</option>
                     </select>
+                    <div th:if="${#fields.hasErrors('method')}" class="alert alert-danger" role="alert">
+                        <span th:errors="*{method}"></span>
+                    </div>
                 </div>
                 <button type="submit" class="mt-5 btn btn-primary">Ingresar Pago</button>
                 <a th:href="@{/pagos}" class="mt-5 btn btn-secondary">Regresar a Pagos</a>

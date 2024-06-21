@@ -1,9 +1,6 @@
 package cl.duoc.telopresto.web.controller.payment;
 
-import cl.duoc.telopresto.web.services.CarService;
-import cl.duoc.telopresto.web.services.PaymentService;
-import cl.duoc.telopresto.web.services.Reservation;
-import cl.duoc.telopresto.web.services.ReservationService;
+import cl.duoc.telopresto.web.services.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +34,27 @@ public class PaymentController {
     @GetMapping("/pagos")
     public String getPayments(ModelMap model, Authentication authentication) {
         String username = (String) authentication.getPrincipal();
-        model.addAttribute("results", paymentService.findByUsername(username));
+        List<Reservation> byUsername = paymentService.findByUsername(username, "paid");
+        byUsername.forEach(Reservation::calculateTotal);
+        byUsername.forEach(
+                reservation -> listOfBrands.stream()
+                        .filter(brand -> brand.get("id").equals(reservation.getBrand()))
+                        .findFirst()
+                        .ifPresent(
+                                brand -> reservation.setBrand(brand.get("name"))
+                        ));
+        List<Payment> payments = byUsername
+                .stream()
+                .map(reservation -> {
+                    List<Payment> list = reservation.getPayments();
+                    list.forEach(payment -> payment.setReservation(reservation.getName()));
+                    return list;
+
+                })
+                .flatMap(List::stream)
+                .toList();
+
+        model.addAttribute("results", payments);
         List<Reservation> byUsernameAndPending = reservationService.findByUsernameAndPending(username);
         byUsernameAndPending.forEach(Reservation::calculateTotal);
         byUsernameAndPending.forEach(
@@ -53,19 +70,28 @@ public class PaymentController {
 
     @GetMapping("/ingresar-pago/{reservationId}")
     public String getPaymentPage(@PathVariable String reservationId, ModelMap model) {
-        PaymentForm paymentForm = PaymentForm.builder().build();
-        reservationService.findById(reservationId).ifPresent(reservation -> {
-            paymentForm.setAmount(
-                    reservation.getAmount() - Optional.ofNullable(reservation.getPayments())
-                            .map(payments -> payments
-                                    .stream()
-                                    .mapToDouble(p -> Double.parseDouble(p.getAmount()))
-                                    .sum()
-                            )
-                            .orElse(0.0)
-            );
-            model.addAttribute("reservation", reservation);
-        });
+        PaymentForm paymentForm = new PaymentForm();
+        reservationService.findById(reservationId)
+                .ifPresent(reservation -> {
+                    paymentForm.setAmount(
+                            reservation.getAmount() -
+                                    Optional.ofNullable(reservation.getPayments())
+                                            .map(payments -> payments
+                                                    .stream()
+                                                    .mapToDouble(p -> Double.parseDouble(p.getAmount()))
+                                                    .sum()
+                                            )
+                                            .orElse(0.0)
+                    );
+
+                    listOfBrands.stream()
+                            .filter(brand -> brand.get("id").equals(reservation.getBrand()))
+                            .findFirst()
+                            .ifPresent(
+                                    brand -> reservation.setBrand(brand.get("name"))
+                            );
+                    model.addAttribute("reservation", reservation);
+                });
         model.addAttribute("paymentForm", paymentForm);
         model.addAttribute("reservationId", reservationId);
         return "ingresar-pago";
@@ -77,9 +103,18 @@ public class PaymentController {
                                   @Valid @ModelAttribute("paymentForm") PaymentForm form,
                                   BindingResult bindingResult
             , RedirectAttributes redirectAttributes) {
-        model.addAttribute("paymentForm", form);
-        model.addAttribute("reservationId", reservationId);
         if (bindingResult.hasErrors()) {
+            reservationService.findById(reservationId).ifPresent(reservation -> {
+                listOfBrands.stream()
+                        .filter(brand -> brand.get("id").equals(reservation.getBrand()))
+                        .findFirst()
+                        .ifPresent(
+                                brand -> reservation.setBrand(brand.get("name"))
+                        );
+                model.addAttribute("reservation", reservation);
+            });
+            model.addAttribute("paymentForm", form);
+            model.addAttribute("reservationId", reservationId);
             return "ingresar-pago";
         }
         paymentService.savePayment(reservationId, form);
