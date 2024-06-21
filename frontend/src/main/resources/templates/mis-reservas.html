@@ -22,16 +22,16 @@
             </thead>
             <tbody>
             <tr th:each="row : ${results}" th:classappend="${highlight != null && row.id == highlight ? 'alert alert-success bg-success' : ''}">
-                <td>[[${row.brand}]]-[[${row.model}]]</td>
+                <td>[[${row.brand}]] - [[${row.model}]]</td>
                 <td>[[${row.startAt}]]</td>
                 <td>[[${row.endAt}]]</td>
                 <td>[[${row.days}]]</td>
                 <td th:text="${'$' + #numbers.formatDecimal(row.dailyCost, 0, 'POINT', 0, 'NONE')}"></td>
                 <td th:text="${'$' + #numbers.formatDecimal(row.amount, 0, 'POINT', 0, 'NONE')}"></td>
                 <td>
-                    <span th:if="${row.status == 'paid'}" class="p-2 bg-success text-white" th:text="PAGADO"></span>
-                    <span th:if="${row.status == 'pending'}" class="p-2 bg-warning text-white" th:text="PENDIENTE DE PAGO"></span>
-                    <span th:if="${row.status == 'released'}" class="p-2 bg-info text-white" th:text="REALIZADA"></span>
+                    <span th:if="${row.status == 'paid'}" class="p-2 bg-success text-white" th:text="${'PAGADO'}"></span>
+                    <span th:if="${row.status == 'pending'}" class="p-2 bg-warning text-white" th:text="${'PENDIENTE DE PAGO'}"></span>
+                    <span th:if="${row.status == 'released'}" class="p-2 bg-info text-white" th:text="${'REALIZADA'}"></span>
                 </td>
             </tr>
             </tbody>

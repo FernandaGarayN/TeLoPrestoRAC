@@ -76,6 +76,9 @@
             </tr>
             </tbody>
         </table>
+        <div th:unless="${#lists.size(results) > 0}" class="alert alert-info" role="alert">
+            No existen vehículos para los criterios ingresados.
+        </div>
     </div>
 </div>
 <footer th:replace="~{fragments/footer :: footer_tag}"></footer>

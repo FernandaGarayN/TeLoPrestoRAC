@@ -1,7 +1,10 @@
 package cl.duoc.telopresto.web.controller.payment;
 
+import cl.duoc.telopresto.web.services.CarService;
 import cl.duoc.telopresto.web.services.PaymentService;
+import cl.duoc.telopresto.web.services.Reservation;
 import cl.duoc.telopresto.web.services.ReservationService;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -21,12 +26,28 @@ import java.util.Optional;
 public class PaymentController {
     private final PaymentService paymentService;
     private final ReservationService reservationService;
+    private final CarService carService;
+    private List<Map<String, String>> listOfBrands;
+
+    @PostConstruct
+    public void init() {
+        listOfBrands = carService.getListOfBrands();
+    }
 
     @GetMapping("/pagos")
     public String getPayments(ModelMap model, Authentication authentication) {
         String username = (String) authentication.getPrincipal();
         model.addAttribute("results", paymentService.findByUsername(username));
-        model.addAttribute("reservations", reservationService.findByUsernameAndPending(username));
+        List<Reservation> byUsernameAndPending = reservationService.findByUsernameAndPending(username);
+        byUsernameAndPending.forEach(Reservation::calculateTotal);
+        byUsernameAndPending.forEach(
+                reservation -> listOfBrands.stream()
+                        .filter(brand -> brand.get("id").equals(reservation.getBrand()))
+                        .findFirst()
+                        .ifPresent(
+                                brand -> reservation.setBrand(brand.get("name"))
+                        ));
+        model.addAttribute("reservations", byUsernameAndPending);
         return "pagos";
     }
 
