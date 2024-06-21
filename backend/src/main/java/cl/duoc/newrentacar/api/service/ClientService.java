@@ -15,6 +15,6 @@ public class ClientService {
   }
 
   public Client findByRut(String rut) {
-    return clientFirebaseRepository.getClientByRut(rut).orElseThrow();
+    return clientFirebaseRepository.getClientByRut(rut).orElse(null);
   }
 }

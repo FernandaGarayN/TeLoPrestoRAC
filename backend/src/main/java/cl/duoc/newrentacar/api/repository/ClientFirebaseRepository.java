@@ -28,6 +28,10 @@ public class ClientFirebaseRepository {
       return Optional.empty();
     }
 
+    if (documents.isEmpty()) {
+      return Optional.empty();
+    }
+
     DocumentSnapshot document = documents.get(0);
     Client object = document.toObject(Client.class);
     return Optional.of(object);

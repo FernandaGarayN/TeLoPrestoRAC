@@ -10,18 +10,8 @@ import java.util.List;
 public class PaymentService {
     private final PaymentClient paymentClient;
 
-    public List<Payment> findByUsername(String username) {
-        List<Reservation> byUsername = paymentClient.findByUsername(username);
-        return byUsername
-                .stream()
-                .filter(r -> r.getStatus().equalsIgnoreCase("paid"))
-                .map(r -> {
-                    r.getPayments().forEach(p -> p.setReservation(r.getName()));
-                    return r.getPayments();
-                        }
-                )
-                .flatMap(List::stream)
-                .toList();
+    public List<Reservation> findByUsername(String username, String status) {
+        return paymentClient.findByUsername(username, status);
     }
 
     public void savePayment(String reservationId, PaymentForm form) {

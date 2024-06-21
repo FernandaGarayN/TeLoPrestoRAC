@@ -8,6 +8,12 @@ public class ClientService {
     private final ClientClient clientClient;
 
     public Client getByRut(String rut) {
-        return clientClient.getClient(rut);
+        Client client = null;
+        try {
+            client = clientClient.getClient(rut);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return client;
     }
 }
