@@ -8,9 +8,8 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class Payment {
-    private Integer id;
-    private Integer reservationId;
-    private String type;
-    private Integer amount;
-    private LocalDate paymentDate;
+    private String reservation;
+    private String amount;
+    private String date;
+    private String method;
 }

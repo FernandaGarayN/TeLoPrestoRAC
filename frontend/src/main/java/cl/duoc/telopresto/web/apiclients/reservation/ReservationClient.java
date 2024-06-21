@@ -10,16 +10,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @FeignClient(
         name = "reservation-client",
         url = "${spring.properties.feign.reservations}",
         configuration = FeignReservationConfig.class)
 public interface ReservationClient {
-    @GetMapping("/{username}")
+    @GetMapping("/by-username/{username}")
     List<Reservation> findByUsername(@PathVariable("username") String username
             , @RequestParam(value = "status",required = false) String status);
 
     @PostMapping
     Reservation save(Reservation reservation);
+
+    @GetMapping("/{reservationId}")
+    Reservation findById(@PathVariable String reservationId);
 }

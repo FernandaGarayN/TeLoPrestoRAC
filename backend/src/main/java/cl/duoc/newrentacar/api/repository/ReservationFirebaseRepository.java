@@ -10,6 +10,7 @@ import com.google.firebase.cloud.FirestoreClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 public class ReservationFirebaseRepository {
@@ -50,5 +51,29 @@ public class ReservationFirebaseRepository {
     }
 
     return reservations;
+  }
+
+  public Optional<Reservation> findById(String id) {
+    Firestore db = FirestoreClient.getFirestore();
+    DocumentReference docRef = db.collection("reservations").document(id);
+    ApiFuture<DocumentSnapshot> future = docRef.get();
+    DocumentSnapshot document;
+    try {
+      document = future.get();
+    } catch (InterruptedException | ExecutionException e) {
+      e.printStackTrace();
+      return Optional.empty();
+    }
+
+    assert document != null;
+    Reservation object = document.toObject(Reservation.class);
+    assert object != null;
+    object.setId(document.getId());
+    return Optional.of(object);
+  }
+
+  public void edit(Reservation reservation) {
+    Firestore db = FirestoreClient.getFirestore();
+    db.collection("reservations").document(reservation.getId()).set(reservation);
   }
 }

@@ -5,6 +5,7 @@ import cl.duoc.telopresto.web.controller.reservation.ReservationForm;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class ReservationService {
@@ -26,6 +27,17 @@ public class ReservationService {
     }
 
     public List<Reservation> findByUsernameAndPending(String username) {
-        return reservationClient.findByUsername(username , "pending" );
+        List<Reservation> pending = reservationClient.findByUsername(username, "pending");
+        pending.forEach(Reservation::calculateTotal);
+        return pending;
+    }
+
+    public Optional<Reservation> findById(String reservationId) {
+        Reservation byId = reservationClient.findById(reservationId);
+        if (byId == null) {
+            return Optional.empty();
+        }
+        byId.calculateTotal();
+        return Optional.of(byId);
     }
 }

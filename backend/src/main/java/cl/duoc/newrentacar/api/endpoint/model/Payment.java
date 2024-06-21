@@ -10,9 +10,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Payment {
-    private Integer id;
-    private Integer reservationId;
-    private String type;
+    private String method;
     private Integer amount;
-    private LocalDate paymentDate;
+    private String date;
 }
