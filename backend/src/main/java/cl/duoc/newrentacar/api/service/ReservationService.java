@@ -1,6 +1,7 @@
 package cl.duoc.newrentacar.api.service;
 
 import cl.duoc.newrentacar.api.endpoint.model.Car;
+import cl.duoc.newrentacar.api.endpoint.model.Payment;
 import cl.duoc.newrentacar.api.endpoint.model.Reservation;
 import cl.duoc.newrentacar.api.repository.*;
 import cl.duoc.newrentacar.api.repository.model.CarEntity;
@@ -16,15 +17,10 @@ import java.util.List;
 @Service
 public class ReservationService {
 
-  @Autowired
-  ClientRepository clientRepository;
-
-  @Autowired
-  CarRepository carRepository;
-
   CarFirebaseRepository carFirebaseRepository;
 
-  ReservationFirebaseRepository  reservationFirebaseRepository;;
+  ReservationFirebaseRepository reservationFirebaseRepository;
+  ;
 
   @PostConstruct
   public void init() {
@@ -48,5 +44,17 @@ public class ReservationService {
 
     reservation.setId(id);
     return reservation;
+  }
+
+  public Reservation savePayment(String id, Payment payment) {
+    Reservation reservation = reservationFirebaseRepository.findById(id).orElseThrow();
+    reservation.addPayment(payment);
+    reservation.setStatus("paid");
+    reservationFirebaseRepository.edit(reservation);
+    return reservation;
+  }
+
+  public Reservation findById(String id) {
+    return reservationFirebaseRepository.findById(id).orElseThrow();
   }
 }

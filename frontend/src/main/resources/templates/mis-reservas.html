@@ -3,7 +3,7 @@
 <head th:replace="~{fragments/head :: head_tag('Mis Reservas')}"><title>INDEX</title></head>
 <body>
 <nav th:replace="~{fragments/navbar :: navbar('reservas')}"></nav>
-<div class="container bg-white">
+<div class="container bg-white p-2">
     <div class="p-2">
         <h2 class="mb-4">Mis Reservas</h2>
     </div>
@@ -28,7 +28,11 @@
                 <td>[[${row.days}]]</td>
                 <td th:text="${'$' + #numbers.formatDecimal(row.dailyCost, 0, 'POINT', 0, 'NONE')}"></td>
                 <td th:text="${'$' + #numbers.formatDecimal(row.amount, 0, 'POINT', 0, 'NONE')}"></td>
-                <td>[[${row.status}]]</td>
+                <td>
+                    <span th:if="${row.status == 'paid'}" class="p-2 bg-success text-white" th:text="PAGADO"></span>
+                    <span th:if="${row.status == 'pending'}" class="p-2 bg-warning text-white" th:text="PENDIENTE DE PAGO"></span>
+                    <span th:if="${row.status == 'released'}" class="p-2 bg-info text-white" th:text="REALIZADA"></span>
+                </td>
             </tr>
             </tbody>
         </table>

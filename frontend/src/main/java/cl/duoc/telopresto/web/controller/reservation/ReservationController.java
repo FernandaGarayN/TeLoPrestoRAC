@@ -1,9 +1,6 @@
 package cl.duoc.telopresto.web.controller.reservation;
 
-import cl.duoc.telopresto.web.services.Car;
-import cl.duoc.telopresto.web.services.CarService;
-import cl.duoc.telopresto.web.services.Reservation;
-import cl.duoc.telopresto.web.services.ReservationService;
+import cl.duoc.telopresto.web.services.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -25,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ReservationController {
   private final ReservationService reservationService;
   private final CarService carService;
+  private final ClientService clientService;
   private List<Map<String, String>> listOfBrands;
 
   @PostConstruct
@@ -55,7 +53,15 @@ public class ReservationController {
       ModelMap model,
       @Valid @ModelAttribute ReservationSearchForm form,
       BindingResult bindingResult) {
-    Integer rut = form.getRut();
+    String rut = form.getRut();
+    Client client = clientService.getByRut(rut);
+    if (client == null) {
+      bindingResult.rejectValue("rut", "rut.not.found", "Rut no encontrado");
+    } else {
+      List<Reservation> reservations = reservationService.findByUsername(client.getUsername());
+      model.addAttribute("username", client.getUsername());
+      model.addAttribute("reservations", reservations);
+    }
     model.addAttribute("reservationSearchForm", form);
     return "reservas-clientes";
   }

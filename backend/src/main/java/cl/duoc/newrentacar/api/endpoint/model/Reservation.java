@@ -2,6 +2,9 @@ package cl.duoc.newrentacar.api.endpoint.model;
 
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -17,4 +20,12 @@ public class Reservation {
   private String status;
   private String startAt;
   private String endAt;
+  private List<Payment> payments;
+
+  public void addPayment(Payment payment) {
+    if (payments == null) {
+      payments = new ArrayList<>();
+    }
+    payments.add(payment);
+  }
 }

@@ -10,7 +10,8 @@ spring:
     feign:
       auth: ${spring.properties.auth-url}/api
       cars: ${spring.properties.backend-url}/api/cars
-      payment: ${spring.properties.backend-url}/api/payments
+      clients: ${spring.properties.backend-url}/api/clients
+      payment: ${spring.properties.backend-url}/api/reservations
       reservations: ${spring.properties.backend-url}/api/reservations
       subsidiaries: ${spring.properties.backend-url}/api/subsidiaries
   cloud:
