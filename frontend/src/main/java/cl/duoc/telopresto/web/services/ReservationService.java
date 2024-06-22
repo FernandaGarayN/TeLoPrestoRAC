@@ -4,6 +4,8 @@ import cl.duoc.telopresto.web.apiclients.reservation.ReservationClient;
 import cl.duoc.telopresto.web.controller.reservation.ReservationForm;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,18 +13,19 @@ import java.util.Optional;
 public class ReservationService {
     private final ReservationClient reservationClient;
 
-    public List<Reservation> findByUsername(String username){
+    public List<Reservation> findByUsername(String username) {
         List<Reservation> byUsername = reservationClient.findByUsername(username, null);
         byUsername.forEach(Reservation::calculateTotal);
         return byUsername;
     }
 
     public Reservation save(ReservationForm form, String username) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return reservationClient.save(Reservation.builder()
                 .username(username)
                 .carId(form.getCarId())
-                .startAt(form.getStartAt())
-                .endAt(form.getEndAt())
+                .startAt(LocalDate.parse(form.getStartAt(), formatter))
+                .endAt(LocalDate.parse(form.getEndAt(), formatter))
                 .build());
     }
 
@@ -39,5 +42,15 @@ public class ReservationService {
         }
         byId.calculateTotal();
         return Optional.of(byId);
+    }
+
+    public Reservation update(ReservationForm form, String id) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return reservationClient.update(id, Reservation.builder()
+                .id(id)
+                .carId(form.getCarId())
+                .startAt(LocalDate.parse(form.getStartAt(), formatter))
+                .endAt(LocalDate.parse(form.getEndAt(), formatter))
+                .build());
     }
 }

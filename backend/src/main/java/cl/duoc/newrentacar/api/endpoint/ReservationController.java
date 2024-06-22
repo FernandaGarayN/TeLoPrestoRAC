@@ -31,6 +31,11 @@ public class ReservationController {
     return ResponseEntity.ok(reservationService.findById(id));
   }
 
+  @PutMapping("/{id}")
+  public ResponseEntity<Reservation> update(@PathVariable String id, @RequestBody Reservation reservation) {
+    return ResponseEntity.ok(reservationService.update(id, reservation));
+  }
+
   @PostMapping("/{id}/payments")
   public ResponseEntity<Reservation> savePayment(@PathVariable String id, @RequestBody Payment payment) {
     return ResponseEntity.ok(reservationService.savePayment(id, payment));
