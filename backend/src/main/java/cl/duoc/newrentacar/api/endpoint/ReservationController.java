@@ -50,5 +50,10 @@ public class ReservationController {
   public ResponseEntity<Reservation> cancel(@PathVariable String id) {
     return ResponseEntity.ok(reservationService.cancel(id));
   }
+  @GetMapping("/by-car/{carId}")
+  public ResponseEntity<List<Reservation>> findByCarId(@PathVariable("carId") String carId) {
+    List<Reservation> reservations = reservationService.findByCarId(carId);
+    return ResponseEntity.ok(reservations);
+  }
 }
 

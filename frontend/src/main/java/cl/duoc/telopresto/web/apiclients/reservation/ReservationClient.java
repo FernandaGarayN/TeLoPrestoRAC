@@ -32,4 +32,7 @@ public interface ReservationClient {
 
     @PutMapping("/{reservationId}/cancel")
     void cancel(@PathVariable String reservationId);
+
+    @GetMapping("/by-car/{carId}")
+    List<Reservation> findByCarId(@PathVariable("carId") String carId);
 }

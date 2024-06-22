@@ -93,6 +93,7 @@ public class ReservationController {
     @GetMapping("/nueva-reserva")
     public String getNewReservation(ModelMap model, @RequestParam("idVehiculo") String id) {
         Car car = carService.findById(id);
+        List<Reservation> reservations = reservationService.findByCarId(id);
 
         listOfBrands.stream()
                 .filter(brand -> brand.get("id").equals(car.getBrand()))
@@ -107,6 +108,7 @@ public class ReservationController {
                         .car(car.getBrand().concat(" - ").concat(car.getModel()))
                         .build();
         model.addAttribute("reservationForm", reservationForm);
+        model.addAttribute("reservations", reservations);
         return "nueva-reserva";
     }
 

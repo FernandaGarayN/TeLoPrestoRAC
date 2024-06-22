@@ -79,4 +79,8 @@ public class ReservationService {
     reservationFirebaseRepository.edit(reservation);
     return reservation;
   }
+
+  public List<Reservation> findByCarId(String carId) {
+    return reservationFirebaseRepository.findByCarId(carId);
+  }
 }
