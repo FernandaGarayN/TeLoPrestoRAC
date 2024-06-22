@@ -55,5 +55,10 @@ public class ReservationController {
     List<Reservation> reservations = reservationService.findByCarId(carId);
     return ResponseEntity.ok(reservations);
   }
+  @GetMapping("/total-gift-points/{username}")
+  public ResponseEntity<Integer> getTotalGiftPoints(@PathVariable String username) {
+    int totalGiftPoints = reservationService.getTotalGiftPoints(username);
+    return ResponseEntity.ok(totalGiftPoints);
+  }
 }
 

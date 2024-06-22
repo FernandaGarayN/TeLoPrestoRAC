@@ -64,4 +64,7 @@ public class ReservationService {
     public List<Reservation> findByCarId(String carId) {
         return reservationClient.findByCarId(carId);
     }
+    public Integer getTotalGiftPoints(String username) {
+        return reservationClient.getTotalGiftPoints(username);
+    }
 }

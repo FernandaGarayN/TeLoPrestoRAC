@@ -21,6 +21,7 @@ public class Reservation {
   private String startAt;
   private String endAt;
   private List<Payment> payments;
+  private int giftPoints;
 
   public void addPayment(Payment payment) {
     if (payments == null) {
