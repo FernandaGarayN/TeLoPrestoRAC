@@ -1,8 +1,6 @@
 package cl.duoc.telopresto.web.controller.car;
 
-import cl.duoc.telopresto.web.services.Car;
-import cl.duoc.telopresto.web.services.CarService;
-import cl.duoc.telopresto.web.services.SubsidiaryService;
+import cl.duoc.telopresto.web.services.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -21,6 +20,7 @@ import java.util.Optional;
 public class CarController {
     private final CarService carService;
     private final SubsidiaryService subsidiaryService;
+    private final ReservationService reservationService;
     private List<Integer> listOfYear;
     private List<Map<String, String>> listOfBrands;
     private List<Map<String, String>> listOfSubsidiaries;
@@ -121,6 +121,14 @@ public class CarController {
     @GetMapping("/detalle-vehiculo")
     public String getDetalleVehiculo(ModelMap model, @RequestParam("idVehiculo") String idVehiculo) {
         Car car = carService.findById(idVehiculo);
+        List<Reservation> reservations = reservationService.findByCarId(idVehiculo);
+
+        List<CarComment> carComments = reservations.stream()
+                .map(Reservation::getComment)
+                .filter(Objects::nonNull)
+                .toList();
+
+        model.addAttribute("carComments", carComments);
 
         listOfCarTypes.stream()
                 .filter(type -> type.get("id").equals(car.getType()))

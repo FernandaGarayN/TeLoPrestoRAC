@@ -111,12 +111,12 @@
                                     </div>
                                 </div>
                             </li>
-                            <li th:each="comment : ${car.comments}" class="list-group-item">
+                            <li th:each="comment : ${carComments}" class="list-group-item">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <p class="card-text">[[${comment.text}]]</p>
+                                        <p class="card-text">[[${comment.comment}]]</p>
                                     </div>
-                                    <div th:replace="~{fragments/rate-star :: ratingStars(${comment.rate})}"></div>
+                                    <div th:replace="~{fragments/rate-star :: ratingStars(${comment.rating})}"></div>
                                 </div>
 
                             </li>
