@@ -192,4 +192,53 @@ public class ReservationController {
         redirectAttributes.addFlashAttribute("successMessage", "Reserva cancelada correctamente");
         return "redirect:/mis-reservas?highlight=".concat(id);
     }
+
+    @GetMapping("/mis-reservas/{id}/comentar")
+    public String getCommentReservation(ModelMap model, @PathVariable("id") String id) {
+        Optional<Reservation> reservation = reservationService.findById(id);
+        if (reservation.isEmpty()) {
+            return "redirect:/mis-reservas";
+        }
+
+        reservation.ifPresent(r -> {
+            listOfBrands.stream()
+                    .filter(brand -> brand.get("id").equals(r.getBrand()))
+                    .findFirst()
+                    .ifPresent(
+                            brand -> r.setBrand(brand.get("name"))
+                    );
+            model.addAttribute("reservation", r);
+        });
+        model.addAttribute("commentForm", new CommentForm());
+        model.addAttribute("reservationId", id);
+        return "nuevo-comentario";
+    }
+
+    @PostMapping("/mis-reservas/{id}/comentar")
+    public String postCommentReservation(
+            ModelMap model,
+            @Valid @ModelAttribute("commentForm") CommentForm form,
+            BindingResult bindingResult,
+            @PathVariable("id") String id,
+            RedirectAttributes redirectAttributes) {
+        model.addAttribute("commentForm",form);
+        model.addAttribute("reservationId", id);
+        if (bindingResult.hasErrors()) {
+            Optional<Reservation> reservation = reservationService.findById(id);
+            reservation.ifPresent(r -> {
+                listOfBrands.stream()
+                        .filter(brand -> brand.get("id").equals(r.getBrand()))
+                        .findFirst()
+                        .ifPresent(
+                                brand -> r.setBrand(brand.get("name"))
+                        );
+                model.addAttribute("reservation", r);
+            });
+            return "nuevo-comentario";
+        }
+        reservationService.comment(id, form);
+        redirectAttributes.addFlashAttribute("successMessage", "Comentario agregado correctamente");
+        return String.format("redirect:/mis-reservas?highlight=%s", id);
+    }
+
 }

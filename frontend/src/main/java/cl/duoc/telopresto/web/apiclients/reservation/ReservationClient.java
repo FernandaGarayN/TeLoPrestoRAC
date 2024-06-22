@@ -2,6 +2,7 @@ package cl.duoc.telopresto.web.apiclients.reservation;
 
 
 import cl.duoc.telopresto.web.config.feign.FeignReservationConfig;
+import cl.duoc.telopresto.web.controller.reservation.CommentForm;
 import cl.duoc.telopresto.web.services.Reservation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -41,4 +42,7 @@ public interface ReservationClient {
 
     @GetMapping("/current-by-car/{carId}")
     List<Reservation> getCurrentByCarId(@PathVariable("carId") String carId);
+
+    @PutMapping("/{id}/comment")
+    void comment(@PathVariable String id, CommentForm form);
 }

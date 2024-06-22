@@ -1,5 +1,6 @@
 package cl.duoc.newrentacar.api.endpoint;
 
+import cl.duoc.newrentacar.api.endpoint.model.CarComment;
 import cl.duoc.newrentacar.api.endpoint.model.Payment;
 import cl.duoc.newrentacar.api.endpoint.model.Reservation;
 import cl.duoc.newrentacar.api.service.ReservationService;
@@ -64,6 +65,11 @@ public class ReservationController {
   public ResponseEntity<List<Reservation>> getCurrentByCarId(@PathVariable("carId") String carId) {
     List<Reservation> reservations = reservationService.findCurrentReservationsByCarId(carId);
     return ResponseEntity.ok(reservations);
+  }
+
+  @PutMapping("/{id}/comment")
+  public ResponseEntity<Reservation> comment(@PathVariable String id, @RequestBody CarComment comment) {
+    return ResponseEntity.ok(reservationService.comment(id, comment));
   }
 }
 

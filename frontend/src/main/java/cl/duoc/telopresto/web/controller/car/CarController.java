@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -121,6 +122,14 @@ public class CarController {
     public String getDetalleVehiculo(ModelMap model, @RequestParam("idVehiculo") String idVehiculo) {
         Car car = carService.findById(idVehiculo);
         List<Reservation> currentByCarId = reservationService.getCurrentByCarId(idVehiculo);
+        List<Reservation> reservations = reservationService.findByCarId(idVehiculo);
+
+        List<CarComment> carComments = reservations.stream()
+                .map(Reservation::getComment)
+                .filter(Objects::nonNull)
+                .toList();
+
+        model.addAttribute("carComments", carComments);
 
         model.addAttribute("isReserved", !currentByCarId.isEmpty());
         listOfCarTypes.stream()

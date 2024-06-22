@@ -22,6 +22,7 @@ public class Reservation {
   private String endAt;
   private List<Payment> payments;
   private int giftPoints;
+  private CarComment comment;
 
   public void addPayment(Payment payment) {
     if (payments == null) {

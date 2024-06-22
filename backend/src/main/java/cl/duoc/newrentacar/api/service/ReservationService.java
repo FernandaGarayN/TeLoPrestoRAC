@@ -1,6 +1,7 @@
 package cl.duoc.newrentacar.api.service;
 
 import cl.duoc.newrentacar.api.endpoint.model.Car;
+import cl.duoc.newrentacar.api.endpoint.model.CarComment;
 import cl.duoc.newrentacar.api.endpoint.model.Payment;
 import cl.duoc.newrentacar.api.endpoint.model.Reservation;
 import cl.duoc.newrentacar.api.repository.*;
@@ -129,5 +130,12 @@ public class ReservationService {
         return (today.isEqual(startAt) || today.isAfter(startAt)) && (today.isEqual(endAt) || today.isBefore(endAt));
       })
       .collect(Collectors.toList());
+  }
+
+  public Reservation comment(String id, CarComment comment) {
+    Reservation reservation = reservationFirebaseRepository.findById(id).orElseThrow();
+    reservation.setComment(comment);
+    reservationFirebaseRepository.edit(reservation);
+    return reservation;
   }
 }

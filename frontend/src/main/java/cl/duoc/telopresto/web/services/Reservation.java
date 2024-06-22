@@ -23,6 +23,7 @@ public class Reservation {
     private LocalDate endAt;
     @Builder.Default
     private List<Payment> payments = new ArrayList<>();
+    private CarComment comment;
     private long days;
     private long amount;
 

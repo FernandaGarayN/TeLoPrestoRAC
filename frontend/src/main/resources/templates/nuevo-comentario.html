@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="https://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head_tag('Ingresar Pago')}"><title>INGRESAR PAGO</title></head>
+<head th:replace="~{fragments/head :: head_tag('Nuevo Comentario')}"><title>INDEX</title></head>
 <body>
-<nav th:replace="~{fragments/navbar :: navbar('pagos')}"></nav>
+<nav th:replace="~{fragments/navbar :: navbar('reservas')}"></nav>
 <div class="container bg-white p-2">
     <div class="p-2">
-        <h2 class="mb-4">Ingresar Pago</h2>
+        <h2 class="mb-4">Nuevo Comentario</h2>
     </div>
     <div class="row">
         <div class="col-md-6">
@@ -74,49 +74,68 @@
             </ul>
         </div>
         <div class="col-md-6">
-            <h3 class="p-2">Información del Pago</h3>
-            <form th:action="@{/ingresar-pago/{id}(id=${reservationId})}" th:object="${paymentForm}" method="post">
-                <div class="form-group">
-                    <label for="amount">Monto:</label>
-                    <input th:field="*{amount}" type="number" class="form-control" id="amount" name="amount" required
-                           readonly>
-                    <div th:if="${#fields.hasErrors('amount')}" class="alert alert-danger" role="alert">
-                        <span th:errors="*{amount}"></span>
+            <h3 class="p-2">Datos del comentario</h3>
+            <form th:object="${commentForm}" th:action="@{/mis-reservas/{id}/comentar(id=${reservationId})}" method="post" class="p-2">
+                <div th:if="${#fields.hasGlobalErrors()}">
+                    <p class="text-danger" th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+                </div>
+                <div class="mb-3 row">
+                    <label for="comment" class="col-sm-2 col-form-label">Comentario</label>
+                    <div class="col-sm-10">
+                        <textarea id="comment" class="form-control" th:field="*{comment}"></textarea>
+
+                        <div th:if="${#fields.hasErrors('comment')}" class="alert alert-danger" role="alert">
+                            <span th:errors="*{comment}"></span>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="paymentDate">Fecha de Pago:</label>
-                    <input th:field="*{date}" type="text" class="form-control" id="paymentDate" name="paymentDate"
-                           required>
-                    <div th:if="${#fields.hasErrors('date')}" class="alert alert-danger" role="alert">
-                        <span th:errors="*{date}"></span>
+                <div class="mb-3 row">
+                    <label for="hiddenRating" class="col-sm-2 col-form-label">Calificación</label>
+                    <div class="col-sm-10">
+                        <input type="hidden" id="hiddenRating" th:field="*{rating}" />
+                        <div class="rating">
+                            <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 stars"></label>
+                            <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars"></label>
+                            <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars"></label>
+                            <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars"></label>
+                            <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star"></label>
+                        </div>
+                        <div th:if="${#fields.hasErrors('rating')}" class="alert alert-danger" role="alert">
+                            <span th:errors="*{rating}"></span>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="paymentMethod">Método de Pago:</label>
-                    <select th:field="*{method}" class="form-control" id="paymentMethod">
-                        <option value="">Elija un Método...</option>
-                        <option value="credit">Crédito</option>
-                        <option value="debit">Débito</option>
-                        <option value="cash">Efectivo</option>
-                        <option value="cash">Transferencia</option>
-                    </select>
-                    <div th:if="${#fields.hasErrors('method')}" class="alert alert-danger" role="alert">
-                        <span th:errors="*{method}"></span>
-                    </div>
-                </div>
-                <button type="submit" class="mt-5 btn btn-primary">Ingresar Pago</button>
+                <button type="submit" class="mt-5 btn btn-primary">Comentar y calificar</button>
                 <a th:href="@{/reservas-clientes}" class="mt-5 btn btn-secondary">Regresar</a>
             </form>
+
         </div>
     </div>
 </div>
 <footer th:replace="~{fragments/footer :: footer_tag}"></footer>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
-    window.addEventListener('DOMContentLoaded', (event) => {
-        flatpickr("#paymentDate", {
-            dateFormat: "Y-m-d"
+    let ratingInput = document.querySelector('#hiddenRating');
+    let ratingStars = Array.from(document.querySelectorAll('.rating > label')).reverse();
+    let ratingValue = ratingInput ? ratingInput.value : 0;
+
+    // Función para desresaltar todas las estrellas
+    function clearStars() {
+        ratingStars.forEach((star) => {
+            star.style.color = '#ddd';
+        });
+    }
+
+    // Resalta las estrellas correspondientes
+    ratingStars.forEach((star, index) => {
+        if (index < ratingValue) {
+            star.style.color = '#FFD700';
+        }
+        star.addEventListener('click', () => {
+            clearStars(); // Desresalta todas las estrellas
+            ratingInput.value = index + 1;
+            for (let i = 0; i <= index; i++) {
+                ratingStars[i].style.color = '#FFD700'; // Resalta las estrellas seleccionadas
+            }
         });
     });
 </script>
