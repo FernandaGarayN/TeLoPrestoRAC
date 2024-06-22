@@ -61,6 +61,11 @@ public class ReservationController {
     int totalGiftPoints = reservationService.getTotalGiftPoints(username);
     return ResponseEntity.ok(totalGiftPoints);
   }
+  @GetMapping("/current-by-car/{carId}")
+  public ResponseEntity<List<Reservation>> getCurrentByCarId(@PathVariable("carId") String carId) {
+    List<Reservation> reservations = reservationService.findCurrentReservationsByCarId(carId);
+    return ResponseEntity.ok(reservations);
+  }
 
   @PutMapping("/{id}/comment")
   public ResponseEntity<Reservation> comment(@PathVariable String id, @RequestBody CarComment comment) {

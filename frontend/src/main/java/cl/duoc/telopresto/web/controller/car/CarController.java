@@ -121,6 +121,7 @@ public class CarController {
     @GetMapping("/detalle-vehiculo")
     public String getDetalleVehiculo(ModelMap model, @RequestParam("idVehiculo") String idVehiculo) {
         Car car = carService.findById(idVehiculo);
+        List<Reservation> currentByCarId = reservationService.getCurrentByCarId(idVehiculo);
         List<Reservation> reservations = reservationService.findByCarId(idVehiculo);
 
         List<CarComment> carComments = reservations.stream()
@@ -130,6 +131,7 @@ public class CarController {
 
         model.addAttribute("carComments", carComments);
 
+        model.addAttribute("isReserved", !currentByCarId.isEmpty());
         listOfCarTypes.stream()
                 .filter(type -> type.get("id").equals(car.getType()))
                 .findFirst()
