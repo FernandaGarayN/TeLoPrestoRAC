@@ -40,5 +40,15 @@ public class ReservationController {
   public ResponseEntity<Reservation> savePayment(@PathVariable String id, @RequestBody Payment payment) {
     return ResponseEntity.ok(reservationService.savePayment(id, payment));
   }
+
+  @PutMapping("/{id}/confirm")
+  public ResponseEntity<Reservation> confirm(@PathVariable String id) {
+    return ResponseEntity.ok(reservationService.confirm(id));
+  }
+
+  @PutMapping("/{id}/cancel")
+  public ResponseEntity<Reservation> cancel(@PathVariable String id) {
+    return ResponseEntity.ok(reservationService.cancel(id));
+  }
 }
 

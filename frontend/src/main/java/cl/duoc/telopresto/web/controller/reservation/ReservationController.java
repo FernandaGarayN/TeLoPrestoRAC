@@ -81,6 +81,15 @@ public class ReservationController {
         return "reservas-clientes";
     }
 
+    @GetMapping("/reservas-clientes/{id}/cancelar")
+    public String cancelReservationClient(
+            @PathVariable("id") String id,
+            RedirectAttributes redirectAttributes) {
+        reservationService.cancel(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Reserva cancelada correctamente");
+        return "redirect:/reservas-clientes?highlight=".concat(id);
+    }
+
     @GetMapping("/nueva-reserva")
     public String getNewReservation(ModelMap model, @RequestParam("idVehiculo") String id) {
         Car car = carService.findById(id);
@@ -161,5 +170,23 @@ public class ReservationController {
         Reservation reservation = reservationService.update(form, id);
         redirectAttributes.addFlashAttribute("successMessage", "Reserva actualizada correctamente");
         return String.format("redirect:/mis-reservas?highlight=%s", reservation.getId());
+    }
+
+    @GetMapping("/mis-reservas/{id}/confirmar")
+    public String confirmReservation(
+            @PathVariable("id") String id,
+            RedirectAttributes redirectAttributes) {
+        reservationService.confirm(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Reserva confirmada correctamente");
+        return "redirect:/mis-reservas?highlight=".concat(id);
+    }
+
+    @GetMapping("/mis-reservas/{id}/cancelar")
+    public String cancelReservation(
+            @PathVariable("id") String id,
+            RedirectAttributes redirectAttributes) {
+        reservationService.cancel(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Reserva cancelada correctamente");
+        return "redirect:/mis-reservas?highlight=".concat(id);
     }
 }
