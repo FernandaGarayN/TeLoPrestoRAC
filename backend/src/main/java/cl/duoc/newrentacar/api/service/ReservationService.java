@@ -65,4 +65,18 @@ public class ReservationService {
     reservationFirebaseRepository.edit(reservation);
     return reservation;
   }
+
+  public Reservation confirm(String id) {
+    Reservation reservation = reservationFirebaseRepository.findById(id).orElseThrow();
+    reservation.setStatus("released");
+    reservationFirebaseRepository.edit(reservation);
+    return reservation;
+  }
+
+  public Reservation cancel(String id) {
+    Reservation reservation = reservationFirebaseRepository.findById(id).orElseThrow();
+    reservation.setStatus("cancelled");
+    reservationFirebaseRepository.edit(reservation);
+    return reservation;
+  }
 }

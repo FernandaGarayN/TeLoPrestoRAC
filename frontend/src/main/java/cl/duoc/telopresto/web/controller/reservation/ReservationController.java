@@ -162,4 +162,22 @@ public class ReservationController {
         redirectAttributes.addFlashAttribute("successMessage", "Reserva actualizada correctamente");
         return String.format("redirect:/mis-reservas?highlight=%s", reservation.getId());
     }
+
+    @GetMapping("/mis-reservas/{id}/confirmar")
+    public String confirmReservation(
+            @PathVariable("id") String id,
+            RedirectAttributes redirectAttributes) {
+        reservationService.confirm(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Reserva confirmada correctamente");
+        return "redirect:/mis-reservas?highlight=".concat(id);
+    }
+
+    @GetMapping("/mis-reservas/{id}/cancelar")
+    public String cancelReservation(
+            @PathVariable("id") String id,
+            RedirectAttributes redirectAttributes) {
+        reservationService.cancel(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Reserva cancelada correctamente");
+        return "redirect:/mis-reservas?highlight=".concat(id);
+    }
 }

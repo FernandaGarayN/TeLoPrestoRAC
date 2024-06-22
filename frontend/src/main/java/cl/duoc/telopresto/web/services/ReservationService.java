@@ -53,4 +53,12 @@ public class ReservationService {
                 .endAt(LocalDate.parse(form.getEndAt(), formatter))
                 .build());
     }
+
+    public void confirm(String id) {
+        reservationClient.confirm(id);
+    }
+
+    public void cancel(String id) {
+        reservationClient.cancel(id);
+    }
 }

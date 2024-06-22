@@ -26,4 +26,10 @@ public interface ReservationClient {
 
     @PutMapping("/{reservationId}")
     Reservation update(@PathVariable String reservationId, Reservation build);
+
+    @PutMapping("/{reservationId}/confirm")
+    void confirm(@PathVariable String reservationId);
+
+    @PutMapping("/{reservationId}/cancel")
+    void cancel(@PathVariable String reservationId);
 }

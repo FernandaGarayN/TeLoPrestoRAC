@@ -45,9 +45,9 @@
                         <a href="#" class="btn btn-primary disabled" style="pointer-events: none;" role="button" aria-disabled="true">Pagar con Flow</a>
                     </span>
 
-                    <a th:if="${row.status != 'released'}" th:href="@{/mis-reservas/{id}/editar(id=${row.id})}" class="btn btn-success">Editar</a>
+                    <a th:if="${row.status == 'pending'}" th:href="@{/mis-reservas/{id}/editar(id=${row.id})}" class="btn btn-success">Editar</a>
                     <a th:if="${row.status == 'paid'}" th:href="@{/mis-reservas/{id}/confirmar(id=${row.id})}" class="btn btn-info">Confirmar</a>
-                    <a th:if="${row.status != 'released'}" th:href="@{/mis-reservas/{id}/cancelar(id=${row.id})}" class="btn btn-danger">Cancelar</a>
+                    <a th:if="${row.status != 'cancelled' && row.status != 'released'}" th:href="@{/mis-reservas/{id}/cancelar(id=${row.id})}" class="btn btn-danger">Cancelar</a>
                 </td>
             </tr>
             </tbody>
