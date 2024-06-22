@@ -57,4 +57,12 @@ public class ReservationService {
   public Reservation findById(String id) {
     return reservationFirebaseRepository.findById(id).orElseThrow();
   }
+
+  public Reservation update(String id, Reservation update) {
+    Reservation reservation = reservationFirebaseRepository.findById(id).orElseThrow();
+    reservation.setStartAt(update.getStartAt());
+    reservation.setEndAt(update.getEndAt());
+    reservationFirebaseRepository.edit(reservation);
+    return reservation;
+  }
 }

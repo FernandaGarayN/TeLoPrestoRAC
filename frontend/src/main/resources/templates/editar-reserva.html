@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="https://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head_tag('Nueva Reserva')}">
+<head th:replace="~{fragments/head :: head_tag('Editar Reserva')}">
     <title>RESERVA</title>
 </head>
 <body>
@@ -8,9 +8,9 @@
 
 <div class="container bg-white p-2">
     <div class="p-2">
-        <h2 class="mb-4">Nueva Reserva</h2>
+        <h2 class="mb-4">Editar Reserva</h2>
     </div>
-    <form th:object="${reservationForm}" th:action="@{/nueva-reserva}" method="post" class="p-2">
+    <form th:object="${reservationForm}" th:action="@{/mis-reservas/{id}/editar(id=${reservationId})}" method="post" class="p-2">
         <div th:if="${#fields.hasGlobalErrors()}">
             <p class="text-danger"  th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
         </div>
@@ -32,12 +32,12 @@
             <label for="fechafin" class="col-sm-2 col-form-label">Fecha de fin</label>
             <div class="col-sm-10">
                 <input th:field="*{endAt}" type="text" class="form-control" id="fechafin" name="fechafin" required readonly>
-                <p class="text-danger" th:if="${#fields.hasErrors('endAt')}" th:errors="*{endAt}"></p>
+                <p class="text-danger" th:if="${#fields.hasErrors('endAt')}" th:errors="*{endAt}" ></p>
             </div>
         </div>
         <div class="mb-3 row">
             <div class="col-sm-12 text-center">
-                <button type="submit" class="btn btn-primary">Reservar</button>
+                <button type="submit" class="btn btn-primary">Modificar Reserva</button>
             </div>
         </div>
     </form>
@@ -46,18 +46,26 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
     window.addEventListener('DOMContentLoaded', (event) => {
+        let fechaInicio = document.querySelector("#fechainicio").value;
+        let fechaFin = document.querySelector("#fechafin").value;
+
         flatpickr("#fechainicio", {
             mode: "range",
             dateFormat: "Y-m-d",
             minDate: "today",
+            defaultDate: [fechaInicio, fechaFin],
             onClose: function(selectedDates, dateStr, instance) {
                 const dates = dateStr.split(" to ");
+                console.log(dates)
                 document.querySelector("#fechainicio").value = dates[0];
                 if (dates[1] !== undefined) {
                     document.querySelector("#fechafin").value = dates[1];
                 }
             }
         });
+
+        document.querySelector("#fechainicio").value = fechaInicio;
+        document.querySelector("#fechafin").value = fechaFin;
     });
 </script>
 </body>

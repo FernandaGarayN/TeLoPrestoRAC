@@ -1,4 +1,4 @@
-package cl.duoc.telopresto.web.controller.reservation;
+package  cl.duoc.telopresto.web.controller.reservation;
 
 import cl.duoc.telopresto.web.controller.validations.ValidDateOrder;
 import jakarta.validation.constraints.NotNull;
@@ -13,10 +13,11 @@ import java.time.LocalDate;
 @Setter
 @ValidDateOrder
 public class ReservationForm {
+    private String id;
     private String carId;
     private String car;
-    @NotNull
-    private LocalDate startAt;
-    @NotNull
-    private LocalDate endAt;
+    @NotNull(message = "El campo 'inicio' es requerido")
+    private String startAt;
+    @NotNull(message = "El campo 'fin' es requerido")
+    private String endAt;
 }
