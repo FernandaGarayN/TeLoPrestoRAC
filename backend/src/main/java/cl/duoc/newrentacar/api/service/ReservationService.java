@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationService {
@@ -117,5 +118,16 @@ public class ReservationService {
     return reservations.stream()
       .mapToInt(Reservation::getGiftPoints)
       .sum();
+  }
+  public List<Reservation> findCurrentReservationsByCarId(String carId) {
+    List<Reservation> reservations = reservationFirebaseRepository.findByCarId(carId);
+    LocalDate today = LocalDate.now();
+    return reservations.stream()
+      .filter(reservation -> {
+        LocalDate startAt = LocalDate.parse(reservation.getStartAt());
+        LocalDate endAt = LocalDate.parse(reservation.getEndAt());
+        return (today.isEqual(startAt) || today.isAfter(startAt)) && (today.isEqual(endAt) || today.isBefore(endAt));
+      })
+      .collect(Collectors.toList());
   }
 }

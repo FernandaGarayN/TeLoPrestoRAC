@@ -67,4 +67,9 @@ public class ReservationService {
     public Integer getTotalGiftPoints(String username) {
         return reservationClient.getTotalGiftPoints(username);
     }
+    public List<Reservation> getCurrentByCarId(String carId) {
+        List<Reservation> currentByCarId = reservationClient.getCurrentByCarId(carId);
+        currentByCarId.forEach(Reservation::calculateTotal);
+        return currentByCarId;
+    }
 }

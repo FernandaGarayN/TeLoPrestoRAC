@@ -38,4 +38,7 @@ public interface ReservationClient {
 
     @GetMapping("/total-gift-points/{username}")
     Integer getTotalGiftPoints(@PathVariable("username") String username);
+
+    @GetMapping("/current-by-car/{carId}")
+    List<Reservation> getCurrentByCarId(@PathVariable("carId") String carId);
 }
