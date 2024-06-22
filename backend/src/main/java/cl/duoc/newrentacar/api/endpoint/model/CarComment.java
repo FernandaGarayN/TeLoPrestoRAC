@@ -1,8 +1,11 @@
 package cl.duoc.newrentacar.api.endpoint.model;
 
-public record CarComment(
-        Integer id, // Set to null when creating a comment
-        String text,
-        int rate
-) {
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class CarComment {
+  private String comment;
+  private int rating;
 }

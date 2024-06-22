@@ -1,5 +1,6 @@
 package cl.duoc.newrentacar.api.endpoint;
 
+import cl.duoc.newrentacar.api.endpoint.model.CarComment;
 import cl.duoc.newrentacar.api.endpoint.model.Payment;
 import cl.duoc.newrentacar.api.endpoint.model.Reservation;
 import cl.duoc.newrentacar.api.service.ReservationService;
@@ -49,6 +50,11 @@ public class ReservationController {
   @PutMapping("/{id}/cancel")
   public ResponseEntity<Reservation> cancel(@PathVariable String id) {
     return ResponseEntity.ok(reservationService.cancel(id));
+  }
+
+  @PutMapping("/{id}/comment")
+  public ResponseEntity<Reservation> comment(@PathVariable String id, @RequestBody CarComment comment) {
+    return ResponseEntity.ok(reservationService.comment(id, comment));
   }
 }
 

@@ -1,6 +1,7 @@
 package cl.duoc.newrentacar.api.service;
 
 import cl.duoc.newrentacar.api.endpoint.model.Car;
+import cl.duoc.newrentacar.api.endpoint.model.CarComment;
 import cl.duoc.newrentacar.api.endpoint.model.Payment;
 import cl.duoc.newrentacar.api.endpoint.model.Reservation;
 import cl.duoc.newrentacar.api.repository.*;
@@ -76,6 +77,13 @@ public class ReservationService {
   public Reservation cancel(String id) {
     Reservation reservation = reservationFirebaseRepository.findById(id).orElseThrow();
     reservation.setStatus("cancelled");
+    reservationFirebaseRepository.edit(reservation);
+    return reservation;
+  }
+
+  public Reservation comment(String id, CarComment comment) {
+    Reservation reservation = reservationFirebaseRepository.findById(id).orElseThrow();
+    reservation.setComment(comment);
     reservationFirebaseRepository.edit(reservation);
     return reservation;
   }

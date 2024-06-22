@@ -1,6 +1,7 @@
 package cl.duoc.telopresto.web.services;
 
 import cl.duoc.telopresto.web.apiclients.reservation.ReservationClient;
+import cl.duoc.telopresto.web.controller.reservation.CommentForm;
 import cl.duoc.telopresto.web.controller.reservation.ReservationForm;
 import lombok.RequiredArgsConstructor;
 
@@ -60,5 +61,9 @@ public class ReservationService {
 
     public void cancel(String id) {
         reservationClient.cancel(id);
+    }
+
+    public void comment(String id, CommentForm form) {
+        reservationClient.comment(id, form);
     }
 }
