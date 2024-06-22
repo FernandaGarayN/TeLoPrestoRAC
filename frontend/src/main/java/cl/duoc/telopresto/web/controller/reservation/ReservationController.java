@@ -1,5 +1,6 @@
 package cl.duoc.telopresto.web.controller.reservation;
 
+import cl.duoc.telopresto.web.apiclients.authboot.AuthbootAuthUser;
 import cl.duoc.telopresto.web.services.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
@@ -35,8 +36,8 @@ public class ReservationController {
             ModelMap model,
             @RequestParam(value = "highlight", required = false) String highlight,
             Authentication authentication) {
-        String username = (String) authentication.getPrincipal();
-        List<Reservation> reservations = reservationService.findByUsername(username);
+        AuthbootAuthUser user = (AuthbootAuthUser) authentication.getPrincipal();
+        List<Reservation> reservations = reservationService.findByUsername(user.getUsername());
         reservations.forEach(
                 reservation -> listOfBrands.stream()
                         .filter(brand -> brand.get("id").equals(reservation.getBrand()))
@@ -93,6 +94,7 @@ public class ReservationController {
     @GetMapping("/nueva-reserva")
     public String getNewReservation(ModelMap model, @RequestParam("idVehiculo") String id) {
         Car car = carService.findById(id);
+        List<Reservation> reservations = reservationService.findByCarId(id);
 
         listOfBrands.stream()
                 .filter(brand -> brand.get("id").equals(car.getBrand()))
@@ -107,6 +109,7 @@ public class ReservationController {
                         .car(car.getBrand().concat(" - ").concat(car.getModel()))
                         .build();
         model.addAttribute("reservationForm", reservationForm);
+        model.addAttribute("reservations", reservations);
         return "nueva-reserva";
     }
 
@@ -120,8 +123,8 @@ public class ReservationController {
         if (bindingResult.hasErrors()) {
             return "nueva-reserva";
         }
-        String username = (String) authentication.getPrincipal();
-        Reservation reservation = reservationService.save(form, username);
+        AuthbootAuthUser user = (AuthbootAuthUser) authentication.getPrincipal();
+        Reservation reservation = reservationService.save(form, user.getUsername());
         return String.format("redirect:/mis-reservas?highlight=%s", reservation.getId());
     }
 

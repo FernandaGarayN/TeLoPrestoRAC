@@ -1,4 +1,7 @@
 server:
+  servlet:
+    session:
+      timeout: 10m
   error:
     whitelabel:
       enabled: false

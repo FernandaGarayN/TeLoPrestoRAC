@@ -62,6 +62,12 @@ public class ReservationService {
     public void cancel(String id) {
         reservationClient.cancel(id);
     }
+    public List<Reservation> findByCarId(String carId) {
+        return reservationClient.findByCarId(carId);
+    }
+    public Integer getTotalGiftPoints(String username) {
+        return reservationClient.getTotalGiftPoints(username);
+    }
 
     public void comment(String id, CommentForm form) {
         reservationClient.comment(id, form);

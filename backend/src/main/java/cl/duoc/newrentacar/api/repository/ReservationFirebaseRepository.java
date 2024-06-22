@@ -76,4 +76,24 @@ public class ReservationFirebaseRepository {
     Firestore db = FirestoreClient.getFirestore();
     db.collection("reservations").document(reservation.getId()).set(reservation);
   }
+  public List<Reservation> findByCarId(String carId) {
+    Firestore db = FirestoreClient.getFirestore();
+    var query = db.collection("reservations").whereEqualTo("carId", carId);
+
+    ApiFuture<QuerySnapshot> querySnapshot = query.get();
+
+    List<Reservation> reservations = new ArrayList<>();
+    try {
+      for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+        Reservation object = document.toObject(Reservation.class);
+        assert object != null;
+        object.setId(document.getId());
+        reservations.add(object);
+      }
+    } catch (InterruptedException | ExecutionException e) {
+      e.printStackTrace();
+    }
+
+    return reservations;
+  }
 }

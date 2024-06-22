@@ -2,6 +2,7 @@ package cl.duoc.telopresto.web.config;
 
 import cl.duoc.telopresto.web.security.JwtAuthenticationProvider;
 import cl.duoc.telopresto.web.services.AuthbootService;
+import cl.duoc.telopresto.web.services.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
   private final AuthbootService authbootService;
+  private final ReservationService reservationService;
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -58,7 +60,7 @@ public class WebSecurityConfig {
 
   @Bean
   public AuthenticationProvider authenticationProvider() {
-    return new JwtAuthenticationProvider(authbootService);
+    return new JwtAuthenticationProvider(authbootService, reservationService);
   }
 
   @Bean

@@ -44,11 +44,23 @@
 </div>
 <footer th:replace="~{fragments/footer :: footer_tag}"></footer>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var reservations = /*[[${reservations}]]*/ [];
+    /*]]>*/
+</script>
 <script>
     window.addEventListener('DOMContentLoaded', (event) => {
+        const disabledDates = reservations.map(reservation => {
+            return {
+                from: new Date(reservation.startAt),
+                to: new Date(reservation.endAt)
+            };
+        });
         flatpickr("#fechainicio", {
             mode: "range",
             dateFormat: "Y-m-d",
+            disable: disabledDates,
             minDate: "today",
             onClose: function(selectedDates, dateStr, instance) {
                 const dates = dateStr.split(" to ");

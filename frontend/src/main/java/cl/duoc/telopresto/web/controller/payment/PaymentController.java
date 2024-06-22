@@ -1,5 +1,7 @@
 package cl.duoc.telopresto.web.controller.payment;
 
+import cl.duoc.telopresto.web.apiclients.authboot.AuthbootAuthResponse;
+import cl.duoc.telopresto.web.apiclients.authboot.AuthbootAuthUser;
 import cl.duoc.telopresto.web.services.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
@@ -33,7 +35,8 @@ public class PaymentController {
 
     @GetMapping("/pagos")
     public String getPayments(ModelMap model, Authentication authentication) {
-        String username = (String) authentication.getPrincipal();
+        AuthbootAuthUser user = (AuthbootAuthUser) authentication.getPrincipal();
+        String username = user.getUsername();
         List<Reservation> byUsername = paymentService.findByUsername(username, "paid");
         byUsername.forEach(Reservation::calculateTotal);
         byUsername.forEach(
