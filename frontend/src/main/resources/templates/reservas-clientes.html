@@ -35,6 +35,7 @@
                 <th>Nº Días</th>
                 <th>Valor Diario</th>
                 <th>Total</th>
+                <th>Estado</th>
                 <th>Acción</th>
             </tr>
             </thead>
@@ -47,8 +48,13 @@
                 <td th:text="${'$' + #numbers.formatDecimal(row.dailyCost, 0, 'POINT', 0, 'NONE')}"></td>
                 <td th:text="${'$' + #numbers.formatDecimal(row.amount, 0, 'POINT', 0, 'NONE')}"></td>
                 <td>
-                    <a th:if="${row.status != 'paid'}" th:href="@{/ingresar-pago/{id}(id=${row.id})}" class="btn btn-primary">Confirmar Pago</a>
-                    <span th:if="${row.status == 'paid'}" class="btn btn-success disabled">Pagado</span>
+                    <span th:if="${row.status == 'paid'}" class="p-2 bg-success text-white" th:text="${'PAGADO'}"></span>
+                    <span th:if="${row.status == 'pending'}" class="p-2 bg-warning text-white" th:text="${'PENDIENTE DE PAGO'}"></span>
+                    <span th:if="${row.status == 'released'}" class="p-2 bg-info text-white" th:text="${'CONFIRMADA'}"></span>
+                    <span th:if="${row.status == 'cancelled'}" class="p-2 bg-danger text-white" th:text="${'CANCELADA'}"></span>
+                <td>
+                    <a th:if="${row.status == 'pending'}" th:href="@{/ingresar-pago/{id}(id=${row.id})}" class="btn btn-primary">Confirmar Pago</a>
+                    <a th:if="${row.status != 'cancelled' && row.status != 'released'}" th:href="@{/reservas-clientes/{id}/cancelar(id=${row.id})}" class="btn btn-danger">Cancelar</a>
                 </td>
             </tr>
             </tbody>

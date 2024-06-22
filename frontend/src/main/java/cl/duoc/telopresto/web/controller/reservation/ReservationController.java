@@ -81,6 +81,15 @@ public class ReservationController {
         return "reservas-clientes";
     }
 
+    @GetMapping("/reservas-clientes/{id}/cancelar")
+    public String cancelReservationClient(
+            @PathVariable("id") String id,
+            RedirectAttributes redirectAttributes) {
+        reservationService.cancel(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Reserva cancelada correctamente");
+        return "redirect:/reservas-clientes?highlight=".concat(id);
+    }
+
     @GetMapping("/nueva-reserva")
     public String getNewReservation(ModelMap model, @RequestParam("idVehiculo") String id) {
         Car car = carService.findById(id);
