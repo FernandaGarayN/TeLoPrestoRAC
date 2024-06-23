@@ -5,11 +5,7 @@ import cl.duoc.newrentacar.api.endpoint.model.CarComment;
 import cl.duoc.newrentacar.api.endpoint.model.Payment;
 import cl.duoc.newrentacar.api.endpoint.model.Reservation;
 import cl.duoc.newrentacar.api.repository.*;
-import cl.duoc.newrentacar.api.repository.model.CarEntity;
-import cl.duoc.newrentacar.api.repository.model.ClientEntity;
-import cl.duoc.newrentacar.api.repository.model.ReservationEntity;
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
