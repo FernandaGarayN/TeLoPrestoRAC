@@ -112,7 +112,7 @@
     </div>
 </div>
 <footer th:replace="~{fragments/footer :: footer_tag}"></footer>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<div th:replace="~{fragments/footer :: footer_scripts}"></div>
 <script>
     window.addEventListener('DOMContentLoaded', (event) => {
         flatpickr("#paymentDate", {
