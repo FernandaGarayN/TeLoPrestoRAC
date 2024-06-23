@@ -21,10 +21,9 @@ import java.util.stream.Collectors;
 @Service
 public class ReservationService {
 
-  CarFirebaseRepository carFirebaseRepository;
+  private CarFirebaseRepository carFirebaseRepository;
 
-  ReservationFirebaseRepository reservationFirebaseRepository;
-  ;
+  private ReservationFirebaseRepository reservationFirebaseRepository;
 
   @PostConstruct
   public void init() {

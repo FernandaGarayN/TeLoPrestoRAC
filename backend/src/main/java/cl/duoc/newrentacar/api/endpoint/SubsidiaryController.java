@@ -1,8 +1,6 @@
 package cl.duoc.newrentacar.api.endpoint;
 
-import cl.duoc.newrentacar.api.endpoint.model.Car;
 import cl.duoc.newrentacar.api.endpoint.model.Subsidiary;
-import cl.duoc.newrentacar.api.service.CarService;
 import cl.duoc.newrentacar.api.service.SubsidiaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

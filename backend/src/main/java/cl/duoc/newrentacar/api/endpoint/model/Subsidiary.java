@@ -11,5 +11,4 @@ public class Subsidiary {
     private String name;
     private String address;
     private int phoneNumber;
-
 }

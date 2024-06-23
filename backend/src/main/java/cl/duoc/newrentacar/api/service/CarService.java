@@ -1,22 +1,15 @@
 package cl.duoc.newrentacar.api.service;
 
 import cl.duoc.newrentacar.api.endpoint.model.Car;
-import cl.duoc.newrentacar.api.endpoint.model.CarComment;
 import cl.duoc.newrentacar.api.repository.CarFirebaseRepository;
-import cl.duoc.newrentacar.api.repository.CarRepository;
-import cl.duoc.newrentacar.api.repository.model.CarEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CarService {
-  @Autowired
-  private CarRepository carRepository;
   private CarFirebaseRepository carFirebaseRepository;
 
   @PostConstruct
