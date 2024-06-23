@@ -113,6 +113,7 @@
     </div>
 </div>
 <footer th:replace="~{fragments/footer :: footer_tag}"></footer>
+<div th:replace="~{fragments/footer :: footer_scripts}"></div>
 <script>
     let ratingInput = document.querySelector('#hiddenRating');
     let ratingStars = Array.from(document.querySelectorAll('.rating > label')).reverse();
