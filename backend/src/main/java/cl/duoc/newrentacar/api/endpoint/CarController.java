@@ -23,8 +23,7 @@ public class CarController {
   private CarService carService;
   @Autowired
   private CarTypeService carTypeService;
-
-@Autowired
+  @Autowired
   private CarBrandService carBrandService;
 
   @GetMapping
@@ -111,7 +110,7 @@ public class CarController {
     }
   }
 
-  @GetMapping ("/types")
+  @GetMapping("/types")
   public ResponseEntity<List<CarType>> getTypes() {
     return ResponseEntity.ok(carTypeService.getAllCarTypes());
   }

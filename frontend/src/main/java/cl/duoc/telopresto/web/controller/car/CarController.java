@@ -123,6 +123,7 @@ public class CarController {
         Car car = carService.findById(idVehiculo);
         List<Reservation> currentByCarId = reservationService.getCurrentByCarId(idVehiculo);
         List<Reservation> reservations = reservationService.findByCarId(idVehiculo);
+        reservations.forEach(Reservation::calculateTotal);
 
         List<CarComment> carComments = reservations.stream()
                 .map(Reservation::getComment)
@@ -130,8 +131,9 @@ public class CarController {
                 .toList();
 
         model.addAttribute("carComments", carComments);
-
+        model.addAttribute("reservations", reservations);
         model.addAttribute("isReserved", !currentByCarId.isEmpty());
+
         listOfCarTypes.stream()
                 .filter(type -> type.get("id").equals(car.getType()))
                 .findFirst()

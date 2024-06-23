@@ -92,7 +92,8 @@ public class ReservationService {
   public List<Reservation> findByCarId(String carId) {
     return reservationFirebaseRepository.findByCarId(carId);
   }
-  public int calculateGiftPoints(Reservation reservation) {
+
+  private int calculateGiftPoints(Reservation reservation) {
     int points = 0;
 
     // Puntos por Reservas Anticipadas
@@ -105,7 +106,7 @@ public class ReservationService {
 
     // Puntos por Alquileres Frecuentes
     long rentalDays = ChronoUnit.DAYS.between(startDate, endDate);
-    points += rentalDays * 50;
+    points += (int) (rentalDays * 50);
 
     // Bonus por alquilar más de 10 días en un mes
     if (rentalDays > 10) {
@@ -114,12 +115,14 @@ public class ReservationService {
 
     return points;
   }
+
   public int getTotalGiftPoints(String username) {
     List<Reservation> reservations = findByUserName(username, null);
     return reservations.stream()
       .mapToInt(Reservation::getGiftPoints)
       .sum();
   }
+
   public List<Reservation> findCurrentReservationsByCarId(String carId) {
     List<Reservation> reservations = reservationFirebaseRepository.findByCarId(carId);
     LocalDate today = LocalDate.now();
@@ -129,7 +132,7 @@ public class ReservationService {
         LocalDate endAt = LocalDate.parse(reservation.getEndAt());
         return (today.isEqual(startAt) || today.isAfter(startAt)) && (today.isEqual(endAt) || today.isBefore(endAt));
       })
-      .collect(Collectors.toList());
+      .toList();
   }
 
   public Reservation comment(String id, CarComment comment) {
