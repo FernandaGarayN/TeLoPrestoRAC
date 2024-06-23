@@ -12,7 +12,7 @@
                 <img th:src="${car.imageUrl}" alt="Foto Vehículo" width="300">
             </div>
             <div class="col-md-6">
-                <div th:if="${isReserved}" class="alert alert-info" role="alert">
+                <div th:if="${isReserved}" class="alert alert-info" role="alert" sec:authorize="isAuthenticated()">
                     Este vehículo está actualmente reservado.
                 </div>
             </div>
@@ -129,6 +129,39 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div th:if="${reservations != null}" id="reservation_cards" class="row p-2" sec:authorize="isAuthenticated()">
+            <h2 class="mb-4">Historial de reservas</h2>
+            <table id="reservations_table" class="table table-striped" th:if="${#lists.size(reservations) > 0}">
+                <thead>
+                <tr>
+                    <th>Fecha de Inicio</th>
+                    <th>Fecha de Término</th>
+                    <th>Nº Días</th>
+                    <th>Valor Diario</th>
+                    <th>Total</th>
+                    <th>Estado</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="row : ${reservations}">
+                    <td>[[${row.startAt}]]</td>
+                    <td>[[${row.endAt}]]</td>
+                    <td>[[${row.days}]]</td>
+                    <td th:text="${'$' + #numbers.formatDecimal(row.dailyCost, 0, 'POINT', 0, 'NONE')}"></td>
+                    <td th:text="${'$' + #numbers.formatDecimal(row.amount, 0, 'POINT', 0, 'NONE')}"></td>
+                    <td>
+                        <span th:if="${row.status == 'paid'}" class="p-2 bg-success text-white" th:text="${'PAGADO'}"></span>
+                        <span th:if="${row.status == 'pending'}" class="p-2 bg-warning text-white" th:text="${'PENDIENTE DE PAGO'}"></span>
+                        <span th:if="${row.status == 'released'}" class="p-2 bg-info text-white" th:text="${'CONFIRMADA'}"></span>
+                        <span th:if="${row.status == 'cancelled'}" class="p-2 bg-danger text-white" th:text="${'CANCELADA'}"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:unless="${#lists.size(reservations) > 0}" class="alert alert-info" role="alert">
+            No existen reservas para este vehículo.
         </div>
     </div>
 </div>

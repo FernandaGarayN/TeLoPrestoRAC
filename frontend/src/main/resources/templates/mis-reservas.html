@@ -54,6 +54,10 @@
             </tbody>
         </table>
     </div>
+
+    <div th:unless="${#lists.size(results) > 0}" class="alert alert-info" role="alert">
+        Ud. no posee reservas de vehículos.
+    </div>
 </div>
 <footer th:replace="~{fragments/footer :: footer_tag}"></footer>
 </body>
