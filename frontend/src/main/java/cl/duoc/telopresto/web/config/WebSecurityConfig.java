@@ -1,5 +1,6 @@
 package cl.duoc.telopresto.web.config;
 
+import cl.duoc.telopresto.web.security.CustomAuthenticationHandler;
 import cl.duoc.telopresto.web.security.JwtAuthenticationProvider;
 import cl.duoc.telopresto.web.services.AuthbootService;
 import cl.duoc.telopresto.web.services.ReservationService;
@@ -13,6 +14,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
 
 @Configuration
 @EnableWebSecurity
@@ -21,6 +24,7 @@ public class WebSecurityConfig {
 
   private final AuthbootService authbootService;
   private final ReservationService reservationService;
+  private final CustomAuthenticationHandler customAuthenticationHandler;
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -48,7 +52,7 @@ public class WebSecurityConfig {
     http.authorizeHttpRequests(
             requests ->
                 requests.requestMatchers(permitAll).permitAll().anyRequest().authenticated())
-        .formLogin(form -> form.loginPage("/login").permitAll())
+        .formLogin(form -> form.loginPage("/login").permitAll().successHandler(customAuthenticationHandler))
         .logout(
             logout -> {
               logout.logoutUrl("/logout").permitAll();

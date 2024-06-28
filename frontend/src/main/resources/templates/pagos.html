@@ -15,14 +15,30 @@
                 <th>Fecha</th>
                 <th>Tipo</th>
                 <th>Monto</th>
+                <th>Estado reserva</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="row : ${results}">
                 <td>[[${row.reservation}]]</td>
                 <td>[[${row.date}]]</td>
-                <td>[[${row.method}]]</td>
+                <td>
+                    <span th:switch="${row.method}">
+                        <span th:case="'credit'" th:text="${'Crédito'}"></span>
+                        <span th:case="'debit'" th:text="${'Débito'}"></span>
+                        <span th:case="'cash'" th:text="${'Efectivo'}"></span>
+                        <span th:case="'wire_transfer'" th:text="${'Transferencia'}"></span>
+                    </span>
+                </td>
                 <td th:text="${'$' + #numbers.formatDecimal(row.amount, 0, 'POINT', 0, 'NONE')}"></td>
+                <td>
+                    <span th:switch="${row.status}">
+                        <span th:case="'paid'" class="p-2 bg-success text-white" th:text="${'PAGADO'}"></span>
+                        <span th:case="'pending'" class="p-2 bg-warning text-white" th:text="${'PENDIENTE DE PAGO'}"></span>
+                        <span th:case="'released'" class="p-2 bg-info text-white" th:text="${'CONFIRMADA'}"></span>
+                        <span th:case="'cancelled'" class="p-2 bg-danger text-white" th:text="${'CANCELADA'}"></span>
+                    </span>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -59,7 +75,8 @@
                 <td th:text="${'$' + #numbers.formatDecimal(row.amount, 0, 'POINT', 0, 'NONE')}"></td>
                 <td>
                     <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Próximamente disponible">
-                        <a href="#" class="btn btn-primary disabled" style="pointer-events: none;" role="button" aria-disabled="true">Pagar con Flow</a>
+                        <a href="#" class="btn btn-primary disabled" style="pointer-events: none;" role="button"
+                           aria-disabled="true">Pagar con Flow</a>
                     </span>
                 </td>
             </tr>

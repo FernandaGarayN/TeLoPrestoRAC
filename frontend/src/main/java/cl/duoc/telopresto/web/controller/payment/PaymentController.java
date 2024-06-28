@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -37,8 +38,17 @@ public class PaymentController {
     public String getPayments(ModelMap model, Authentication authentication) {
         AuthbootAuthUser user = (AuthbootAuthUser) authentication.getPrincipal();
         String username = user.getUsername();
-        List<Reservation> byUsername = paymentService.findByUsername(username, "paid");
+        List<Reservation> paid = paymentService.findByUsername(username, "paid");
+        List<Reservation> released = paymentService.findByUsername(username, "released");
+        List<Reservation> cancelled = paymentService.findByUsername(username, "cancelled");
+
+        List<Reservation> byUsername = new ArrayList<>();
+        byUsername.addAll(paid);
+        byUsername.addAll(released);
+        byUsername.addAll(cancelled);
+
         byUsername.forEach(Reservation::calculateTotal);
+
         byUsername.forEach(
                 reservation -> listOfBrands.stream()
                         .filter(brand -> brand.get("id").equals(reservation.getBrand()))
@@ -46,13 +56,14 @@ public class PaymentController {
                         .ifPresent(
                                 brand -> reservation.setBrand(brand.get("name"))
                         ));
+
         List<Payment> payments = byUsername
                 .stream()
                 .map(reservation -> {
                     List<Payment> list = reservation.getPayments();
                     list.forEach(payment -> payment.setReservation(reservation.getName()));
+                    list.forEach(payment -> payment.setStatus(reservation.getStatus()));
                     return list;
-
                 })
                 .flatMap(List::stream)
                 .toList();

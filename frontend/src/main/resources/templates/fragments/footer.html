@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head><title></title></head>
 <body>
 <footer th:fragment="footer_tag" class="container bg-light p-5 mt-5">
@@ -27,7 +28,9 @@
     <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-    <script th:src="@{/js/rastreo-sesion.js}"></script>
+    <script th:src="@{/webjars/sockjs-client/sockjs.min.js}" sec:authorize="isAuthenticated()"></script>
+    <script th:src="@{/webjars/stomp-websocket/stomp.min.js}" sec:authorize="isAuthenticated()"></script>
+    <script th:src="@{/js/rastreo-sesion.js}" sec:authorize="isAuthenticated()"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </div>
 </body>

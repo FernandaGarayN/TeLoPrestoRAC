@@ -1,5 +1,7 @@
-package cl.duoc.telopresto.web.config;
+package cl.duoc.telopresto.web.config.websocket;
 
+import cl.duoc.telopresto.web.apiclients.authboot.AuthbootAuthUser;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -12,6 +14,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
 import java.security.Principal;
+import java.util.Map;
+import java.util.UUID;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -20,10 +24,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/session-timeout").setHandshakeHandler(new DefaultHandshakeHandler() {
             @Override
-            protected Principal determineUser(ServerHttpRequest request, WebSocketHandler wsHandler, Map<String, Object> attributes) {
+            public Principal determineUser(@NotNull ServerHttpRequest request, @NotNull WebSocketHandler wsHandler, @NotNull Map<String, Object> attributes) {
                 // Get the authenticated user's username
-                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-                String username = auth != null ? auth.getName() : "anonymous";
+                var auth = SecurityContextHolder.getContext().getAuthentication();
+                var principal = (AuthbootAuthUser)auth.getPrincipal();
+                String username = principal != null ? principal.getUsername() : "anonymous-".concat(UUID.randomUUID().toString());
                 return new StompPrincipal(username);
             }
         }).withSockJS();
