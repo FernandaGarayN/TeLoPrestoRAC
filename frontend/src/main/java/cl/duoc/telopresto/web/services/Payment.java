@@ -12,4 +12,5 @@ public class Payment {
     private String amount;
     private String date;
     private String method;
+    private String status;
 }

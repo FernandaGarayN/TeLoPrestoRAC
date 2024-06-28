@@ -99,7 +99,7 @@
                         <option value="credit">Crédito</option>
                         <option value="debit">Débito</option>
                         <option value="cash">Efectivo</option>
-                        <option value="cash">Transferencia</option>
+                        <option value="wire_transfer">Transferencia</option>
                     </select>
                     <div th:if="${#fields.hasErrors('method')}" class="alert alert-danger" role="alert">
                         <span th:errors="*{method}"></span>
