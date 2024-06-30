@@ -1,4 +1,4 @@
-const destination = '/user/{username}/queue/session-timeout';
+const destination = '/user/queue/session-timeout';
 
 const stompClientSubscribeCallback = function(message) {
     let timeToExpire = JSON.parse(message.body);
@@ -11,8 +11,7 @@ const stompClient = Stomp.over(socket);
 stompClient.connect({}, function(frame) {
     console.log('Connected: ', frame.command);
     console.log('Headers: ', frame.headers)
-    let realDestination = destination.replace('{username}', frame.headers['user-name']);
-    stompClient.subscribe(realDestination, stompClientSubscribeCallback, {
+    stompClient.subscribe(destination, stompClientSubscribeCallback, {
         'ack': 'client',
         'id': 'sub-0'
     });
