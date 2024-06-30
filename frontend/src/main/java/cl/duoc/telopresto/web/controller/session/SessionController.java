@@ -36,7 +36,7 @@ public class SessionController {
             if (timeToExpire < 60000L) { // Less than 1 minute
                 long secondsToExpire = timeToExpire / 1000L;
                 var username = (String) session.getAttribute("username");
-                log.info("Session {} for {} will expire in {} seconds", session.getId(), username, secondsToExpire);// Replace with your actual username attribute
+                log.info("Session {} for {} will expire in {} seconds", session.getId(), username, secondsToExpire);
                 messagingTemplate.convertAndSendToUser(username, "/queue/session-timeout", secondsToExpire);
             }
         }
