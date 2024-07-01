@@ -6,75 +6,75 @@
 
 <div class="container bg-white p-2">
     <h1 class="text-center mb-5">REGISTRATE</h1>
-    <form>
+    <form th:action="@{/registro}" th:object="${registerForm}" method="post">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p class="text-danger"  th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+        </div>
         <!-- Datos del cliente -->
         <div class="mb-3 row">
             <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                <input type="text" class="form-control" id="nombre" th:field="*{name}">
+                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error text-danger"></span>
             </div>
         </div>
         <div class="mb-3 row">
             <label for="apellido" class="col-sm-2 col-form-label">Apellido</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="apellido" name="apellido" required>
-            </div>
-        </div>
-        <div class="mb-3 row">
-            <label for="rut" class="col-sm-2 col-form-label">Rut</label>
-            <div class="col-sm-10">
-                <input type="rut" class="form-control" id="rut" name="rut" required>
-            </div>
-        </div>
-        <div class="mb-3 row">
-            <label for="address" class="col-sm-2 col-form-label">Dirección</label>
-            <div class="col-sm-10">
-                <input type="address" class="form-control" id="address" name="address" required>
+                <input type="text" class="form-control" id="apellido" th:field="*{lastname}">
+                <span th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}" class="error text-danger"></span>
             </div>
         </div>
         <div class="mb-3 row">
             <label for="email" class="col-sm-2 col-form-label">Email</label>
             <div class="col-sm-10">
-                <input type="email" class="form-control" id="email" name="email" required>
+                <input type="text" class="form-control" id="email" th:field="*{email}">
+                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error text-danger"></span>
             </div>
         </div>
         <div class="mb-3 row">
-            <label for="telefono" class="col-sm-2 col-form-label">Teléfono</label>
+            <label for="password" class="col-sm-2 col-form-label">Contraseña</label>
             <div class="col-sm-10">
-                <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                <input type="password" class="form-control" id="password" th:field="*{password}">
+                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error text-danger"></span>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="passwordConfirmation" class="col-sm-2 col-form-label">Confirmación de Contraseña</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" id="passwordConfirmation" th:field="*{passwordConfirmation}">
+                <span th:if="${#fields.hasErrors('passwordConfirmation')}" th:errors="*{passwordConfirmation}" class="error text-danger"></span>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="rut" class="col-sm-2 col-form-label">RUT</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="rut" th:field="*{rut}">
+                <span th:if="${#fields.hasErrors('rut')}" th:errors="*{rut}" class="error text-danger"></span>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="address" class="col-sm-2 col-form-label">Dirección</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="address" th:field="*{address}">
+                <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error text-danger"></span>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="phone" class="col-sm-2 col-form-label">Teléfono</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="phone" th:field="*{phone}">
+                <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error text-danger"></span>
             </div>
         </div>
         <div class="mb-3 row">
             <div class="col-sm-12 text-center">
-                <button id="btncontacto" type="button" class="btn btn-primary">Regístrate</button>
+                <button id="btncontacto" type="submit" class="btn btn-primary">Regístrate</button>
             </div>
         </div>
     </form>
 </div>
-<div class="modal fade" id="confirmarModal" tabindex="-1" role="dialog" aria-labelledby="confirmarModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmarModalLabel">Confirmación de Reserva</h5>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body">
-                <p>¡Gracias por contactarte Rent-a-Car High Gamma! Hemos recibido su mensaje con éxito.</p>
-                <p>Nos contactaremos a la brevedad posible</p>
-            </div>
-        </div>
-    </div>
-</div>
 <footer th:replace="~{fragments/footer :: footer_tag}"></footer>
 <div th:replace="~{fragments/footer :: footer_scripts}"></div>
-<script>
-    $(document).ready(function (){
-        $("#btncontacto").click(function (){
-            $('#confirmarModal').modal('show');
-        })
-    })
-
-</script>
 </body>
 </html>

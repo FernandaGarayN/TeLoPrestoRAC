@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Slf4j
-public class FeignAuthbootInterceptor implements RequestInterceptor {
+public class FeignAuthbootUserInterceptor implements RequestInterceptor {
     private static final String AUTHORIZATION_HEADER="Authorization";
     private static final String TOKEN_TYPE = "Bearer";
     private final AuthbootService authbootService;

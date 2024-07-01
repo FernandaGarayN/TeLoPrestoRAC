@@ -2,10 +2,8 @@ package cl.duoc.telopresto.web.apiclients.base;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.time.LocalDateTime;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 /**
@@ -20,6 +18,8 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 @RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseResponse {
   @Builder.Default private final LocalDateTime date = LocalDateTime.now();

@@ -4,6 +4,9 @@
 <body>
 <div class="container my-5">
     <div class="row justify-content-center">
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+        </div>
         <div class="col-md-6 bg-white bg-opacity-50">
             <h1>Iniciar sesión</h1>
             <div th:if="${param.error}" class="alert alert-danger">

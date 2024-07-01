@@ -7,7 +7,7 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.authentication.BadCredentialsException;
 
 @Slf4j
-public class AuthbootErrorDecoder implements ErrorDecoder {
+public class AuthbootAuthErrorDecoder implements ErrorDecoder {
   private final ErrorDecoder defaultErrorDecoder = new Default();
 
   @Override
