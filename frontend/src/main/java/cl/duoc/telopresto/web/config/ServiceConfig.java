@@ -1,12 +1,12 @@
 package cl.duoc.telopresto.web.config;
 
-import cl.duoc.telopresto.web.apiclients.authboot.AuthbootClient;
+import cl.duoc.telopresto.web.apiclients.authboot.AuthbootAuthClient;
+import cl.duoc.telopresto.web.apiclients.authboot.AuthbootUserClient;
 import cl.duoc.telopresto.web.apiclients.car.CarClient;
 import cl.duoc.telopresto.web.apiclients.client.ClientClient;
 import cl.duoc.telopresto.web.apiclients.payment.PaymentClient;
 import cl.duoc.telopresto.web.apiclients.reservation.ReservationClient;
 import cl.duoc.telopresto.web.apiclients.subsidiary.SubsidiaryClient;
-import cl.duoc.telopresto.web.apiclients.user.UserClient;
 import cl.duoc.telopresto.web.services.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -17,8 +17,7 @@ import org.springframework.security.web.savedrequest.RequestCache;
 @Configuration
 @RequiredArgsConstructor
 public class ServiceConfig {
-    private final AuthbootClient authbootClient;
-    private final UserClient userClient;
+    private final AuthbootUserClient authbootUserClient;
     private final CarClient carClient;
     private final SubsidiaryClient subsidiaryClient;
     private final ReservationClient reservationClient;
@@ -28,11 +27,6 @@ public class ServiceConfig {
     @Bean
     public RequestCache requestCache() {
         return new HttpSessionRequestCache();
-    }
-
-    @Bean
-    public AuthbootService authbootService() {
-        return new AuthbootService(authbootClient);
     }
 
     @Bean
@@ -62,6 +56,6 @@ public class ServiceConfig {
 
     @Bean
     public UserService userService() {
-        return new UserService(userClient);
+        return new UserService(authbootUserClient, clientClient);
     }
 }

@@ -36,4 +36,10 @@ public class ClientFirebaseRepository {
     Client object = document.toObject(Client.class);
     return Optional.of(object);
   }
+
+    public Client save(Client client) {
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+        dbFirestore.collection("clients").add(client);
+        return client;
+    }
 }

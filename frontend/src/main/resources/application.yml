@@ -8,6 +8,7 @@ server:
     path: /error
 spring:
   properties:
+    authboot-credentials: ${AUTHBOOT_CREDENTIALS:sysadmin:sysadmin}
     auth-url: ${AUTH_URL:http://localhost:8090}
     backend-url: ${BACKEND_URL:http://localhost:8091}
     feign:

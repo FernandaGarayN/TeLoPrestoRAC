@@ -12,4 +12,6 @@ import org.springframework.web.bind.annotation.*;
 public interface ClientClient {
     @GetMapping("/{rut}")
     Client getClient(@PathVariable("rut") String rut);
+    @PostMapping
+    void postClient(@RequestBody Client client);
 }
