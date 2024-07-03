@@ -30,6 +30,7 @@ public class CarFirebaseRepository {
   }
 
   public void save(Car aCar) {
+    aCar.setStatus("Disponible");
     Firestore db = FirestoreClient.getFirestore();  // Save the car and get a reference to the saved document
     ApiFuture<DocumentReference> addedDocRef = db.collection("cars").add(aCar);
     DocumentReference docRef = null;
@@ -58,6 +59,7 @@ public class CarFirebaseRepository {
 
     // Crear la consulta inicial
     Query query = db.collection("cars");
+    query = query.whereEqualTo("status", "Disponible");
 
     // Agregar filtros a la consulta
     if (brand != null && !brand.isEmpty()) {
@@ -162,5 +164,10 @@ public class CarFirebaseRepository {
     } catch (InterruptedException | ExecutionException e) {
       return Optional.empty();
     }
+  }
+  public void changeCarStatus(String id, String status) {
+    Firestore db = FirestoreClient.getFirestore();
+    DocumentReference docRef = db.collection("cars").document(id);
+    docRef.update("status", status);
   }
 }

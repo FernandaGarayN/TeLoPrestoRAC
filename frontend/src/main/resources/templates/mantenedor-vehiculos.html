@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace="~{fragments/head :: head_tag('Mantenedor de Vehículos')}">
+<head th:replace="~{fragments/head :: head_tag('Gestión de Flota de Vehículos')}">
     <title>Mantenedor de Vehículos</title>
 </head>
 <body>
 <nav th:replace="~{fragments/navbar :: navbar('mantenedor-vehiculos')}"></nav>
 <div class="container bg-white">
     <div class="p-2">
-        <h2 class="mb-4">Mantenedor de Vehículos</h2>
+        <h2 class="mb-4">Gestión de Flota de Vehículos</h2>
     </div>
 
     <!-- Crear un nuevo vehículo -->
@@ -36,8 +36,10 @@
                 <td th:text="${car.brand}"></td>
                 <td th:text="${car.model}"></td>
                 <td>
-                    <a th:href="@{'/editar-vehiculo/' + ${car.id}}">Editar</a> |
-                    <a th:href="@{'/eliminar-vehiculo/' + ${car.id}}">Eliminar</a>
+                    <a th:if="${car.status == 'Disponible'}" th:href="@{'/editar-vehiculo/' + ${car.id}}">Editar |</a>
+                    <a th:if="${car.status == 'Disponible'}" th:href="@{'/eliminar-vehiculo/' + ${car.id}}">Eliminar |</a>
+                    <a th:if="${car.status == 'Disponible'}" th:href="@{'/cambiar-a-en-mantencion/' + ${car.id}}">Enviar a Mantención</a>
+                    <a th:if="${car.status == 'En Mantención'}" th:href="@{'/cambiar-a-disponible/' + ${car.id}}">Habilitar</a>
                 </td>
             </tr>
             </tbody>

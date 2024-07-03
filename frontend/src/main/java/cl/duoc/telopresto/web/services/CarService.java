@@ -124,4 +124,10 @@ public class CarService {
     public List<Map<String, String>> getListOfCarTypes() {
         return carClient.getTypes().stream().map(type -> Map.of("id", type.getId(), "name", type.getName())).toList();
     }
+    public void changeCarStatusEnMantencion(String id) {
+        carClient.changeCarStatusEnMantencion(id);
+    }
+    public void changeCarStatusDisponible(String id) {
+        carClient.changeCarStatusDisponible(id);
+    }
 }

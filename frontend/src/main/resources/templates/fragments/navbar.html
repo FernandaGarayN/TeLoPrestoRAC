@@ -31,7 +31,7 @@
                 <li class="nav-item" sec:authorize="hasRole('ROLE_MANAGE_CAR_R')"
                     th:classappend="${#strings.equalsIgnoreCase('mantenedor-vehiculos', liActive) ? 'active' : ''}">
                     <a th:if="${not #strings.equalsIgnoreCase('mantenedor-vehiculos', liActive)}" class="nav-link"
-                       th:href="@{/mantenedor-vehiculos}">Mantenedor de vehiculos</a>
+                       th:href="@{/mantenedor-vehiculos}">Gestión de Flota de Vehículos</a>
                     <span th:if="${#strings.equalsIgnoreCase('mantenedor-vehiculos', liActive)}" class="nav-link">Mantenedor de vehiculos</span>
                 </li>
                 <li class="nav-item" sec:authorize="hasRole('ROLE_RESERVATION_PAYMENT_R')"

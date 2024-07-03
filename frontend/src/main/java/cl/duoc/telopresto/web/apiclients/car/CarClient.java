@@ -5,6 +5,7 @@ import cl.duoc.telopresto.web.services.Car;
 import cl.duoc.telopresto.web.services.CarBrand;
 import cl.duoc.telopresto.web.services.CarType;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,4 +48,9 @@ public interface CarClient {
 
     @GetMapping("/types")
     List<CarType> getTypes();
+
+    @GetMapping("/{id}/status/en-mantencion")
+    public void changeCarStatusEnMantencion(@PathVariable String id);
+    @GetMapping("/{id}/status/disponible")
+    public void changeCarStatusDisponible(@PathVariable String id);
 }

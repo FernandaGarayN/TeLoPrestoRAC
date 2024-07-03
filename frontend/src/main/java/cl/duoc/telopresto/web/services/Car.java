@@ -25,4 +25,5 @@ public class Car {
     private String mimeType;
     private String extension;
     private List<CarComment> comments;
+    private String status;
 }
