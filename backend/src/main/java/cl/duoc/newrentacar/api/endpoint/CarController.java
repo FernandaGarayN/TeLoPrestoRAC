@@ -114,4 +114,15 @@ public class CarController {
   public ResponseEntity<List<CarType>> getTypes() {
     return ResponseEntity.ok(carTypeService.getAllCarTypes());
   }
+
+  @GetMapping("/{id}/status/en-mantencion")
+  public ResponseEntity<Void> changeCarStatusEnMantencion(@PathVariable String id) {
+    carService.changeCarStatus(id, "En Mantención");
+    return ResponseEntity.ok().build();
+  }
+  @GetMapping("/{id}/status/disponible")
+  public ResponseEntity<Void> changeCarStatusDisponible(@PathVariable String id) {
+    carService.changeCarStatus(id, "Disponible");
+    return ResponseEntity.ok().build();
+  }
 }

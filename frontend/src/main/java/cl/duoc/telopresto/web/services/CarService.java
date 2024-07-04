@@ -128,4 +128,10 @@ public class CarService {
     public List<CarType> getTypes() {
         return carClient.getTypes();
     }
+    public void changeCarStatusEnMantencion(String id) {
+        carClient.changeCarStatusEnMantencion(id);
+    }
+    public void changeCarStatusDisponible(String id) {
+        carClient.changeCarStatusDisponible(id);
+    }
 }

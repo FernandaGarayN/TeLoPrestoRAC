@@ -83,4 +83,8 @@ public class CarService {
   public Car deleteCarFirebaseById(String id) {
     return carFirebaseRepository.delete(id).orElseThrow();
   }
+
+  public void changeCarStatus(String id, String status) {
+    carFirebaseRepository.changeCarStatus(id, status);
+  }
 }

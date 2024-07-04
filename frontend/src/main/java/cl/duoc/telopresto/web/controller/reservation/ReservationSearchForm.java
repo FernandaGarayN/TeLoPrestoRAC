@@ -9,4 +9,6 @@ import lombok.Setter;
 @Setter
 public class ReservationSearchForm {
     private String rut;
+    private String name;
+    private String lastname;
 }

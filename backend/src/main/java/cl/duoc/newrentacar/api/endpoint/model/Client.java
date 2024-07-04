@@ -16,4 +16,5 @@ public class Client {
   private String rut;
   private String username;
   private Integer giftPoints;
+  private String id;
 }

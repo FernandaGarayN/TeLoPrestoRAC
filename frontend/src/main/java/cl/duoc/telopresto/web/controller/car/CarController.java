@@ -236,4 +236,70 @@ public class CarController {
         redirectAttributes.addFlashAttribute("successMessage", "El vehículo ha sido eliminado exitosamente.");
         return "redirect:/mantenedor-vehiculos";
     }
+    @GetMapping("/cambiar-a-en-mantencion/{id}")
+    public String changeToMaintenance(@PathVariable("id") String id, RedirectAttributes redirectAttributes, ModelMap model) {
+        carService.changeCarStatusEnMantencion(id);
+        redirectAttributes.addFlashAttribute("successMessage", "El vehículo ha sido cambiado a estado de mantención.");
+        List<Car> cars = carService.findAll();
+        cars.forEach(
+                car -> {
+
+                    listOfCarTypes.stream()
+                            .filter(type -> type.get("id").equals(car.getType()))
+                            .findFirst()
+                            .ifPresent(
+                                    type -> car.setType(type.get("name"))
+                            );
+
+                    listOfSubsidiaries.stream()
+                            .filter(subsidiary -> subsidiary.get("id").equals(car.getSubsidiary()))
+                            .findFirst()
+                            .ifPresent(
+                                    subsidiary -> car.setSubsidiary(subsidiary.get("name"))
+                            );
+
+                    listOfBrands.stream()
+                            .filter(brand -> brand.get("id").equals(car.getBrand()))
+                            .findFirst()
+                            .ifPresent(
+                                    brand -> car.setBrand(brand.get("name"))
+                            );
+                }
+        );
+        model.addAttribute("cars", cars);
+        return "redirect:/mantenedor-vehiculos";
+    }
+    @GetMapping("/cambiar-a-disponible/{id}")
+    public String changeToAvailable(@PathVariable("id") String id, RedirectAttributes redirectAttributes, ModelMap model) {
+        carService.changeCarStatusDisponible(id);
+        redirectAttributes.addFlashAttribute("successMessage", "El vehículo ha sido cambiado a estado disponible.");
+        List<Car> cars = carService.findAll();
+        cars.forEach(
+                car -> {
+
+                    listOfCarTypes.stream()
+                            .filter(type -> type.get("id").equals(car.getType()))
+                            .findFirst()
+                            .ifPresent(
+                                    type -> car.setType(type.get("name"))
+                            );
+
+                    listOfSubsidiaries.stream()
+                            .filter(subsidiary -> subsidiary.get("id").equals(car.getSubsidiary()))
+                            .findFirst()
+                            .ifPresent(
+                                    subsidiary -> car.setSubsidiary(subsidiary.get("name"))
+                            );
+
+                    listOfBrands.stream()
+                            .filter(brand -> brand.get("id").equals(car.getBrand()))
+                            .findFirst()
+                            .ifPresent(
+                                    brand -> car.setBrand(brand.get("name"))
+                            );
+                }
+        );
+        model.addAttribute("cars", cars);
+        return "redirect:/mantenedor-vehiculos";
+    }
 }

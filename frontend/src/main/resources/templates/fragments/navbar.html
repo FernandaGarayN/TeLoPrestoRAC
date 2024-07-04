@@ -8,7 +8,7 @@
 <nav th:fragment="navbar(liActive)" class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <a class="navbar-brand" href="#">
-            <img th:src="@{/img/favicon.webp}" alt="Rent a Car" width="30" height="30" class="d-inline-block align-top">
+            <img th:src="@{/img/TLP_Logo.png}" alt="Rent a Car" width="50" height="50" class="d-inline-block align-top">
             Rent a Car
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -24,11 +24,11 @@
                 <li class="nav-item" sec:authorize="!isAuthenticated()" th:classappend="${#strings.equalsIgnoreCase('contacto', liActive) ? 'active' : ''}">
                     <a class="nav-link" th:href="@{/contacto}">Contacto</a>
                 </li>
-                <li class="nav-item" sec:authorize="hasRole('ROLE_RESERVATION_U')"
-                    th:classappend="${#strings.equalsIgnoreCase('reservas', liActive) ? 'active' : ''}">
-                    <a th:if="${not #strings.equalsIgnoreCase('reservas', liActive)}" class="nav-link"
-                       th:href="@{/mis-reservas}">Mis Reservas</a>
-                    <span th:if="${#strings.equalsIgnoreCase('reservas', liActive)}" class="nav-link">Mis Reservas</span>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_MANAGE_CAR_R')"
+                    th:classappend="${#strings.equalsIgnoreCase('mantenedor-vehiculos', liActive) ? 'active' : ''}">
+                    <a th:if="${not #strings.equalsIgnoreCase('mantenedor-vehiculos', liActive)}" class="nav-link"
+                       th:href="@{/mantenedor-vehiculos}">Gestión de Flota de Vehículos</a>
+                    <span th:if="${#strings.equalsIgnoreCase('mantenedor-vehiculos', liActive)}" class="nav-link">Mantenedor de vehiculos</span>
                 </li>
                 <li class="nav-item" sec:authorize="hasRole('ROLE_RESERVATION_PAYMENT_R')"
                     th:classappend="${#strings.equalsIgnoreCase('pagos', liActive) ? 'active' : ''}">
@@ -41,12 +41,6 @@
                     <a th:if="${not #strings.equalsIgnoreCase('reservas-clientes', liActive)}" class="nav-link"
                        th:href="@{/reservas-clientes}">Reservas Clientes</a>
                     <span th:if="${#strings.equalsIgnoreCase('reservas-clientes', liActive)}" class="nav-link">Reservas Clientes</span>
-                </li>
-                <li class="nav-item" sec:authorize="hasRole('ROLE_MANAGE_CAR_R')"
-                    th:classappend="${#strings.equalsIgnoreCase('mantenedor-vehiculos', liActive) ? 'active' : ''}">
-                    <a th:if="${not #strings.equalsIgnoreCase('mantenedor-vehiculos', liActive)}" class="nav-link"
-                       th:href="@{/mantenedor-vehiculos}">Mantenedor de vehiculos</a>
-                    <span th:if="${#strings.equalsIgnoreCase('mantenedor-vehiculos', liActive)}" class="nav-link">Mantenedor de vehiculos</span>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" th:href="@{/login}" sec:authorize="!isAuthenticated()">Inicia Sesión</a>

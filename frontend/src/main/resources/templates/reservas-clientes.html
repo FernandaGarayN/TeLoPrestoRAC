@@ -16,6 +16,20 @@
                     <span th:errors="*{rut}"></span>
                 </div>
             </div>
+            <div class="form-group col-md-3">
+                <label for="name">Nombre:</label>
+                <input th:field="*{name}" type="text" class="form-control" id="name" placeholder="Ej.: Juan">
+                <div th:if="${#fields.hasErrors('name')}" class="alert alert-danger" role="alert">
+                    <span th:errors="*{name}"></span>
+                </div>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="lastname">Apellido:</label>
+                <input th:field="*{lastname}" type="text" class="form-control" id="lastname" placeholder="Ej.: Pérez">
+                <div th:if="${#fields.hasErrors('lastname')}" class="alert alert-danger" role="alert">
+                    <span th:errors="*{lastname}"></span>
+                </div>
+            </div>
         </div>
         <button type="submit" class="btn btn-primary">Buscar</button>
     </form>
@@ -24,41 +38,44 @@
         <span th:text="${successMessage}"></span>
     </div>
 
-    <div th:if="${reservations != null}" id="reservation_cards" class="bg-white p-2">
-        <h2 class="mb-4">Reservas de <span th:utext="${username}"></span></h2>
-        <table id="reservation_table" class="table table-striped" th:if="${#lists.size(reservations) > 0}">
-            <thead>
-            <tr>
-                <th>Vehículo</th>
-                <th>Fecha de Inicio</th>
-                <th>Fecha de Término</th>
-                <th>Nº Días</th>
-                <th>Valor Diario</th>
-                <th>Total</th>
-                <th>Estado</th>
-                <th>Acción</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="row : ${reservations}">
-                <td>[[${row.brand}]]-[[${row.model}]]</td>
-                <td>[[${row.startAt}]]</td>
-                <td>[[${row.endAt}]]</td>
-                <td>[[${row.days}]]</td>
-                <td th:text="${'$' + #numbers.formatDecimal(row.dailyCost, 0, 'POINT', 0, 'NONE')}"></td>
-                <td th:text="${'$' + #numbers.formatDecimal(row.amount, 0, 'POINT', 0, 'NONE')}"></td>
-                <td>
-                    <span th:if="${row.status == 'paid'}" class="p-2 bg-success text-white" th:text="${'PAGADO'}"></span>
-                    <span th:if="${row.status == 'pending'}" class="p-2 bg-warning text-white" th:text="${'PENDIENTE DE PAGO'}"></span>
-                    <span th:if="${row.status == 'released'}" class="p-2 bg-info text-white" th:text="${'CONFIRMADA'}"></span>
-                    <span th:if="${row.status == 'cancelled'}" class="p-2 bg-danger text-white" th:text="${'CANCELADA'}"></span>
-                <td>
-                    <a th:if="${row.status == 'pending'}" th:href="@{/ingresar-pago/{id}(id=${row.id})}" class="btn btn-primary">Confirmar Pago</a>
-                    <a th:if="${row.status != 'cancelled' && row.status != 'released'}" th:href="@{/reservas-clientes/{id}/cancelar(id=${row.id})}" class="btn btn-danger">Cancelar</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+    <div th:if="${reservationMap != null}" id="reservation_cards" class="bg-white p-2">
+        <div th:each="userReservationsEntry : ${reservationMap}">
+            <h2 th:text="${userReservationsEntry.key}"></h2>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Vehículo</th>
+                    <th>Fecha de Inicio</th>
+                    <th>Fecha de Término</th>
+                    <th>Nº Días</th>
+                    <th>Valor Diario</th>
+                    <th>Total</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="row : ${userReservationsEntry.value}">
+                    <td th:text="${row.brand + ' - ' + row.model}"></td>
+                    <td th:text="${row.startAt}"></td>
+                    <td th:text="${row.endAt}"></td>
+                    <td th:text="${row.days}"></td>
+                    <td th:text="${'$' + #numbers.formatDecimal(row.dailyCost, 0, 'POINT', 0, 'NONE')}"></td>
+                    <td th:text="${'$' + #numbers.formatDecimal(row.amount, 0, 'POINT', 0, 'NONE')}"></td>
+                    <td>
+                        <span th:if="${row.status == 'paid'}" class="p-2 bg-success text-white">PAGADO</span>
+                        <span th:if="${row.status == 'pending'}" class="p-2 bg-warning text-white">PENDIENTE DE PAGO</span>
+                        <span th:if="${row.status == 'released'}" class="p-2 bg-info text-white">CONFIRMADA</span>
+                        <span th:if="${row.status == 'cancelled'}" class="p-2 bg-danger text-white">CANCELADA</span>
+                    </td>
+                    <td>
+                        <a th:if="${row.status == 'pending'}" th:href="@{/ingresar-pago/{id}(id=${row.id})}" class="btn btn-primary">Confirmar Pago</a>
+                        <a th:if="${row.status != 'cancelled' && row.status != 'released'}" th:href="@{/reservas-clientes/{id}/cancelar(id=${row.id})}" class="btn btn-danger">Cancelar</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <footer th:replace="~{fragments/footer :: footer_tag}"></footer>
