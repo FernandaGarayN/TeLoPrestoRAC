@@ -1,42 +1,89 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="https://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head_tag('Tu mejor opción en Rent-A-Car')}"><title>INDEX</title></head>
+<head th:replace="~{fragments/head :: head_tag('Vehículos')}"><title>VEHICULOS</title></head>
 <body>
-<nav th:replace="~{fragments/navbar :: navbar('index')}"></nav>
+<nav th:replace="~{fragments/navbar :: navbar('vehiculos')}"></nav>
+
 <div class="container bg-white p-2">
-    <div class="row mt-5">
-        <div class="col-md-6">
-            <h1 class="display-4">Te lo Presto Rent A Car</h1>
-            <p class="lead">Ofrecemos una amplia variedad de vehículos para satisfacer todas tus necesidades de
-                transporte. ¡Reserva hoy mismo!</p>
-            <a th:href="@{/busqueda-vehiculos}" class="btn btn-primary btn-lg">Reservar ahora</a>
-        </div>
-        <div class="col-md-6 text-center">
-            <img th:src="@{/img/auto.jpg}" alt="Alquila un auto con Rent a Car" class="img-fluid rounded">
-        </div>
-    </div>
-    <div class="row mt-5">
-        <div class="col text-center">
-            <h2>¿Por qué arrendar con nosotros?</h2>
-            <ol class="list-unstyled">
-                <li class="py-2"><i class="fas fa-check-circle text-primary"></i> Porque somos una empresa joven e innovadora</li>
-                <li class="py-2"><i class="fas fa-check-circle text-primary"></i> Porque conocemos el mercado</li>
-                <li class="py-2"><i class="fas fa-check-circle text-primary"></i> Porque sabemos lo complejo que es</li>
-            </ol>
+    <h1>Nuestros Vehículos</h1>
+    <div class="row">
+        <div class="col">
+            ¡Bienvenido a nuestra sección de Vehículos Disponibles! Aquí podrás explorar nuestra variada selección de autos diseñados para satisfacer todas tus necesidades de transporte.
+            Cada vehículo ha sido cuidadosamente seleccionado para ofrecerte comodidad, seguridad y eficiencia en cada viaje.
+            <br> <br>
+            Navega por nuestro carrusel de imágenes y haz clic en cualquier vehículo para obtener más detalles sobre su disponibilidad, características y precios.
+            Si buscas algo específico, te invitamos a utilizar nuestra herramienta de <a th:href="@{/busqueda-vehiculos}">Búsqueda Avanzada</a> para encontrar el auto perfecto que se ajuste a tus requerimientos.
+            <br> <br>
+            ¡Descubre hoy mismo la mejor opción para tu próximo viaje y disfruta de la experiencia única que ofrecemos!
         </div>
     </div>
-    <div class="row mt-5">
-        <div class="col text-center">
-            <h2>Nuestros Servicios</h2>
-            <ul class="list-unstyled">
-                <li class="py-2"><i class="fas fa-car text-primary"></i> Servicio de renta de autos</li>
-                <li class="py-2"><i class="fas fa-shuttle-van text-primary"></i> Servicio "Te llevo?"</li>
-                <li class="py-2"><i class="fas fa-shield-alt text-primary"></i> Seguros</li>
-            </ul>
+    <div class="row b-2">
+        <!-- Tarjetas dinámicas para cada tipo de vehículo -->
+        <div class="col-12">
+            <div id="vehicleTypeCarousel" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li th:each="carType, stat : ${carTypes}" th:data-target="'#vehicleTypeCarousel'" th:data-slide-to="${stat.index}" th:class="${stat.first} ? 'active' : ''"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div th:each="carType, stat : ${carTypes}" th:class="${stat.first} ? 'carousel-item active' : 'carousel-item'">
+                        <img th:src="@{${carType.image}}" class="d-block w-500" alt="Imagen del tipo de vehículo"/>
+                        <div class="carousel-caption d-none d-md-block">
+                            <div class="description-box">
+                                <h4 th:text="${carType.name}">Nombre del Tipo de Vehículo</h4>
+                                <p th:text="${carType.description}">Descripción</p>
+                                <form th:action="@{/busqueda-vehiculos}" method="post">
+                                    <input type="hidden" th:value="${carType.id}" th:attr="name='type'">
+                                    <button type="submit" class="btn btn-primary">Explorar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#vehicleTypeCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Anterior</span>
+                </a>
+                <a class="carousel-control-next" href="#vehicleTypeCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Siguiente</span>
+                </a>
+            </div>
+            <div class="container mt-4">
+                <div class="d-flex flex-row flex-nowrap overflow-auto">
+                    <div th:each="carType, stat : ${carTypes}" class="m-2">
+                        <form th:action="@{/busqueda-vehiculos}" method="post">
+                            <input type="hidden" th:value="${carType.id}" th:attr="name='type'">
+                            <button type="submit" class="btn btn-primary btn-sm" th:id="'btn-' + ${stat.index}" th:text="${carType.name}">Nombre del Tipo de Vehículo</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
 <footer th:replace="~{fragments/footer :: footer_tag}"></footer>
 <div th:replace="~{fragments/footer :: footer_scripts}"></div>
+<script>
+    $(document).ready(function () {
+        function changeButtonColor(activeIndex) {
+            // Restablece todos los botones a la clase original
+            $('.btn-primary, .btn-success').each(function() {
+                if ($(this).attr('id') !== 'btn-' + activeIndex) {
+                    $(this).removeClass('btn-success').addClass('btn-primary');
+                }
+            });
+            // Encuentra el botón correspondiente y cambia su clase
+            $('#btn-' + activeIndex).removeClass('btn-primary').addClass('btn-success');
+        }
+
+        const initialActiveIndex = $('#vehicleTypeCarousel .carousel-item.active').index();
+        changeButtonColor(initialActiveIndex);
+
+        $('#vehicleTypeCarousel').on('slide.bs.carousel', function (e) {
+            changeButtonColor(e.to);
+        });
+    });
+</script>
 </body>
 </html>
