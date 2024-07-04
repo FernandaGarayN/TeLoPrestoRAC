@@ -81,4 +81,48 @@ h1 {
 .bg-opacity-50 {
     background-color: rgba(255, 255, 255, 0.5);
 }
-  
+
+.carousel-inner {
+    min-height: 400px; /* Ajusta este valor según sea necesario */
+}
+
+.carousel-inner img {
+    object-fit: cover; /* Asegura que las imágenes cubran el espacio disponible */
+    width: 100%;
+    max-height: 400px; /* Ajusta este valor para que coincida con la altura del .carousel-inner */
+}
+
+.description-box {
+    font-size: 18px;
+    background-color: rgba(128, 128, 128, 0.7); /* Gris con transparencia */
+    padding: 10px; /* Espaciado interno para que el texto no toque los bordes */
+    border-radius: 5px; /* Bordes redondeados para un aspecto más suave */
+}
+
+.carousel-caption, .carousel-caption .btn-primary {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s;
+}
+
+.carousel-item:hover .carousel-caption,
+.carousel-item:hover .carousel-caption .btn-primary {
+    opacity: 1;
+    visibility: visible;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+}
+.modern-text {
+    color: #333;
+    line-height: 1.6;
+    font-size: 20px;
+}
+.feature-text {
+    font-weight: 500;
+    color: #007bff;
+}
