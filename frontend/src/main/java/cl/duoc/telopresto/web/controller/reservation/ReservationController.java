@@ -6,6 +6,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -62,21 +64,29 @@ public class ReservationController {
             @Valid @ModelAttribute ReservationSearchForm form,
             BindingResult bindingResult) {
         String rut = form.getRut();
-        Client client = clientService.getByRut(rut);
-        if (client == null) {
-            bindingResult.rejectValue("rut", "rut.not.found", "Rut no encontrado");
+        String name = form.getName();
+        String lastName = form.getLastname();
+        List <Client> clients = clientService.getByRutOrName(rut,name,lastName);
+        if (clients == null  || clients.isEmpty()) {
+            ObjectError error = new ObjectError("global", "No se encontraron clientes para la búsqueda");
+            bindingResult.addError(error);
         } else {
-            List<Reservation> reservations = reservationService.findByUsername(client.getUsername());
-            reservations.forEach(Reservation::calculateTotal);
-            reservations.forEach(
-                    reservation -> listOfBrands.stream()
-                            .filter(brand -> brand.get("id").equals(reservation.getBrand()))
-                            .findFirst()
-                            .ifPresent(
-                                    brand -> reservation.setBrand(brand.get("name"))
-                            ));
-            model.addAttribute("username", client.getUsername());
-            model.addAttribute("reservations", reservations);
+            Map<String, List<Reservation>> reservationMap = new HashMap<>();
+
+            clients.forEach(client -> {
+                List<Reservation> reservations = reservationService.findByUsername(client.getUsername());
+                reservations.forEach(Reservation::calculateTotal);
+                reservations.forEach(
+                        reservation -> listOfBrands.stream()
+                                .filter(brand -> brand.get("id").equals(reservation.getBrand()))
+                                .findFirst()
+                                .ifPresent(
+                                        brand -> reservation.setBrand(brand.get("name"))
+                                ));
+                reservationMap.put(client.getUsername(), reservations);
+            });
+
+            model.addAttribute("reservationMap", reservationMap);
         }
         model.addAttribute("reservationSearchForm", form);
         return "reservas-clientes";
