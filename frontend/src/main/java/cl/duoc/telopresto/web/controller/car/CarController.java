@@ -5,6 +5,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,6 +32,13 @@ public class CarController {
         listOfSubsidiaries = subsidiaryService.getListOfSubsidiaries();
         listOfBrands = carService.getListOfBrands();
         listOfYear = carService.getListOfYears();
+    }
+
+    @GetMapping({"/", "/index"})
+    public String showVehicleTypes(Model model) {
+        model.addAttribute("carTypes", carService.getTypes());
+        model.addAttribute("carSearchForm", CarSearchForm.builder().build());
+        return "index";
     }
 
     @GetMapping("/mantenedor-vehiculos")

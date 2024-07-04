@@ -21,24 +21,8 @@
                     <a th:if="${not #strings.equalsIgnoreCase('index', liActive)}" class="nav-link" th:href="@{/index}">Inicio<span class="sr-only"></span></a>
                     <span th:if="${#strings.equalsIgnoreCase('index', liActive)}" class="nav-link">Inicio</span>
                 </li>
-                <li class="nav-item" th:classappend="${#strings.equalsIgnoreCase('vehiculos', liActive) ? 'active' : ''}">
-                    <a th:if="${not #strings.equalsIgnoreCase('vehiculos', liActive)}" class="nav-link" th:href="@{/vehiculos}">Vehículos</a>
-                    <span th:if="${#strings.equalsIgnoreCase('vehiculos', liActive)}" class="nav-link">Vehículos</span>
-                </li>
                 <li class="nav-item" sec:authorize="!isAuthenticated()" th:classappend="${#strings.equalsIgnoreCase('contacto', liActive) ? 'active' : ''}">
                     <a class="nav-link" th:href="@{/contacto}">Contacto</a>
-                </li>
-                <li class="nav-item" sec:authorize="hasRole('ROLE_MANAGE_CAR_R')"
-                    th:classappend="${#strings.equalsIgnoreCase('mantenedor-vehiculos', liActive) ? 'active' : ''}">
-                    <a th:if="${not #strings.equalsIgnoreCase('mantenedor-vehiculos', liActive)}" class="nav-link"
-                       th:href="@{/mantenedor-vehiculos}">Mantenedor de vehiculos</a>
-                    <span th:if="${#strings.equalsIgnoreCase('mantenedor-vehiculos', liActive)}" class="nav-link">Mantenedor de vehiculos</span>
-                </li>
-                <li class="nav-item" sec:authorize="hasRole('ROLE_RESERVATION_PAYMENT_R')"
-                    th:classappend="${#strings.equalsIgnoreCase('pagos', liActive) ? 'active' : ''}">
-                    <a th:if="${not #strings.equalsIgnoreCase('pagos', liActive)}" class="nav-link"
-                       th:href="@{/pagos}">Pagos</a>
-                    <span th:if="${#strings.equalsIgnoreCase('pagos', liActive)}" class="nav-link">Pagos</span>
                 </li>
                 <li class="nav-item" sec:authorize="hasRole('ROLE_RESERVATION_U')"
                     th:classappend="${#strings.equalsIgnoreCase('reservas', liActive) ? 'active' : ''}">
@@ -46,11 +30,23 @@
                        th:href="@{/mis-reservas}">Mis Reservas</a>
                     <span th:if="${#strings.equalsIgnoreCase('reservas', liActive)}" class="nav-link">Mis Reservas</span>
                 </li>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_RESERVATION_PAYMENT_R')"
+                    th:classappend="${#strings.equalsIgnoreCase('pagos', liActive) ? 'active' : ''}">
+                    <a th:if="${not #strings.equalsIgnoreCase('pagos', liActive)}" class="nav-link"
+                       th:href="@{/pagos}">Pagos</a>
+                    <span th:if="${#strings.equalsIgnoreCase('pagos', liActive)}" class="nav-link">Pagos</span>
+                </li>
                 <li class="nav-item" sec:authorize="hasRole('ROLE_RESERVATION_E')"
                     th:classappend="${#strings.equalsIgnoreCase('reservas-clientes', liActive) ? 'active' : ''}">
                     <a th:if="${not #strings.equalsIgnoreCase('reservas-clientes', liActive)}" class="nav-link"
                        th:href="@{/reservas-clientes}">Reservas Clientes</a>
                     <span th:if="${#strings.equalsIgnoreCase('reservas-clientes', liActive)}" class="nav-link">Reservas Clientes</span>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_MANAGE_CAR_R')"
+                    th:classappend="${#strings.equalsIgnoreCase('mantenedor-vehiculos', liActive) ? 'active' : ''}">
+                    <a th:if="${not #strings.equalsIgnoreCase('mantenedor-vehiculos', liActive)}" class="nav-link"
+                       th:href="@{/mantenedor-vehiculos}">Mantenedor de vehiculos</a>
+                    <span th:if="${#strings.equalsIgnoreCase('mantenedor-vehiculos', liActive)}" class="nav-link">Mantenedor de vehiculos</span>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" th:href="@{/login}" sec:authorize="!isAuthenticated()">Inicia Sesión</a>

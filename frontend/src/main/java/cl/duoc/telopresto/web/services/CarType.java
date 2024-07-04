@@ -8,4 +8,6 @@ import lombok.Setter;
 public class CarType {
   private String id;
   private String name;
+  private String description;
+  private String image;
 }

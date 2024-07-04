@@ -124,4 +124,8 @@ public class CarService {
     public List<Map<String, String>> getListOfCarTypes() {
         return carClient.getTypes().stream().map(type -> Map.of("id", type.getId(), "name", type.getName())).toList();
     }
+
+    public List<CarType> getTypes() {
+        return carClient.getTypes();
+    }
 }
