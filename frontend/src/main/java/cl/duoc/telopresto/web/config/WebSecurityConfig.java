@@ -3,6 +3,7 @@ package cl.duoc.telopresto.web.config;
 import cl.duoc.telopresto.web.security.CustomAuthenticationHandler;
 import cl.duoc.telopresto.web.security.JwtAuthenticationProvider;
 import cl.duoc.telopresto.web.services.AuthbootService;
+import cl.duoc.telopresto.web.services.ClientService;
 import cl.duoc.telopresto.web.services.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +25,7 @@ public class WebSecurityConfig {
 
   private final AuthbootService authbootService;
   private final ReservationService reservationService;
+  private final ClientService clientService;
   private final CustomAuthenticationHandler customAuthenticationHandler;
 
   @Bean
@@ -64,7 +66,7 @@ public class WebSecurityConfig {
 
   @Bean
   public AuthenticationProvider authenticationProvider() {
-    return new JwtAuthenticationProvider(authbootService, reservationService);
+    return new JwtAuthenticationProvider(authbootService, reservationService, clientService);
   }
 
   @Bean

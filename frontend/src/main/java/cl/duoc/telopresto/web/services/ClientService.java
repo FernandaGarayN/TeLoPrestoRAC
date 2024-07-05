@@ -81,4 +81,8 @@ public class ClientService {
         client.setEmail(form.getEmail());
         clientClient.edit(id, client);
     }
+
+    public void getByUsername(String username) {
+        clientClient.byUsername(username);
+    }
 }
