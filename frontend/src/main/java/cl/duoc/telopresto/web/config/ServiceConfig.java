@@ -46,7 +46,7 @@ public class ServiceConfig {
 
     @Bean
     public ClientService clientService() {
-        return new ClientService(clientClient);
+        return new ClientService(clientClient, authbootUserClient);
     }
 
     @Bean

@@ -1,6 +1,5 @@
 package cl.duoc.telopresto.web.controller.payment;
 
-import cl.duoc.telopresto.web.apiclients.authboot.AuthbootAuthResponse;
 import cl.duoc.telopresto.web.apiclients.authboot.AuthbootAuthUser;
 import cl.duoc.telopresto.web.services.*;
 import jakarta.annotation.PostConstruct;

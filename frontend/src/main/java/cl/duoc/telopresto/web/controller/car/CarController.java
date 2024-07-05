@@ -236,6 +236,7 @@ public class CarController {
         redirectAttributes.addFlashAttribute("successMessage", "El vehículo ha sido eliminado exitosamente.");
         return "redirect:/mantenedor-vehiculos";
     }
+
     @GetMapping("/cambiar-a-en-mantencion/{id}")
     public String changeToMaintenance(@PathVariable("id") String id, RedirectAttributes redirectAttributes, ModelMap model) {
         carService.changeCarStatusEnMantencion(id);
