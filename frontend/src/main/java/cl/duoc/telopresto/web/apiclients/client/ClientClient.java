@@ -38,4 +38,7 @@ public interface ClientClient {
 
     @PatchMapping("/{id}")
     void edit(@PathVariable String id, @RequestBody Client client);
+
+    @GetMapping("/by-username/{username}")
+    Client byUsername(@PathVariable String username);
 }
