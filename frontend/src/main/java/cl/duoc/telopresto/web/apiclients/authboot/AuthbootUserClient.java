@@ -5,8 +5,7 @@ import cl.duoc.telopresto.web.config.feign.FeignAuthbootUserConfig;
 import cl.duoc.telopresto.web.services.PasswordRecovery;
 import cl.duoc.telopresto.web.services.Reservation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,4 +20,13 @@ public interface AuthbootUserClient {
 
     @PostMapping
     BaseResponse post(@RequestBody AuthbootNewUserRequest newUserApi);
+
+    @PatchMapping("/by-username/{username}/status-disabled")
+    BaseResponse statusDisabledByUsername(@PathVariable String username);
+
+    @PatchMapping("/by-username/{username}/status-enabled")
+    BaseResponse statusEnabledByUsername(@PathVariable String username);
+
+    @DeleteMapping("/by-username/{username}")
+    BaseResponse deleteByUsername(@PathVariable String username);
 }

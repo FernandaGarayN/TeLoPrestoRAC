@@ -30,11 +30,23 @@
                        th:href="@{/mantenedor-vehiculos}">Gestión de Flota de Vehículos</a>
                     <span th:if="${#strings.equalsIgnoreCase('mantenedor-vehiculos', liActive)}" class="nav-link">Mantenedor de vehiculos</span>
                 </li>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_MANAGE_CLIENT_R')"
+                    th:classappend="${#strings.equalsIgnoreCase('gestion-clientes', liActive) ? 'active' : ''}">
+                    <a class="nav-link" th:href="@{/gestion-clientes}"
+                       th:if="${not #strings.equalsIgnoreCase('gestion-clientes', liActive)}">Gestión de Clientes</a>
+                    <span th:if="${#strings.equalsIgnoreCase('gestion-clientes', liActive)}" class="nav-link">Gestión de Clientes</span>
+                </li>
                 <li class="nav-item" sec:authorize="hasRole('ROLE_RESERVATION_PAYMENT_R')"
                     th:classappend="${#strings.equalsIgnoreCase('pagos', liActive) ? 'active' : ''}">
                     <a th:if="${not #strings.equalsIgnoreCase('pagos', liActive)}" class="nav-link"
                        th:href="@{/pagos}">Pagos</a>
                     <span th:if="${#strings.equalsIgnoreCase('pagos', liActive)}" class="nav-link">Pagos</span>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_RESERVATION_U')"
+                    th:classappend="${#strings.equalsIgnoreCase('reservas', liActive) ? 'active' : ''}">
+                    <a th:if="${not #strings.equalsIgnoreCase('reservas', liActive)}" class="nav-link"
+                       th:href="@{/mis-reservas}">Mis Reservas</a>
+                    <span th:if="${#strings.equalsIgnoreCase('reservas', liActive)}" class="nav-link">Mis Reservas</span>
                 </li>
                 <li class="nav-item" sec:authorize="hasRole('ROLE_RESERVATION_E')"
                     th:classappend="${#strings.equalsIgnoreCase('reservas-clientes', liActive) ? 'active' : ''}">

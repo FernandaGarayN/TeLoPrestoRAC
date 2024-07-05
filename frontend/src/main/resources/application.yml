@@ -22,5 +22,9 @@ spring:
     openfeign:
       okhttp:
         enabled: true
+logging:
+  level:
+    org.springframework.web: DEBUG
+    cl.duoc.telopresto.web: ${LOGGING_LEVEL:DEBUG}
 
 

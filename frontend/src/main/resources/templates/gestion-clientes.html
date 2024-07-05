@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/head :: head_tag('Gestión de Clientes')}">
+    <title>Gestión de Clientes</title>
+</head>
+<body>
+<nav th:replace="~{fragments/navbar :: navbar('gestion-clientes')}"></nav>
+<div class="container bg-white">
+    <div class="p-2">
+        <h2 class="mb-4">Gestión de Clientes</h2>
+    </div>
+
+    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${successMessage}"></span>
+    </div>
+    <!-- Lista de clientes existentes -->
+    <div id="car-list" class="p-2">
+        <h3>Clientes en el sistema</h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Aquí debes iterar sobre la lista de clientes y mostrar cada cliente -->
+            <tr th:each="client : ${clients}">
+                <td th:text="${client.name}"></td>
+                <td th:text="${client.lastname}"></td>
+                <td th:text="${client.email}"></td>
+                <td>
+                    <a th:if="${client.status == 'Habilitado'}" th:href="@{'/editar-cliente/' + ${client.id}}">Editar |</a>
+                    <a th:if="${client.status == 'Habilitado'}" th:href="@{'/eliminar-cliente/' + ${client.id}}">Eliminar |</a>
+                    <a th:if="${client.status == 'Habilitado'}" th:href="@{'/deshabilitar-cliente/' + ${client.id}}">Deshabilitar</a>
+                    <a th:if="${client.status == 'Deshabilitado'}" th:href="@{'/habilitar-cliente/' + ${client.id}}">Habilitar</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<footer th:replace="~{fragments/footer :: footer_tag}"></footer>
+<div th:replace="~{fragments/footer :: footer_scripts}"></div>
+</body>
+</html>
