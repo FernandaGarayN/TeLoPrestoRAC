@@ -17,12 +17,15 @@ public class CarFirebaseRepository {
   public List<Car> getAllCars() {
     Firestore db = FirestoreClient.getFirestore();
     try {
-      QuerySnapshot querySnapshot = db.collection("cars").orderBy("plateCode").get().get();
-      return querySnapshot.getDocuments().stream().map(document -> {
-        Car car = document.toObject(Car.class);
-        car.setId(document.getId());
-        return car;
-      }).toList();
+      QuerySnapshot querySnapshot =
+        db.collection("cars")
+          .orderBy("plateCode")
+          .get()
+          .get();
+      return querySnapshot.getDocuments()
+        .stream()
+        .map(CarFirebaseRepository::buildCar)
+        .toList();
     } catch (Exception e) {
       e.printStackTrace();
       return Collections.emptyList();
@@ -33,22 +36,13 @@ public class CarFirebaseRepository {
     aCar.setStatus("Disponible");
     Firestore db = FirestoreClient.getFirestore();  // Save the car and get a reference to the saved document
     ApiFuture<DocumentReference> addedDocRef = db.collection("cars").add(aCar);
-    DocumentReference docRef = null;
+    DocumentReference docRef;
     try {
       docRef = addedDocRef.get();
+      docRef.update("image", generateImageBlob(aCar, docRef).getName());
     } catch (InterruptedException | ExecutionException e) {
       e.printStackTrace();
     }
-    byte[] imageBytes = Base64.getDecoder().decode(aCar.getImage());
-
-    Bucket bucket = StorageClient.getInstance().bucket();
-    Storage storage = bucket.getStorage();
-    String blobName = "/images/cars/" + docRef.getId() + "." + aCar.getExtension();
-    BlobId blobId = BlobId.of(bucket.getName(), blobName);
-    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(aCar.getMimeType()).build();
-    Blob blob = storage.create(blobInfo, imageBytes);
-    docRef.update("image", blob.getName());
-
   }
 
   public List<Car> findFirebaseCars(String brand, String model, String color, String type, Integer year, String subsidiary, Integer price) {
@@ -89,16 +83,21 @@ public class CarFirebaseRepository {
 
     try {
       for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-        Car car = document.toObject(Car.class);
-        assert car != null;
-        car.setId(document.getId());
-        finalCars.add(car);
+        finalCars.add(buildCar(document));
       }
     } catch (InterruptedException | ExecutionException e) {
       throw new RuntimeException(e);
     }
 
     return finalCars;
+  }
+
+  private static Car buildCar(DocumentSnapshot document) {
+    Car car = document.toObject(Car.class);
+    assert car != null;
+    car.setId(document.getId());
+    car.setImageUrl(generateNewImageLink(car.getImage()));
+    return car;
   }
 
   public Optional<Car> findCarById(String id) {
@@ -109,17 +108,7 @@ public class CarFirebaseRepository {
     try {
       DocumentSnapshot document = future.get();
       if (document.exists()) {
-        Car car = document.toObject(Car.class);
-        assert car != null;
-        car.setId(document.getId());
-        String blobName = car.getImage();
-        if (blobName != null && !blobName.isEmpty()) {
-          Bucket bucket = StorageClient.getInstance().bucket();
-          Blob blob = bucket.get(blobName);
-          URL signedUrl = blob.signUrl(7, TimeUnit.DAYS);
-          car.setImageUrl(signedUrl.toString());
-        }
-        return Optional.of(car);
+        return Optional.of(buildCar(document));
       } else {
         return Optional.empty();
       }
@@ -128,21 +117,34 @@ public class CarFirebaseRepository {
     }
   }
 
+  private static String generateNewImageLink(String blobName) {
+    String newLink = "";
+    if (blobName != null && !blobName.isEmpty()) {
+      Bucket bucket = StorageClient.getInstance().bucket();
+      Blob blob = bucket.get(blobName);
+      URL signedUrl = blob.signUrl(30, TimeUnit.MINUTES);
+      newLink = signedUrl.toString();
+    }
+    return newLink;
+  }
+
   public void edit(String id, Car aCar, boolean newImage) {
     Firestore db = FirestoreClient.getFirestore();
     DocumentReference docRef = db.collection("cars").document(id);
     docRef.set(aCar);
     if(newImage){
-      byte[] imageBytes = Base64.getDecoder().decode(aCar.getImage());
-
-      Bucket bucket = StorageClient.getInstance().bucket();
-      Storage storage = bucket.getStorage();
-      String blobName = "/images/cars/" + docRef.getId() + "." + aCar.getExtension();
-      BlobId blobId = BlobId.of(bucket.getName(), blobName);
-      BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(aCar.getMimeType()).build();
-      Blob blob = storage.create(blobInfo, imageBytes);
-      docRef.update("image", blob.getName());
+      docRef.update("image", generateImageBlob(aCar, docRef).getName());
     }
+  }
+
+  private static Blob generateImageBlob(Car aCar, DocumentReference docRef) {
+    byte[] imageBytes = Base64.getDecoder().decode(aCar.getImage());
+    Bucket bucket = StorageClient.getInstance().bucket();
+    Storage storage = bucket.getStorage();
+    String blobName = "/images/cars/" + docRef.getId() + "." + aCar.getExtension();
+    BlobId blobId = BlobId.of(bucket.getName(), blobName);
+    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(aCar.getMimeType()).build();
+    return storage.create(blobInfo, imageBytes);
   }
 
   public Optional<Car> delete(String id) {
@@ -153,11 +155,8 @@ public class CarFirebaseRepository {
     try {
       DocumentSnapshot document = future.get();
       if (document.exists()) {
-        Car car = document.toObject(Car.class);
-        assert car != null;
-        car.setId(document.getId());
         docRef.delete();
-        return Optional.of(car);
+        return Optional.of(buildCar(document));
       } else {
         return Optional.empty();
       }

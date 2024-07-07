@@ -12,11 +12,11 @@ import java.util.List;
 @FeignClient(
         name = "authboot-user-client",
         url = "${spring.properties.feign.auth}/users",
-        configuration = FeignAuthbootUserConfig.class)
+        configuration = {FeignAuthbootUserConfig.class})
 public interface AuthbootUserClient {
 
     @PostMapping("/password-recovery")
-    List<Reservation> passwordRecovery (@RequestBody PasswordRecovery passwordRecovery);
+    List<Reservation> passwordRecovery(@RequestBody PasswordRecovery passwordRecovery);
 
     @PostMapping
     BaseResponse post(@RequestBody AuthbootNewUserRequest newUserApi);

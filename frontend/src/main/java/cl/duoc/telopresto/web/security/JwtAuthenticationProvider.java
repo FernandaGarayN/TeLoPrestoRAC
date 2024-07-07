@@ -27,7 +27,9 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
     var response = authbootService.auth(createRequest(authentication));
     var user = response.getData();
     var username = authentication.getName();
-    clientService.getByUsername(username);
+    if (user.getRoles().contains("RAC_CLIENT")) {
+      clientService.getByUsername(username);
+    }
     var totalGiftPoints = reservationService.getTotalGiftPoints(username);
     user.setTotalGiftPoints(totalGiftPoints);
     return new UsernamePasswordAuthenticationToken(user, user.getToken(), generateAuthorities(user));

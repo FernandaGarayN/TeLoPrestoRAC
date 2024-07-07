@@ -12,10 +12,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @RequiredArgsConstructor
 public class FeignAuthbootUserConfig {
-  private final AuthbootService authService;
   @Bean
-  public RequestInterceptor feignInterceptor() {
-    return new FeignAuthbootUserInterceptor(authService);
+  public FeignAuthbootUserInterceptor feignInterceptor() {
+    return new FeignAuthbootUserInterceptor();
   }
 
   @Bean
