@@ -7,12 +7,14 @@ import com.google.cloud.storage.*;
 import com.google.cloud.storage.Blob;
 import com.google.firebase.cloud.FirestoreClient;
 import com.google.firebase.cloud.StorageClient;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class CarFirebaseRepository {
   public List<Car> getAllCars() {
     Firestore db = FirestoreClient.getFirestore();
@@ -27,7 +29,7 @@ public class CarFirebaseRepository {
         .map(CarFirebaseRepository::buildCar)
         .toList();
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("Error al obtener los autos", e);
       return Collections.emptyList();
     }
   }
@@ -41,7 +43,7 @@ public class CarFirebaseRepository {
       docRef = addedDocRef.get();
       docRef.update("image", generateImageBlob(aCar, docRef).getName());
     } catch (InterruptedException | ExecutionException e) {
-      e.printStackTrace();
+      log.error("Error al guardar el auto", e);
     }
   }
 
@@ -86,7 +88,8 @@ public class CarFirebaseRepository {
         finalCars.add(buildCar(document));
       }
     } catch (InterruptedException | ExecutionException e) {
-      throw new RuntimeException(e);
+      log.error("Error al obtener los autos", e);
+      return Collections.emptyList();
     }
 
     return finalCars;
@@ -113,6 +116,7 @@ public class CarFirebaseRepository {
         return Optional.empty();
       }
     } catch (InterruptedException | ExecutionException e) {
+      log.error("Error al obtener el auto", e);
       return Optional.empty();
     }
   }
@@ -161,6 +165,7 @@ public class CarFirebaseRepository {
         return Optional.empty();
       }
     } catch (InterruptedException | ExecutionException e) {
+      log.error("Error al eliminar el auto", e);
       return Optional.empty();
     }
   }
