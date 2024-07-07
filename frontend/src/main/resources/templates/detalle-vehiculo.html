@@ -9,11 +9,14 @@
         <h2 class="mb-4">Detalle del Vehículo</h2>
         <div class="row">
             <div class="col-md-6">
-                <img th:src="${car.imageUrl}" alt="Foto Vehículo" width="300">
+                <img th:src="${car.imageUrl}" alt="Foto Vehículo" width="400">
             </div>
             <div class="col-md-6">
-                <div th:if="${isReserved}" class="alert alert-info" role="alert" sec:authorize="isAuthenticated()">
+                <div th:if="${isReserved}" class="alert alert-warning" role="alert" sec:authorize="isAuthenticated()">
                     Este vehículo está actualmente reservado.
+                </div>
+                <div th:if="${not isReserved}" class="alert alert-info" role="alert" sec:authorize="isAuthenticated()">
+                    Este vehículo está actualmente disponible.
                 </div>
             </div>
         </div>

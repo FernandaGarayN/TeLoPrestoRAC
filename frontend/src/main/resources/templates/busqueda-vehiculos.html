@@ -59,6 +59,7 @@
         <table id="cars_table" class="table table-striped" th:if="${#lists.size(results) > 0}">
             <thead>
             <tr>
+                <th></th>
                 <th>Marca</th>
                 <th>Modelo</th>
                 <th>Tipo</th>
@@ -68,6 +69,7 @@
             </thead>
             <tbody>
             <tr th:each="row : ${results}">
+                <td><img th:src="@{${row.imageUrl}}" class="d-block" width="100" alt="Imagen del vehículo"/></td>
                 <td>[[${row.brand}]]</td>
                 <td>[[${row.model}]]</td>
                 <td>[[${row.type}]]</td>
