@@ -25,6 +25,7 @@ public class ClientService {
   }
 
   public Client save(Client client) {
+    client.setStatus("Habilitado");
     return clientFirebaseRepository.save(client);
   }
 
