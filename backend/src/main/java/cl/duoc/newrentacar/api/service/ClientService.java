@@ -58,4 +58,8 @@ public class ClientService {
     }
     return bdClient;
   }
+
+  public Client findByUsername(String username) {
+    return clientFirebaseRepository.getClientByUsername(username).orElse(null);
+  }
 }
