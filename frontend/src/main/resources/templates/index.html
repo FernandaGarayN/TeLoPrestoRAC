@@ -11,7 +11,7 @@
     <div class="row b-2">
         <!-- Tarjetas dinámicas para cada tipo de vehículo -->
         <div class="col-12">
-            <div id="vehicleTypeCarousel" class="carousel slide" data-ride="carousel">
+            <div id="vehicleTypeCarousel" class="carousel slide" data-ride="carousel" data-interval="2000">
                 <ol class="carousel-indicators">
                     <li th:each="carType, stat : ${carTypes}" th:data-target="'#vehicleTypeCarousel'" th:data-slide-to="${stat.index}" th:class="${stat.first} ? 'active' : ''"></li>
                 </ol>

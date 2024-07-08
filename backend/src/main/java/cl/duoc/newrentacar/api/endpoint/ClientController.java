@@ -36,6 +36,16 @@ public class ClientController {
     }
   }
 
+  @GetMapping("/by-username/{username}")
+  public ResponseEntity<Client> getClientByUsername(@PathVariable String username) {
+    Client client = clientService.findByUsername(username);
+    if (client != null) {
+      return ResponseEntity.ok(client);
+    } else {
+      return ResponseEntity.notFound().build();
+    }
+  }
+
   @PostMapping("/search")
   public ResponseEntity<List<Client>> getClientByRutOrName(@Validated @RequestBody ClientSearchRequest searchRequest) {
     List <Client> clients = clientService.findByRutOrName(searchRequest.getRut(), searchRequest.getName(), searchRequest.getLastName());

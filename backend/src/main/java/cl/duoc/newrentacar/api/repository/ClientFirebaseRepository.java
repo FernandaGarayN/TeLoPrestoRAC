@@ -151,4 +151,28 @@ public class ClientFirebaseRepository {
     Firestore dbFirestore = FirestoreClient.getFirestore();
     dbFirestore.collection("clients").document(bdClient.getId()).set(bdClient);
   }
+
+    public Optional<Client> getClientByUsername(String username) {
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+
+        ApiFuture<QuerySnapshot> future = dbFirestore
+                .collection("clients")
+                .whereEqualTo("username", username)
+                .get();
+
+        List<QueryDocumentSnapshot> documents;
+        try {
+            documents = future.get().getDocuments();
+        } catch (InterruptedException | ExecutionException e) {
+            return Optional.empty();
+        }
+
+        if (documents.isEmpty()) {
+            return Optional.empty();
+        }
+
+        DocumentSnapshot document = documents.get(0);
+        Client object = document.toObject(Client.class);
+        return Optional.of(object);
+    }
 }
