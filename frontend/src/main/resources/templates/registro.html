@@ -14,15 +14,22 @@
         <div class="mb-3 row">
             <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="nombre" th:field="*{name}">
+                <input type="text" class="form-control" id="nombre" th:field="*{name}" oninput="generateUsername()">
                 <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error text-danger"></span>
             </div>
         </div>
         <div class="mb-3 row">
             <label for="apellido" class="col-sm-2 col-form-label">Apellido</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="apellido" th:field="*{lastname}">
+                <input type="text" class="form-control" id="apellido" th:field="*{lastname}" oninput="generateUsername()">
                 <span th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}" class="error text-danger"></span>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="username" class="col-sm-2 col-form-label">Nombre de Usuario (Autogenerado)</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="username" th:field="*{username}" readonly>
+                <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error text-danger"></span>
             </div>
         </div>
         <div class="mb-3 row">
@@ -76,5 +83,16 @@
 </div>
 <footer th:replace="~{fragments/footer :: footer_tag}"></footer>
 <div th:replace="~{fragments/footer :: footer_scripts}"></div>
+<script>
+    function generateUsername() {
+        const name = document.getElementById('nombre').value;
+        const lastname = document.getElementById('apellido').value;
+        if (name && lastname) {
+            document.getElementById('username').value = name.charAt(0).toLowerCase() + lastname.toLowerCase();
+        } else {
+            document.getElementById('username').value = '';
+        }
+    }
+</script>
 </body>
 </html>

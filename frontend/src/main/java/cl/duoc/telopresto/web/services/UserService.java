@@ -23,12 +23,11 @@ public class UserService {
 
     public Client postUser(RegisterForm form) {
         validateNewClient(form);
-        String username = createUsername(form.getName(), form.getLastname());
-        postNewUser(form, username);
-        return postNewClient(form, username);
+        postNewUser(form);
+        return postNewClient(form);
     }
 
-    private Client postNewClient(RegisterForm form, String username) {
+    private Client postNewClient(RegisterForm form) {
         Client build = Client.builder()
                 .name(form.getName())
                 .lastname(form.getLastname())
@@ -36,7 +35,7 @@ public class UserService {
                 .address(form.getAddress())
                 .rut(form.getRut())
                 .phoneNumber(form.getPhone())
-                .username(username)
+                .username(form.getUsername())
                 .build();
 
         clientClient.postClient(build);
@@ -44,11 +43,11 @@ public class UserService {
         return build;
     }
 
-    private void postNewUser(RegisterForm form, String username) {
+    private void postNewUser(RegisterForm form) {
         try {
             authbootUserClient.post(
                     AuthbootNewUserRequest.builder()
-                            .username(username)
+                            .username(form.getUsername())
                             .email(form.getEmail())
                             .password(form.getPassword())
                             .roles(DEFAULT_ROLES).build()
@@ -68,9 +67,5 @@ public class UserService {
             }
             log.info("Client by {} not found, creating new client", form.getRut());
         }
-    }
-
-    private String createUsername(String name, String lastname) {
-        return name.toLowerCase().charAt(0) + lastname.toLowerCase();
     }
 }
