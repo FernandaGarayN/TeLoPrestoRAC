@@ -1,11 +1,19 @@
-version: "3.8"
+networks:
+  tlp-rac:
+    driver: bridge
 services:
   backend:
+    depends_on:
+      - auth
     build: ./backend
     ports:
       - "8091:8091"
     restart: on-failure
+    networks:
+      - tlp-rac
   frontend:
+    depends_on:
+      - backend
     build: ./frontend
     ports:
       - "8080:8080"
@@ -13,9 +21,24 @@ services:
     environment:
       - BACKEND_URL=http://backend:8091
       - AUTH_URL=http://auth:8090
+    networks:
+      - tlp-rac
   auth:
-    image: cfmartinezs/authboot:1.0.0
+    build: https://github.com/FernandaGarayN/Authboot.git
     ports:
       - "8090:8090"
+    environment:
+      - ERROR_NOTIFICATION_EMAIL=teloprestorentacar@gmail.com
+      - JWT_SECRET=UzEkbGwzZzRzJDQkZDNzY3VicjFyJDNzdDMkdDN4dDAkcXUxM3IzJGQzYzFyJHF1MyQzcjNzJG11eSRwM3JzMXN0M250MywkYzBtdW4xYzR0MyRjMG4kRzNuZDNwMHJ0My5jbCRwNHI0JDR2MXM0cm4wcyEh
+      - JWT_SECRET_ENCODING=BASE64
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
+      - EUREKA_CLIENT_ENABLED=false
+      - SPRING_PROFILE=local-init-db
+      - CONFIG_SERVER_ENABLED=false
+      - PORT=8090
+      - SPRING_MAIL_PASSWORD=iiwvuekdmjlpsmlg
+      - SPRING_MAIL_USERNAME=teloprestorentacar@gmail.com
+    networks:
+      - tlp-rac
     restart: on-failure
 
