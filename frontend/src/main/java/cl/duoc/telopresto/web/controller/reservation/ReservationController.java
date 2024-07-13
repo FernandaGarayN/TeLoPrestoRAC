@@ -120,17 +120,22 @@ public class ReservationController {
                         .build();
         model.addAttribute("reservationForm", reservationForm);
         model.addAttribute("reservations", reservations);
+        model.addAttribute("id", id);
         return "nueva-reserva";
     }
 
     @PostMapping("/nueva-reserva")
     public String postNewReservation(
             ModelMap model,
+            @RequestParam("idVehiculo") String id,
             @Valid @ModelAttribute("reservationForm") ReservationForm form,
             BindingResult bindingResult,
             Authentication authentication) {
         model.addAttribute("reservationForm", form);
         if (bindingResult.hasErrors()) {
+            List<Reservation> reservations = reservationService.findByCarId(id);
+            model.addAttribute("reservations", reservations);
+            model.addAttribute("id", id);
             return "nueva-reserva";
         }
         AuthbootAuthUser user = (AuthbootAuthUser) authentication.getPrincipal();

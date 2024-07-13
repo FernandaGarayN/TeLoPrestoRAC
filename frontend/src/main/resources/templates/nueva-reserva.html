@@ -10,7 +10,7 @@
     <div class="p-2">
         <h2 class="mb-4">Nueva Reserva</h2>
     </div>
-    <form th:object="${reservationForm}" th:action="@{/nueva-reserva}" method="post" class="p-2">
+    <form th:object="${reservationForm}" th:action="@{/nueva-reserva(idVehiculo=${id})}" method="post" class="p-2">
         <div th:if="${#fields.hasGlobalErrors()}">
             <p class="text-danger"  th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
         </div>
@@ -46,7 +46,7 @@
 <div th:replace="~{fragments/footer :: footer_scripts}"></div>
 <script th:inline="javascript">
     /*<![CDATA[*/
-    var reservations = /*[[${reservations}]]*/ [];
+    const reservations = /*[[${reservations}]]*/ [];
     /*]]>*/
 </script>
 <script>
